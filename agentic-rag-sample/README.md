@@ -4,7 +4,7 @@ A simple Node.js application that implements Retrieval-Augmented Generation (RAG
 
 ## Features
 
-- 🤖 **Local AI Model**: Uses Ollama with Gemma2 for completely offline operation
+- 🤖 **Local AI Model**: Uses Ollama with Mistral for completely offline operation
 - 📚 **Multi-format Document Support**: Handles PDF, CSV, and text files
 - 🔍 **Semantic Search**: Advanced document retrieval using HuggingFace embeddings
 - 💬 **Conversational Agent**: Interactive question-answering interface
@@ -16,14 +16,14 @@ Before running this application, make sure you have:
 
 1. **Node.js** (v18 or higher)
 2. **Ollama** installed and running
-3. **Gemma2 model** downloaded in Ollama
+3. **Mistral model** downloaded in Ollama
 
-### Installing Ollama and Gemma2
+### Installing Ollama and Mistral
 
 1. Install Ollama from [https://ollama.com/](https://ollama.com/)
-2. Pull the Gemma2 model:
+2. Pull the Mistral model:
    ```bash
-   ollama pull gemma2:latest
+   ollama pull mistral:latest
    ```
 3. Verify Ollama is running:
    ```bash
@@ -103,7 +103,7 @@ You can customize the application by editing the `.env` file:
 ```bash
 # Ollama Configuration
 OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=gemma2:latest
+OLLAMA_MODEL=mistral:latest
 
 # HuggingFace Configuration  
 HUGGINGFACE_MODEL=BAAI/bge-small-en-v1.5
@@ -149,7 +149,7 @@ VERBOSE_LOGGING=false
 
 - **Minimum**: 8GB RAM
 - **Recommended**: 16GB RAM for optimal performance
-- **Model size**: Gemma2 requires ~5GB of available memory
+- **Model size**: Mistral requires ~4.1GB of available memory
 
 ## Development
 

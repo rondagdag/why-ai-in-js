@@ -34,7 +34,7 @@ class AgenticRAGSystem {
 
     // Configure LLM model
     Settings.llm = ollama({
-      model: process.env.OLLAMA_MODEL || "llama3.2:latest",
+      model: process.env.OLLAMA_MODEL || "mistral:latest",
       options: {
         temperature: 0.1, // Lower temperature for more consistent responses
       },
@@ -213,7 +213,7 @@ async function main() {
     console.error("\n❌ Application failed:", error);
     console.log("\n🛠️  Troubleshooting tips:");
     console.log("1. Make sure Ollama is installed and running");
-    console.log(`2. Ensure the model '${process.env.OLLAMA_MODEL || "llama3.1:8b"}' is available`);
+    console.log(`2. Ensure the model '${process.env.OLLAMA_MODEL || "mistral:latest"}' is available`);
     console.log("3. Check that documents exist in the docs/ folder");
     console.log("4. Verify your environment configuration");
     process.exit(1);
