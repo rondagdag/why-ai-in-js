@@ -36,14 +36,14 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
   let session = null;
 
   // Check if the API is available
-  if (!self.ai || !self.ai.languageModel) {
+  if (!self.LanguageModel) {
     errorMessage.style.display = "block";
     errorMessage.innerHTML = `Your browser doesn't support the Prompt API. If you're on Chrome, join the <a href="https://developer.chrome.com/docs/ai/join-epp">Early Preview Program</a> to enable it.`;
     return;
   }
 
   // Check model availability
-  const availability = await self.ai.languageModel.availability();
+  const availability = await self.LanguageModel.availability();
   if (availability === 'unavailable') {
     errorMessage.style.display = "block";
     errorMessage.innerHTML = `The Prompt API model is unavailable on this device.`;
@@ -226,9 +226,17 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
 
   const updateSession = async () => {
     try {
-      session = await self.ai.languageModel.create({
-        temperature: Number(sessionTemperature.value),
-        topK: Number(sessionTopK.value),
+      // Get current parameter limits
+      const params = await self.LanguageModel.params();
+      const { maxTopK } = params;
+      
+      // Validate and clamp topK value to be within valid range (1 to maxTopK)
+      const topKValue = Math.max(1, Math.min(Number(sessionTopK.value), maxTopK));
+      const temperatureValue = Number(sessionTemperature.value);
+      
+      session = await self.LanguageModel.create({
+        temperature: temperatureValue,
+        topK: topKValue,
         initialPrompts: [
           { role: 'system', content: SYSTEM_PROMPT }
         ],
@@ -253,20 +261,46 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
   };
 
   sessionTemperature.addEventListener("input", async () => {
+    // Validate temperature is within bounds
+    const maxTemp = parseFloat(sessionTemperature.max) || 2.0;
+    const minTemp = parseFloat(sessionTemperature.min) || 0.0;
+    const currentTemp = parseFloat(sessionTemperature.value);
+    
+    if (currentTemp > maxTemp) {
+      sessionTemperature.value = maxTemp;
+    } else if (currentTemp < minTemp) {
+      sessionTemperature.value = minTemp;
+    }
+    
     await updateSession();
   });
 
   sessionTopK.addEventListener("input", async () => {
+    // Validate topK is within bounds  
+    const maxTopK = parseInt(sessionTopK.max) || 8;
+    const minTopK = parseInt(sessionTopK.min) || 1;
+    const currentTopK = parseInt(sessionTopK.value);
+    
+    if (currentTopK > maxTopK) {
+      sessionTopK.value = maxTopK;
+    } else if (currentTopK < minTopK) {
+      sessionTopK.value = minTopK;
+    }
+    
     await updateSession();
   });
 
   if (!session) {
-    const params = await self.ai.languageModel.params();
+    const params = await self.LanguageModel.params();
     const { defaultTopK, maxTopK, defaultTemperature, maxTemperature } = params;
     sessionTemperature.value = defaultTemperature;
     sessionTemperature.max = maxTemperature || 2.0;
     sessionTopK.value = defaultTopK;
     sessionTopK.max = maxTopK;
+    // Set minimum value for topK to ensure it's always valid
+    sessionTopK.min = 1;
+    // Update the input values to reflect the clamped values
+    sessionTopK.value = Math.max(1, Math.min(defaultTopK, maxTopK));
     await updateSession();
   }
 })();

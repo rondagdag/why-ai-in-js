@@ -14,16 +14,23 @@ Understanding how different generations consume and process information is cruci
 
 ## Installation & Setup
 
-1. Clone this repository, build the project
-2. Enable Chrome's built-in AI features:
-   - Open Chrome and navigate to `chrome://flags`
-   - Enable the following flags:
-     - `chrome://flags/#summarization-api-for-gemini-nano`
-   - Click "Restart" to apply changes
-   - For more details, see the [official Chrome Summarization API documentation](https://developer.chrome.com/docs/ai/summarizer-api)
-3. Open Chrome and navigate to `chrome://extensions`
-4. Enable "Developer mode" in the top right corner
-5. Click "Load unpacked" and select the extension directory
+1. Clone this repository:
+   ```bash
+   git clone <repository-url>
+   cd explain-in-generations
+   ```
+2. Install dependencies and build the project:
+   ```bash
+   npm install
+   npm run build
+   ```
+3. Ensure your system meets the hardware requirements (see Requirements section below)
+4. Open Chrome and navigate to `chrome://extensions`
+5. Enable "Developer mode" in the top right corner
+6. Click "Load unpacked" and select the `dist` folder from the project directory
+7. The first time you use the extension, Gemini Nano will be automatically downloaded (this may take some time)
+
+For more details, see the [official Chrome Summarization API documentation](https://developer.chrome.com/docs/ai/summarizer-api)
 
 ## Usage
 
@@ -35,19 +42,34 @@ Understanding how different generations consume and process information is cruci
 
 ## Requirements
 
-- Google Chrome version 116 or later
-- Permissions:
-  - `"sidePanel"`: Required for the extension's side panel interface
-  - `"activeTab"`: Required to access the current page's content
-  - `"generativeContentAPI"`: Required for AI-powered text generation
+### Browser Requirements
+- Google Chrome version 138 or later
+
+### Hardware Requirements
+- **Operating System**: Windows 10 or 11; macOS 13+ (Ventura and onwards); or Linux
+  - Chrome for Android, iOS, and ChromeOS are not yet supported
+- **Storage**: At least 22 GB of free space on the volume that contains your Chrome profile for Gemini Nano download
+- **GPU**: Strictly more than 4 GB of VRAM
+- **Network**: Unlimited data or an unmetered connection for initial model download
+
+### Permissions
+- `"sidePanel"`: Required for the extension's side panel interface
+- `"activeTab"`: Required to access the current page's content
+- `"generativeContentAPI"`: Required for AI-powered text generation
+
+**Note**: If available storage space falls below 10 GB after download, the model will be automatically removed and will need to be redownloaded when requirements are met again.
 
 ## API Notes
 
-This extension uses Chrome's Generative Content API, which:
-- Is free to use
-- Runs locally on the user's device
-- Does not send data to external servers
-- Requires Chrome version 116 or later
+This extension uses Chrome's built-in Summarizer API with Gemini Nano, which:
+- Is free to use and runs locally on the user's device
+- Does not send data to external servers, ensuring privacy
+- Requires Chrome version 138 or later
+- Uses Gemini Nano model which is automatically downloaded on first use
+- Supports various summarization types (key-points, tldr, teaser, headline) and formats
+- Before using APIs that use Gemini Nano, review the [People + AI Guidebook](https://pair.withgoogle.com/guidebook/) for best practices
+
+**Important**: Please acknowledge [Google's Generative AI Prohibited Uses Policy](https://policies.google.com/terms/generative-ai/use-policy) before using this extension.
 
 ## **What's next for 🌟 Explain in Generations**
 - Enhanced generational context awareness
