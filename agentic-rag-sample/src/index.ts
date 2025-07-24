@@ -6,6 +6,7 @@ import { HuggingFaceEmbedding } from "@llamaindex/huggingface";
 import * as dotenv from "dotenv";
 import * as path from "path";
 import { fileURLToPath } from "url";
+import * as readline from "readline";
 
 // Load environment variables
 dotenv.config();
@@ -18,9 +19,18 @@ class AgenticRAGSystem {
   private index: VectorStoreIndex | null = null;
   private ragAgent: any = null;
   private isInitialized = false;
+  private rl: readline.Interface | null = null;
 
   constructor() {
     this.setupConfiguration();
+    this.setupReadline();
+  }
+
+  private setupReadline() {
+    this.rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
   }
 
   private setupConfiguration() {
@@ -29,7 +39,6 @@ class AgenticRAGSystem {
     // Configure embedding model
     Settings.embedModel = new HuggingFaceEmbedding({
       modelType: process.env.HUGGINGFACE_MODEL || "BAAI/bge-small-en-v1.5",
-      quantized: false,
     });
 
     // Configure LLM model
@@ -157,6 +166,23 @@ class AgenticRAGSystem {
     }
   }
 
+  private askQuestion(): Promise<string> {
+    return new Promise((resolve) => {
+      if (this.rl) {
+        this.rl.question("\n💬 Enter your question (or 'exit'/'quit' to end): ", (answer) => {
+          resolve(answer.trim());
+        });
+      }
+    });
+  }
+
+  private closeReadline() {
+    if (this.rl) {
+      this.rl.close();
+      this.rl = null;
+    }
+  }
+
   async runInteractiveSession() {
     if (!this.isInitialized) {
       await this.initialize();
@@ -178,21 +204,33 @@ class AgenticRAGSystem {
     sampleQueries.forEach((query, index) => {
       console.log(`  ${index + 1}. ${query}`);
     });
-    console.log();
+    
+    console.log("\n✨ Start asking your questions!");
 
-    // For demo purposes, let's run a few sample queries
-    for (const query of sampleQueries.slice(0, 1)) {
+    // Interactive loop
+    while (true) {
       try {
-        const response = await this.query(query);
+        const question = await this.askQuestion();
+        
+        // Check for exit commands
+        if (question.toLowerCase() === 'exit' || question.toLowerCase() === 'quit' || question === '') {
+          console.log("\n👋 Thank you for using the Agentic RAG System!");
+          break;
+        }
+
+        // Process the question
+        const response = await this.query(question);
         console.log("🤖 Response:");
         console.log(response);
-        console.log("\n" + "=".repeat(80) + "\n");
+        console.log("\n" + "=".repeat(80));
+        
       } catch (error) {
-        console.error(`❌ Error with query "${query}":`, error);
+        console.error(`❌ Error processing your question:`, error);
+        console.log("Please try again or type 'exit' to quit.");
       }
     }
 
-    console.log("✨ Demo completed! To run more queries, implement interactive input or modify the sample queries in the code.");
+    this.closeReadline();
   }
 }
 
@@ -222,6 +260,11 @@ async function main() {
 
 // Handle graceful shutdown
 process.on('SIGINT', () => {
+  console.log("\n👋 Shutting down gracefully...");
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
   console.log("\n👋 Shutting down gracefully...");
   process.exit(0);
 });
