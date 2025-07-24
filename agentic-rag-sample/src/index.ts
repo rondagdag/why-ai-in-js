@@ -169,9 +169,9 @@ class AgenticRAGSystem {
     // Sample queries to get started
     const sampleQueries = [
         "Why AI in JavaScript?",
-    //    "Tell me about AI and machine learning benefits",
-    //   "Which companies have the highest revenue?",
-    //   "What are the key project learnings mentioned?",
+        "Tell me about AI and machine learning benefits",
+        "Which companies have the highest revenue?",
+       "What are the key project learnings mentioned?",
     ];
 
     console.log("🌟 Sample queries you can try:");
@@ -181,7 +181,7 @@ class AgenticRAGSystem {
     console.log();
 
     // For demo purposes, let's run a few sample queries
-    for (const query of sampleQueries.slice(0, 2)) {
+    for (const query of sampleQueries.slice(0, 1)) {
       try {
         const response = await this.query(query);
         console.log("🤖 Response:");
