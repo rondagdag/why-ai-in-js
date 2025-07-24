@@ -6,7 +6,7 @@ A simple Node.js application that implements Retrieval-Augmented Generation (RAG
 
 - 🤖 **Local AI Model**: Uses Ollama with Mistral for completely offline operation
 - 📚 **Multi-format Document Support**: Handles PDF, CSV, and text files
-- 🔍 **Semantic Search**: Advanced document retrieval using HuggingFace embeddings
+- 🔍 **Semantic Search**: Advanced document retrieval using Ollama embeddings
 - 💬 **Conversational Agent**: Interactive question-answering interface
 - 🛡️ **Privacy-First**: All processing happens locally with no external API calls
 
@@ -16,14 +16,14 @@ Before running this application, make sure you have:
 
 1. **Node.js** (v18 or higher)
 2. **Ollama** installed and running
-3. **Mistral model** downloaded in Ollama
+3. **Required Ollama models** downloaded
 
-### Installing Ollama and Mistral
+### Quick Setup
 
 1. Install Ollama from [https://ollama.com/](https://ollama.com/)
-2. Pull the Mistral model:
+2. Run the setup script to download required models:
    ```bash
-   ollama pull mistral:latest
+   ./setup-ollama.sh
    ```
 3. Verify Ollama is running:
    ```bash

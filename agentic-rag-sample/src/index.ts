@@ -1,8 +1,7 @@
 import { VectorStoreIndex, Settings } from "llamaindex";
 import { SimpleDirectoryReader } from "@llamaindex/readers/directory";
 import { agent } from "@llamaindex/workflow";
-import { ollama } from "@llamaindex/ollama";
-import { HuggingFaceEmbedding } from "@llamaindex/huggingface";
+import { ollama, OllamaEmbedding } from "@llamaindex/ollama";
 import * as dotenv from "dotenv";
 import * as path from "path";
 import { fileURLToPath } from "url";
@@ -36,9 +35,9 @@ class AgenticRAGSystem {
   private setupConfiguration() {
     console.log("🔧 Setting up configuration...");
     
-    // Configure embedding model
-    Settings.embedModel = new HuggingFaceEmbedding({
-      modelType: process.env.HUGGINGFACE_MODEL || "BAAI/bge-small-en-v1.5",
+    // Configure embedding model - using Ollama instead of HuggingFace to avoid network issues
+    Settings.embedModel = new OllamaEmbedding({
+      model: process.env.OLLAMA_EMBEDDING_MODEL || "nomic-embed-text",
     });
 
     // Configure LLM model

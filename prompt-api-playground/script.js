@@ -1,6 +1,9 @@
 /**
  * Copyright 2024 Google LLC
  * SPDX-License-Identifier: Apache-2.0
+ * 
+ * Updated for Chrome Prompt API (Chrome 138+)
+ * https://developer.chrome.com/docs/ai/prompt-api
  */
 
 import { marked } from "https://cdn.jsdelivr.net/npm/marked@13.0.3/lib/marked.esm.js";
@@ -32,10 +35,25 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
 
   let session = null;
 
+  // Check if the API is available
   if (!self.ai || !self.ai.languageModel) {
     errorMessage.style.display = "block";
-    errorMessage.innerHTML = `Your browser doesn't support the Prompt API. If you're on Chrome, join the <a href="https://developer.chrome.com/docs/ai/built-in#get_an_early_preview">Early Preview Program</a> to enable it.`;
+    errorMessage.innerHTML = `Your browser doesn't support the Prompt API. If you're on Chrome, join the <a href="https://developer.chrome.com/docs/ai/join-epp">Early Preview Program</a> to enable it.`;
     return;
+  }
+
+  // Check model availability
+  const availability = await self.ai.languageModel.availability();
+  if (availability === 'unavailable') {
+    errorMessage.style.display = "block";
+    errorMessage.innerHTML = `The Prompt API model is unavailable on this device.`;
+    return;
+  }
+
+  if (availability === 'downloadable' || availability === 'downloading') {
+    errorMessage.style.display = "block";
+    errorMessage.innerHTML = `The Prompt API model is ${availability}. Please wait...`;
+    // Continue to allow the user to try, but show the status
   }
 
   promptArea.style.display = "block";
@@ -77,7 +95,17 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
         previousChunk = chunk;
       }
     } catch (error) {
+      console.error('Prompt error:', error);
       p.textContent = `Error: ${error.message}`;
+      
+      // If the session was destroyed or there's a quota issue, try to recreate it
+      if (error.message.includes('session') || error.message.includes('quota')) {
+        try {
+          await updateSession();
+        } catch (sessionError) {
+          console.error('Failed to recreate session:', sessionError);
+        }
+      }
     } finally {
       if (highlight) {
         problematicArea.style.display = "block";
@@ -94,18 +122,18 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
     if (!session) {
       return;
     }
-    const { maxTokens, temperature, tokensLeft, tokensSoFar, topK } = session;
+    const { maxTemperature, temperature, inputUsage, inputQuota, topK } = session;
     maxTokensInfo.textContent = new Intl.NumberFormat("en-US").format(
-      maxTokens,
+      inputQuota,
     );
     (temperatureInfo.textContent = new Intl.NumberFormat("en-US", {
       maximumSignificantDigits: 5,
     }).format(temperature)),
       (tokensLeftInfo.textContent = new Intl.NumberFormat("en-US").format(
-        tokensLeft,
+        inputQuota - inputUsage,
       ));
     tokensSoFarInfo.textContent = new Intl.NumberFormat("en-US").format(
-      tokensSoFar,
+      inputUsage,
     );
     topKInfo.textContent = new Intl.NumberFormat("en-US").format(topK);
   };
@@ -136,14 +164,18 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
 
   promptInput.addEventListener("input", async () => {
     const value = promptInput.value.trim();
-    if (!value) {
+    if (!value || !session) {
       return;
     }
-    const cost = await session.countPromptTokens(value);
-    if (!cost) {
-      return;
+    try {
+      const cost = await session.measureInputUsage(value);
+      if (cost) {
+        costSpan.textContent = `${cost} token${cost === 1 ? '' : 's'}`;
+      }
+    } catch (error) {
+      // measureInputUsage might not be available in all versions
+      console.warn('Token counting not available:', error);
     }
-    costSpan.textContent = `${cost} token${cost === 1 ? '' : 's'}`;
   });
 
   const resetUI = () => {
@@ -161,12 +193,14 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
     promptInput.focus();
   };
 
-  resetButton.addEventListener("click", () => {
+  resetButton.addEventListener("click", async () => {
     promptInput.value = "";
     resetUI();
-    session.destroy();
-    session = null;
-    updateSession();
+    if (session) {
+      session.destroy();
+      session = null;
+    }
+    await updateSession();
   });
 
   copyLinkButton.addEventListener("click", () => {
@@ -191,13 +225,31 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
   });
 
   const updateSession = async () => {
-    session = await self.ai.languageModel.create({
-      temperature: Number(sessionTemperature.value),
-      topK: Number(sessionTopK.value),
-      systemPrompt: SYSTEM_PROMPT,
-    });
-    resetUI();
-    updateStats();
+    try {
+      session = await self.ai.languageModel.create({
+        temperature: Number(sessionTemperature.value),
+        topK: Number(sessionTopK.value),
+        initialPrompts: [
+          { role: 'system', content: SYSTEM_PROMPT }
+        ],
+        monitor(m) {
+          m.addEventListener('downloadprogress', (e) => {
+            console.log(`Downloaded ${e.loaded * 100}%`);
+            if (errorMessage.style.display === "block" && errorMessage.innerHTML.includes('downloading')) {
+              errorMessage.innerHTML = `The Prompt API model is downloading... ${Math.round(e.loaded * 100)}%`;
+            }
+          });
+        },
+      });
+      if (errorMessage.style.display === "block" && errorMessage.innerHTML.includes('downloading')) {
+        errorMessage.style.display = "none";
+      }
+      resetUI();
+      updateStats();
+    } catch (error) {
+      errorMessage.style.display = "block";
+      errorMessage.innerHTML = `Error creating session: ${error.message}`;
+    }
   };
 
   sessionTemperature.addEventListener("input", async () => {
@@ -209,9 +261,10 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
   });
 
   if (!session) {
-    const { defaultTopK, maxTopK, defaultTemperature } =
-      await self.ai.languageModel.capabilities();
+    const params = await self.ai.languageModel.params();
+    const { defaultTopK, maxTopK, defaultTemperature, maxTemperature } = params;
     sessionTemperature.value = defaultTemperature;
+    sessionTemperature.max = maxTemperature || 2.0;
     sessionTopK.value = defaultTopK;
     sessionTopK.max = maxTopK;
     await updateSession();
