@@ -1,0 +1,16 @@
+Framework,Language,Size (KB),Browser Support,GPU Acceleration,Model Types,Performance Score,Learning Curve,Community Size,Documentation Quality,Last Updated
+TensorFlow.js,JavaScript,2400,Excellent,WebGL/WebGPU,CNN/RNN/Transformer,9.2,Medium,Large,Excellent,2024-01
+MediaPipe,JavaScript,1800,Good,WebGL,Computer Vision,8.7,Easy,Medium,Good,2024-01
+ONNX.js,JavaScript,1200,Good,WebGL/WebAssembly,Universal,8.5,Medium,Medium,Good,2023-12
+ML5.js,JavaScript,800,Excellent,WebGL,Creative ML,7.8,Easy,Small,Good,2023-11
+WebNN,JavaScript,600,Limited,Native,Neural Networks,9.0,Hard,Small,Limited,2024-01
+Brain.js,JavaScript,400,Excellent,CPU Only,Simple NN,6.5,Easy,Small,Good,2023-10
+ConvNetJS,JavaScript,300,Excellent,CPU Only,CNN,6.0,Medium,Small,Fair,2022-08
+Synaptic,JavaScript,250,Excellent,CPU Only,Various NN,5.8,Medium,Small,Fair,2021-12
+WebDNN,JavaScript,500,Limited,WebGL/WebAssembly,CNN,7.2,Hard,Small,Limited,2023-06
+Paddle.js,JavaScript,1500,Good,WebGL,Various,7.9,Medium,Small,Good,2023-09
+Mind,JavaScript,180,Excellent,CPU Only,Simple NN,5.5,Easy,Small,Fair,2022-05
+Neuro.js,JavaScript,220,Excellent,CPU Only,Feedforward,5.2,Easy,Small,Fair,2021-11
+WebGL-ML,JavaScript,350,Good,WebGL,Custom,6.8,Hard,Small,Limited,2023-03
+TensorSpace.js,JavaScript,450,Good,WebGL,Visualization,7.0,Medium,Small,Good,2023-08
+Danfo.js,JavaScript,600,Excellent,CPU Only,Data Processing,7.5,Easy,Medium,Good,2024-01

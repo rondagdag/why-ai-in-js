@@ -1,0 +1,16 @@
+Browser,Version,WebGL,WebGL2,WebGPU,WebAssembly,SharedArrayBuffer,OffscreenCanvas,Web Workers,WebCodecs,WebNN,Performance Score
+Chrome,120,Full,Full,Experimental,Full,Full,Full,Full,Full,Origin Trial,9.5
+Firefox,121,Full,Full,None,Full,Full,Full,Full,Partial,None,8.2
+Safari,17.2,Full,Full,None,Full,Partial,Full,Full,None,None,7.8
+Edge,120,Full,Full,Experimental,Full,Full,Full,Full,Full,Origin Trial,9.4
+Opera,105,Full,Full,Experimental,Full,Full,Full,Full,Full,Origin Trial,9.3
+Chrome Mobile,120,Full,Full,None,Full,Partial,Full,Full,Partial,None,8.5
+Safari Mobile,17.2,Full,Full,None,Full,None,Partial,Full,None,None,7.2
+Firefox Mobile,121,Full,Full,None,Full,Partial,Full,Full,None,None,7.8
+Samsung Internet,23.0,Full,Full,None,Full,Partial,Full,Full,None,None,7.5
+UC Browser,15.5,Partial,Partial,None,Full,None,None,Full,None,None,5.2
+Opera Mobile,76,Full,Full,None,Full,Partial,Full,Full,Partial,None,7.9
+Chrome OS,120,Full,Full,Experimental,Full,Full,Full,Full,Full,Origin Trial,9.6
+WebView Android,120,Full,Full,None,Full,Partial,Full,Full,Partial,None,8.3
+iOS WebView,17.2,Full,Full,None,Full,None,Partial,Full,None,None,7.0
+KaiOS,3.1,Partial,None,None,Partial,None,None,Partial,None,None,4.5

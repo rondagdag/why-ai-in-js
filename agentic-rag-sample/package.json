@@ -1,0 +1,32 @@
+{
+  "name": "agentic-rag-sample",
+  "version": "1.0.0",
+  "description": "A simple Node.js application that implements RAG using LlamaIndex.TS with local Ollama model",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist"
+  },
+  "keywords": ["RAG", "LlamaIndex", "Ollama", "AI", "TypeScript"],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "llamaindex": "^0.11.22",
+    "@llamaindex/workflow": "^1.1.18",
+    "@llamaindex/readers": "^3.1.16",
+    "@llamaindex/ollama": "^0.1.17",
+    "@llamaindex/huggingface": "^0.1.22",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "tsx": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

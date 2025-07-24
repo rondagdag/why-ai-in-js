@@ -1,0 +1,21 @@
+Framework,Test,Device Type,Model Size (MB),Load Time (ms),Inference Time (ms),Memory Usage (MB),FPS,Accuracy,Power Consumption
+TensorFlow.js,MobileNet,Desktop,16.9,1200,45,180,22,0.876,Medium
+TensorFlow.js,MobileNet,Mobile,16.9,2800,120,210,8,0.876,High
+TensorFlow.js,ResNet50,Desktop,98.2,3500,180,420,5.5,0.921,High
+TensorFlow.js,ResNet50,Mobile,98.2,8900,650,480,1.5,0.921,Very High
+ONNX.js,MobileNet,Desktop,16.9,800,35,150,28,0.876,Low
+ONNX.js,MobileNet,Mobile,16.9,1900,95,180,10,0.876,Medium
+MediaPipe,BlazeFace,Desktop,0.3,150,8,45,125,0.95,Very Low
+MediaPipe,BlazeFace,Mobile,0.3,280,18,65,55,0.95,Low
+ML5.js,PoseNet,Desktop,12.7,1800,85,220,12,0.82,Medium
+ML5.js,PoseNet,Mobile,12.7,4200,280,250,3.5,0.82,High
+Brain.js,Simple NN,Desktop,0.1,50,2,25,500,0.78,Very Low
+Brain.js,Simple NN,Mobile,0.1,120,8,35,125,0.78,Low
+WebDNN,MobileNet,Desktop,16.9,900,42,165,24,0.876,Low
+WebDNN,MobileNet,Mobile,16.9,2200,110,195,9,0.876,Medium
+TensorFlow.js,BERT-Base,Desktop,417.8,12000,890,1200,1.1,0.894,Very High
+TensorFlow.js,BERT-Base,Mobile,417.8,28000,2400,1400,0.4,0.894,Extreme
+Paddle.js,YOLOv4,Desktop,245.7,5800,220,680,4.5,0.73,High
+Paddle.js,YOLOv4,Mobile,245.7,14500,780,720,1.3,0.73,Very High
+ConvNetJS,CIFAR-10,Desktop,2.1,180,12,85,83,0.68,Very Low
+ConvNetJS,CIFAR-10,Mobile,2.1,420,42,110,24,0.68,Low
