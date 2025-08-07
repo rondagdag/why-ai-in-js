@@ -34,7 +34,7 @@ agentic-rag-sample/
 
 ### Local Model Configuration
 
-- **LLM Model**: Ollama with `gemma3:latest`
+- **LLM Model**: Ollama with `mistral:latest`
 - **Embedding Model**: `BAAI/bge-small-en-v1.5` (HuggingFace)
 - **Vector Store**: In-memory vector index
 - **Query Configuration**: `similarityTopK: 10` for comprehensive context retrieval
@@ -101,7 +101,7 @@ Settings.embedModel = new HuggingFaceEmbedding({
 
 // Ollama LLM configuration
 const llm = ollama({
-  model: "gemma3:latest",
+  model: "mistral:latest",
 });
 
 // Query tool configuration
@@ -120,7 +120,7 @@ const queryTool = index.queryTool({
 
 ```typescript
 const ragAgent = agent({
-  llm: ollama({ model: "gemma3:latest" }),
+  llm: ollama({ model: "mistral:latest" }),
   tools: [queryTool],
 });
 
@@ -132,13 +132,13 @@ const response = await ragAgent.run("What information is available in the docume
 ### Prerequisites
 
 - **Node.js**: v18 or higher
-- **Ollama**: Installed with `gemma3:latest` model
+- **Ollama**: Installed with `mistral:latest` model
 - **TypeScript**: Latest version
 - **Memory**: Minimum 8GB RAM recommended for local model
 
 ### Setup Steps
 
-1. Install Ollama and pull `gemma3:latest` model
+1. Install Ollama and pull `mistral:latest` model
 2. Initialize Node.js project with TypeScript
 3. Install required dependencies
 4. Configure TypeScript with proper module resolution

@@ -118,10 +118,6 @@ class AgenticRAGSystem {
     try {
       // Create query tool with metadata
       const queryTool = this.index.queryTool({
-        metadata: {
-          name: "document_query_tool",
-          description: "Tool for querying documents including PDFs, CSVs, text files, and other documents in the knowledge base. Use this tool to search for information, answer questions, and provide insights based on the indexed documents.",
-        },
         options: {
           similarityTopK: parseInt(process.env.SIMILARITY_TOP_K || "10"),
         },
@@ -129,8 +125,9 @@ class AgenticRAGSystem {
 
       // Create agent using the LLM from Settings
       this.ragAgent = agent({
+        systemPrompt: "You are a helpful assistant that answers questions based on the provided documents. Use the query engine tool provided to retrieve relevant information from the knowledge base. Search first. If the answer is not found in the documents, respond with 'I don't know'. ",
         tools: [queryTool],
-        verbose: process.env.VERBOSE_LOGGING === "true",
+        verbose: process.env.VERBOSE_LOGGING === "true"
       });
 
       console.log("✅ RAG agent created successfully");
