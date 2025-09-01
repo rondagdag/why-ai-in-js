@@ -59,5 +59,7 @@ async function selectLevel(level: Generation) {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-  initializeUI().catch(console.error);
+  initializeUI().catch(() => {
+    // Error initializing UI - silently fail in production
+  });
 });

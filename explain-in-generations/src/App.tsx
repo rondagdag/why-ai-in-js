@@ -43,7 +43,7 @@ function App() {
             }
           });
         } catch (error) {
-          console.warn('Failed to detect Chrome theme, falling back to system preference:', error);
+          // Failed to detect Chrome theme, falling back to system preference
           return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
       }
@@ -106,7 +106,7 @@ function App() {
           level: generation
         })
       } else {
-        console.error(`No generation found for level ${currentLevel}`)
+        // No generation found for level - handle gracefully
       }
     }
   }, [selectedText, currentLevel])

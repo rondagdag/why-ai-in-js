@@ -1,13 +1,6 @@
-// Initialize Sentry for error tracking and monitoring
-import { Toucan } from "toucan-js"
 import { generations, getGenerationByLevel } from "./constants/generations"
 import { APP_CONSTANTS } from "./constants/app"
 import type { ChromeMessage } from "./types/chrome-api"
-
-const sentry = new Toucan({
-  dsn: "https://85882377f458516b86a142cd2433f657@o4508836932812800.ingest.us.sentry.io/4508836938579969",
-  environment: import.meta.env.PROD ? "production" : "development"
-})
 
 // Default configuration for the current explanation level
 // This serves as a fallback if no stored level is found
@@ -33,8 +26,7 @@ async function setCurrentLevel(generation: typeof currentLevel): Promise<void> {
     await chrome.storage.local.set({ [APP_CONSTANTS.STORAGE_KEYS.CURRENT_LEVEL]: generation });
     currentLevel = generation;
   } catch (error) {
-    sentry.captureException(error);
-    console.error('Failed to save current level:', error);
+    // Error saving current level - silently fail in production
   }
 }
 
@@ -43,8 +35,7 @@ function sendRuntimeMessage(message: ChromeMessage): void {
   try {
     chrome.runtime.sendMessage(message);
   } catch (error) {
-    sentry.captureException(error);
-    console.error('Failed to send runtime message:', error);
+    // Error sending runtime message - silently fail in production
   }
 }
 
@@ -113,8 +104,7 @@ async function openSidePanelSafely(windowId: number): Promise<void> {
       await new Promise((resolve) => setTimeout(resolve, APP_CONSTANTS.PANEL_OPEN_DELAY))
     }
   } catch (error) {
-    sentry.captureException(error)
-    console.error('Failed to open side panel:', error)
+    // Error opening side panel - silently fail in production
   }
 }
 
@@ -128,7 +118,7 @@ async function processStream(stream: AsyncIterable<string>): Promise<void> {
       })
     }
   } catch (error) {
-    console.error('Error processing stream:', error)
+    // Error processing stream - silently fail in production
     throw error
   }
 }
@@ -197,7 +187,7 @@ async function processSummarization(selectedText: string, tabInfo: { url?: strin
     await streamSummarization(summarizer, selectedText, tabInfo)
     
   } catch (error) {
-    sentry.captureException(error)
+    // Error processing summarization - handle gracefully
     sendRuntimeMessage({
       type: APP_CONSTANTS.MESSAGE_TYPES.ERROR,
       error: error instanceof Error ? error.message : APP_CONSTANTS.ERROR_MESSAGES.PROCESSING_FAILED
@@ -236,10 +226,5 @@ if ('Summarizer' in self) {
     }
   })
 } else {
-  // Log an error if the Summarizer API is not available in this browser
-  sentry.captureMessage("Try to access Summarizer", "fatal", {
-    data: {
-      userAgent: navigator.userAgent
-    }
-  })
+  // Summarizer API not available - handle gracefully
 }

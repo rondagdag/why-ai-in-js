@@ -78,7 +78,9 @@ For more details, see the [official Chrome Summarization API documentation](http
 ### Permissions
 - `"sidePanel"`: Required for the extension's side panel interface
 - `"activeTab"`: Required to access the current page's content
-- `"generativeContentAPI"`: Required for AI-powered text generation
+- `"contextMenus"`: Required for right-click context menu functionality
+- `"storage"`: Required to store user preferences locally
+- `"<all_urls>"`: Required to access webpage content for AI processing
 
 **Note**: If available storage space falls below 10 GB after download, the model will be automatically removed and will need to be redownloaded when requirements are met again.
 

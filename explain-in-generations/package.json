@@ -23,7 +23,6 @@
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "toucan-js": "^4.0.0",
     "ua-parser-js": "^2.0.0"
   },
   "devDependencies": {
