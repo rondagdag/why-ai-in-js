@@ -8,9 +8,9 @@ const sentry = new Toucan({
 // Default configuration for the current explanation level
 // This serves as a fallback if no stored level is found
 let currentLevel = {
-  level: 1,
-  context: "Explain like I'm from the Greatest Generation (1901-1924). Use very formal, authoritative language with proper etiquette. Reference early 20th century contexts, classical literature, and time-tested principles. Think: formal academic lecture or professional correspondence style. Focus on foundational wisdom and proven methodologies.",
-  description: "Classical formal style, scholarly tone, foundational principles, traditional wisdom emphasis"
+  level: 7,
+  context: "Explain like I'm from Generation Alpha (2013-2025). Give me that linguistic glow-up with skibidi explanations! Use rizz-level emojis 🚀, Ohio-tier gamification, and brain rot content that slaps. Break into mini-challenges with maximum rizz, use AI/tech analogies that are straight fire, and keep it bussin with interactive vibes. Think: TikTok brain rot explanations with skibidi transitions and visual cues that hit different.",
+  description: "Skibidi-level interactive style 🎮, Ohio-tier gamified chunks 🎯, brain rot AI explanations 🤖, rizz-maxing emoji communication 😊"
 }
 
 // On extension startup, retrieve the previously saved level from Chrome's storage
@@ -46,7 +46,7 @@ chrome.runtime.onInstalled.addListener(() => {
 const getOptions = () => ({
   sharedContext: `${currentLevel.context}. ${currentLevel.description}`,
   type: "tldr",
-  format: "plain-text",
+  format: "markdown",
   length: "medium"
 })
 
