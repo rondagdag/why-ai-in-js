@@ -1,4 +1,4 @@
-# 🌟 Explain in Generations 🌟
+# 🌟 Explain by Generation 🌟
 
 ## Author
 Created by **Ron Dagdag** - A Chrome extension that brings AI-powered generational communication to your browsing experience.
@@ -7,7 +7,7 @@ Created by **Ron Dagdag** - A Chrome extension that brings AI-powered generation
 Understanding how different generations consume and process information is crucial in today's multi-generational world. We created a tool that adapts explanations to match the communication styles and cultural references of different generations, from Gen Alpha to the Greatest Generation.
 
 ## **What it does**
-🌟 Explain in Generations enables users to highlight any text on a webpage and instantly receive AI-powered explanations tailored to specific generational communication styles. It seamlessly integrates into the Chrome side panel, allowing users to switch between different generational perspectives without leaving their current page.
+🌟 Explain by Generation enables users to highlight any text on a webpage and instantly receive AI-powered explanations tailored to specific generational communication styles. It seamlessly integrates into the Chrome side panel, allowing users to switch between different generational perspectives without leaving their current page.
 
 ## **Features**
 - Adapts explanations for 7 different generations
@@ -96,7 +96,7 @@ This extension uses Chrome's built-in Summarizer API with Gemini Nano, which:
 
 **Important**: Please acknowledge [Google's Generative AI Prohibited Uses Policy](https://policies.google.com/terms/generative-ai/use-policy) before using this extension.
 
-## **What's next for 🌟 Explain in Generations**
+## **What's next for 🌟 Explain by Generation**
 - Enhanced generational context awareness
 - Customizable communication style preferences
 - Multi-language support with generation-appropriate localizations

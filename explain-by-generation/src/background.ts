@@ -95,7 +95,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: APP_CONSTANTS.CONTEXT_MENU_ID,
-    title: "Explain in Generations",
+    title: "Explain by Generation",
     contexts: ["selection"]  // Only show menu on text selection
   })
 })

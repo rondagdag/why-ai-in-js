@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Explain in Generations",
+  "name": "Explain by Generation",
   "version": "1.0.0",
   "description": "Highlight text to get AI-powered explanations customized for different generations",
   "permissions": [

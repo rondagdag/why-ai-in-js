@@ -35,7 +35,7 @@ COLLECTED_DIR="./collected_extensions"
 mkdir -p "$COLLECTED_DIR"
 
 # Create ZIP file for Chrome Web Store
-EXTENSION_NAME="explain-in-generations"
+EXTENSION_NAME="explain-by-generation"
 VERSION=$(node -p "require('./package.json').version")
 ZIP_NAME="${EXTENSION_NAME}-v${VERSION}.zip"
 ZIP_PATH="$COLLECTED_DIR/$ZIP_NAME"
