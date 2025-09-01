@@ -17,7 +17,7 @@
 npm run package
 
 # This will create:
-# - chrome-extension-package/ (for testing)
+# - chrome-extension-pkg/ (for testing)
 # - explain-in-generations-v0.0.2.zip (for upload)
 ```
 
@@ -25,7 +25,7 @@ npm run package
 1. Open Chrome and navigate to `chrome://extensions/`
 2. Enable "Developer mode" (toggle in top right)
 3. Click "Load unpacked"
-4. Select the `chrome-extension-package` folder
+4. Select the `chrome-extension-pkg` folder
 5. **Test thoroughly**:
    - Verify all features work
    - Test on different websites

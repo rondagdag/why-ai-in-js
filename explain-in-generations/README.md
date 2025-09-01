@@ -43,7 +43,7 @@ npm run package
 ```
 
 This creates:
-- `chrome-extension-package/` - Unpacked extension for testing
+- `chrome-extension-pkg/` - Unpacked extension for testing
 - `explain-in-generations-v[version].zip` - Ready for Chrome Web Store upload
 
 For complete submission instructions, see:

@@ -16,7 +16,7 @@ echo "📦 Building extension..."
 npm run build
 
 # Create a clean package directory
-PACKAGE_DIR="./chrome-extension-package"
+PACKAGE_DIR="./chrome-extension-pkg"
 rm -rf "$PACKAGE_DIR"
 mkdir -p "$PACKAGE_DIR"
 

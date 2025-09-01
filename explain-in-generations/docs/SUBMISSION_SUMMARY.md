@@ -18,7 +18,7 @@ Your extension is **fully prepared** for Chrome Web Store submission! Here's wha
 ### 🗂️ Files Created
 - `package-extension.sh` - Automated packaging script
 - `explain-in-generations-v0.0.2.zip` - Ready-to-upload package
-- `chrome-extension-package/` - Test package folder
+- `chrome-extension-pkg/` - Test package folder
 
 ## 🚀 Next Steps (Your Action Items)
 
@@ -27,7 +27,7 @@ Your extension is **fully prepared** for Chrome Web Store submission! Here's wha
 # Test your packaged extension
 1. Open Chrome → chrome://extensions/
 2. Enable "Developer mode"
-3. Click "Load unpacked" → Select chrome-extension-package/
+3. Click "Load unpacked" → Select chrome-extension-pkg/
 4. Test all features thoroughly
 ```
 
