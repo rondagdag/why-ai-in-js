@@ -1,5 +1,7 @@
 // Initialize Sentry for error tracking and monitoring
 import { Toucan } from "toucan-js"
+import { generations, getGenerationByLevel } from "./constants/generations"
+
 const sentry = new Toucan({
   dsn: "https://85882377f458516b86a142cd2433f657@o4508836932812800.ingest.us.sentry.io/4508836938579969",
   environment: import.meta.env.PROD ? "production" : "development"
@@ -7,11 +9,7 @@ const sentry = new Toucan({
 
 // Default configuration for the current explanation level
 // This serves as a fallback if no stored level is found
-let currentLevel = {
-  level: 7,
-  context: "Explain like I'm from Generation Alpha (2013-2025). Give me that linguistic glow-up with skibidi explanations! Use rizz-level emojis 🚀, Ohio-tier gamification, and brain rot content that slaps. Break into mini-challenges with maximum rizz, use AI/tech analogies that are straight fire, and keep it bussin with interactive vibes. Think: TikTok brain rot explanations with skibidi transitions and visual cues that hit different.",
-  description: "Skibidi-level interactive style 🎮, Ohio-tier gamified chunks 🎯, brain rot AI explanations 🤖, rizz-maxing emoji communication 😊"
-}
+let currentLevel = getGenerationByLevel(7) || generations[generations.length - 1]
 
 // Store the last tab info for rerun functionality
 let lastTabInfo: { url?: string; id?: number } = {}
@@ -19,27 +17,44 @@ let lastTabInfo: { url?: string; id?: number } = {}
 // On extension startup, retrieve the previously saved level from Chrome's storage
 // This ensures user preferences persist across browser sessions
 chrome.storage.local.get(['currentLevel'], (result) => {
-  if (result.currentLevel) {
-    currentLevel = result.currentLevel;
+  if (result.currentLevel && result.currentLevel.level) {
+    const generation = getGenerationByLevel(result.currentLevel.level)
+    if (generation) {
+      currentLevel = generation;
+    }
   }
 });
 
 // Message handler for level changes from the popup and rerun requests from side panel
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "SET_LEVEL") {
-    currentLevel = message.level
-    // Persist the new level to Chrome's storage
-    chrome.storage.local.set({ currentLevel: message.level });
-    sendResponse({ success: true })
+    // Validate that the level exists in our generations data
+    const generation = getGenerationByLevel(message.level.level)
+    if (generation) {
+      currentLevel = generation
+      // Persist the new level to Chrome's storage
+      chrome.storage.local.set({ currentLevel: generation });
+      sendResponse({ success: true })
+    } else {
+      sendResponse({ success: false, error: "Invalid generation level" })
+    }
   } else if (message.type === "RERUN_SUMMARIZATION") {
     // Handle rerun request from side panel
     if (message.text && message.level) {
-      currentLevel = message.level
-      chrome.storage.local.set({ currentLevel: message.level });
-      // Process the text with the new level
-      processSummarization(message.text, lastTabInfo)
+      // Validate that the level exists in our generations data
+      const generation = getGenerationByLevel(message.level.level)
+      if (generation) {
+        currentLevel = generation
+        chrome.storage.local.set({ currentLevel: generation });
+        // Process the text with the new level
+        processSummarization(message.text, lastTabInfo, true)
+        sendResponse({ success: true })
+      } else {
+        sendResponse({ success: false, error: "Invalid generation level" })
+      }
+    } else {
+      sendResponse({ success: false, error: "Missing text or level" })
     }
-    sendResponse({ success: true })
   }
 })
 
@@ -62,8 +77,18 @@ const getOptions = () => ({
 })
 
 // Function to process summarization for both initial selection and rerun
-async function processSummarization(selectedText: string, tabInfo: { url?: string; id?: number }) {
+async function processSummarization(selectedText: string, tabInfo: { url?: string; id?: number }, isRerun = false) {
   try {
+    // Send initial message indicating rerun or fresh start
+    chrome.runtime.sendMessage({
+      chunk: "",
+      type: "STREAM_RESPONSE",
+      isFirst: true,
+      level: currentLevel.level,
+      isRerun: isRerun,
+      selectedText: selectedText // Include the selected text
+    })
+
     // Check if the summarizer API is available and ready to use
     // @ts-expect-error new chrome feature
     const availability = await Summarizer.availability();
@@ -80,13 +105,6 @@ async function processSummarization(selectedText: string, tabInfo: { url?: strin
 
     if (availability === 'available') {
       // API is ready to use immediately
-      chrome.runtime.sendMessage({
-        chunk: "",
-        type: "STREAM_RESPONSE",
-        isFirst: true,
-        level: currentLevel.level
-      })
-
       // Initialize the summarizer with current options
       // @ts-expect-error new chrome feature
       summarizer = await Summarizer.create(getOptions());
@@ -123,6 +141,21 @@ async function processSummarization(selectedText: string, tabInfo: { url?: strin
         }
       )
       await summarizer.ready
+
+      // Process the selected text and stream the results after model is ready
+      const stream = await summarizer.summarize(selectedText, {
+        context: tabInfo.url ? `article from ${new URL(tabInfo.url).origin}` : ''
+      })
+      for await (const chunk of stream) {
+        chrome.runtime.sendMessage({
+          chunk,
+          type: "STREAM_RESPONSE"
+        })
+      }
+      chrome.runtime.sendMessage({
+        type: "STREAM_COMPLETE",
+        level: currentLevel.level
+      })
     }
   } catch (error) {
     sentry.captureException(error)
@@ -140,23 +173,23 @@ if ('Summarizer' in self) {
     if (info.menuItemId === "summarize-text" && info.selectionText && tab?.id) {
       // Store the tab info for potential rerun
       lastTabInfo = { url: tab.url, id: tab.id }
-      
-      // Notify side panel about the selected text
-      chrome.runtime.sendMessage({
-        type: "TEXT_SELECTED",
-        text: info.selectionText
-      })
 
       // Open the side panel if available
       if (chrome.sidePanel && tab) {
         try {
           chrome.sidePanel.open({ windowId: tab.windowId })
-          // Small delay to ensure panel is ready
-          await new Promise((resolve) => setTimeout(resolve, 500))
+          // Longer delay to ensure panel is ready
+          await new Promise((resolve) => setTimeout(resolve, 1000))
         } catch (error) {
           sentry.captureException(error)
         }
       }
+      
+      // Notify side panel about the selected text (after panel is ready)
+      chrome.runtime.sendMessage({
+        type: "TEXT_SELECTED",
+        text: info.selectionText
+      })
 
       // Process the summarization
       await processSummarization(info.selectionText, { url: tab.url, id: tab.id })
