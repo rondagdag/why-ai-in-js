@@ -45,7 +45,7 @@ Your extension already includes these required icons:
 ### 3. Store Listing Content
 
 #### Title
-**Current**: "Explain in Generations"
+**Current**: "Explain by Generation"
 **Requirements**: 
 - Maximum 45 characters
 - Must be descriptive and unique

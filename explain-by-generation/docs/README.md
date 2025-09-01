@@ -1,6 +1,6 @@
 # Documentation
 
-This folder contains all the documentation files for the Explain in Generations Chrome extension.
+This folder contains all the documentation files for the Explain by Generation Chrome extension.
 
 ## 📋 Documentation Files
 

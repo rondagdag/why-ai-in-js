@@ -66,7 +66,7 @@ For detailed instructions, see the README.md file in the `agentic-rag-sample` di
 | Right Click for Superpowers | Enhances the browser's context menu with AI-powered capabilities for smarter interactions |
 | Summarization API Playground | Interactive testing environment for text summarization algorithms with real-time API integration |
 | Translation & Language Detection API Playground | A comprehensive testing ground for translation and language detection capabilities using client-side APIs |
-| Explain in Generations | A browser extension that breaks down complex topics into different levels of understanding, helping users grasp concepts progressively |
+| Explain by Generation | A browser extension that breaks down complex topics into different levels of understanding, helping users grasp concepts progressively |
 | Next.js Client Demo | A client-side demo powered by Next.js showcasing dynamic user interactions and server-side rendering features |
 | Techstack Time Machine | A tool that visualizes and analyzes the evolution of technology stacks over time |
 | Video Background Removal | Real-time video background removal using ML models running entirely in the browser |

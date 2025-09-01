@@ -191,7 +191,7 @@ function App() {
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold">Explain in Generations</h1>
+            <h1 className="text-2xl font-bold">Explain by Generation</h1>
             <button 
               onClick={() => setSummary("")}
               className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 transition-colors"

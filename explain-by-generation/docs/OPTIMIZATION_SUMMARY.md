@@ -1,7 +1,7 @@
 # Critical Issues Fixed - Optimization Summary
 
 ## 🚀 Overview
-Fixed critical performance, memory, and maintainability issues in the "Explain in Generations" Chrome extension project.
+Fixed critical performance, memory, and maintainability issues in the "Explain by Generation" Chrome extension project.
 
 ## ✅ Critical Issues Resolved
 

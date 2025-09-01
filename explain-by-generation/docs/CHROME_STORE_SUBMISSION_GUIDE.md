@@ -43,7 +43,7 @@ npm run package
 #### 2. Store Listing Information
 
 ##### Basic Information
-- **Name**: "Explain in Generations"
+- **Name**: "Explain by Generation"
 - **Summary**: "Get AI-powered explanations of highlighted text customized for different generations"
 - **Description**: 
 ```
@@ -59,7 +59,7 @@ FEATURES:
 
 HOW IT WORKS:
 1. Highlight text on any webpage
-2. Right-click and select "Explain in Generations"
+2. Right-click and select "Explain by Generation"
 3. Choose your target generation in the side panel
 4. Get a customized explanation instantly
 
@@ -127,7 +127,7 @@ Works on any website, any text, anywhere on the web!
 Create a simple privacy policy and host it on your website:
 
 ```markdown
-# Privacy Policy for Explain in Generations
+# Privacy Policy for Explain by Generation
 
 Last updated: [DATE]
 
