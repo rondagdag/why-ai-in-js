@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react"
 import Markdown from "markdown-to-jsx"
-import { Switch } from "./components/ui/Switch"
 import { Select } from "./components/ui/Select"
 import { Button } from "./components/ui/Button"
 import TrashIcon from "./components/icons/TrashIcon"
@@ -15,12 +14,76 @@ function App() {
   const [total, setTotal] = useState(0)
   const [currentLevel, setCurrentLevel] = useState(7)
   const [selectedText, setSelectedText] = useState<string>("")
-  const [theme, setTheme] = useState<'light' | 'dark'>(
-    () => (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-  )
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system')
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark')
+    // Function to get the actual theme based on Chrome theme preference
+    const getEffectiveTheme = async (currentTheme: 'light' | 'dark' | 'system') => {
+      if (currentTheme === 'system') {
+        try {
+          // Try to detect Chrome's theme by checking if it has dark mode enabled
+          // We can use Chrome storage to check theme preferences or detect via CSS
+          return new Promise<'light' | 'dark'>((resolve) => {
+            // Check Chrome's built-in dark mode detection
+            // Chrome extensions can detect this through the browser's color scheme
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // Additional check: try to detect if Chrome itself is in dark mode
+            // by checking the browser's UI colors if available
+            if (typeof chrome !== 'undefined' && chrome.storage) {
+              chrome.storage.local.get(['theme'], (result) => {
+                if (result.theme) {
+                  resolve(result.theme === 'dark' ? 'dark' : 'light');
+                } else {
+                  resolve(isDark ? 'dark' : 'light');
+                }
+              });
+            } else {
+              resolve(isDark ? 'dark' : 'light');
+            }
+          });
+        } catch (error) {
+          console.warn('Failed to detect Chrome theme, falling back to system preference:', error);
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+      }
+      return currentTheme;
+    }
+
+    const applyTheme = async () => {
+      const effectiveTheme = await getEffectiveTheme(theme);
+      document.documentElement.classList.toggle('dark', effectiveTheme === 'dark');
+    };
+
+    applyTheme();
+
+    // Listen for theme changes when theme is set to 'system'
+    if (theme === 'system') {
+      // Listen for system/Chrome theme changes
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleChange = () => {
+        applyTheme();
+      };
+      
+      mediaQuery.addEventListener('change', handleChange);
+      
+      // Also listen for Chrome storage changes if someone changes theme in another part of the extension
+      const storageListener = (changes: { [key: string]: chrome.storage.StorageChange }) => {
+        if (changes.theme) {
+          applyTheme();
+        }
+      };
+      
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.onChanged.addListener(storageListener);
+        return () => {
+          mediaQuery.removeEventListener('change', handleChange);
+          chrome.storage.onChanged.removeListener(storageListener);
+        };
+      } else {
+        return () => mediaQuery.removeEventListener('change', handleChange);
+      }
+    }
   }, [theme])
 
   // Load saved generation level on component mount
@@ -147,11 +210,17 @@ function App() {
               <TrashIcon className="h-5 w-5" />
             </button>
             <div className="flex items-center gap-2">
-              <Switch 
-                checked={theme === 'dark'}
-                onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+              <button
+                onClick={() => {
+                  const nextTheme = theme === 'system' ? 'light' : theme === 'light' ? 'dark' : 'system'
+                  setTheme(nextTheme)
+                }}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-md border hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm"
                 aria-label="Toggle theme"
-              />
+              >
+                {theme === 'system' ? '🌓' : theme === 'light' ? '☀️' : '🌙'}
+                <span className="capitalize">{theme}</span>
+              </button>
             </div>
           </div>
         </div>

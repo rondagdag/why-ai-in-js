@@ -9798,34 +9798,6 @@ const twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
-function Switch({ checked, onCheckedChange, className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "button",
-    {
-      role: "switch",
-      "aria-checked": checked,
-      onClick: () => onCheckedChange?.(!checked),
-      className: cn(
-        "relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50",
-        checked ? "bg-primary" : "bg-gray-200 dark:bg-gray-700",
-        className
-      ),
-      ...props,
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "span",
-          {
-            className: cn(
-              "pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform",
-              checked ? "translate-x-6" : "translate-x-1"
-            )
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "sr-only", children: "Theme toggle" })
-      ]
-    }
-  );
-}
 /**
  * @license lucide-react v0.462.0 - ISC
  *
@@ -10190,11 +10162,24 @@ function App() {
   const [total, setTotal] = reactExports.useState(0);
   const [currentLevel, setCurrentLevel] = reactExports.useState(7);
   const [selectedText, setSelectedText] = reactExports.useState("");
-  const [theme, setTheme] = reactExports.useState(
-    () => window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-  );
+  const [theme, setTheme] = reactExports.useState("system");
   reactExports.useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
+    const getEffectiveTheme = (currentTheme) => {
+      if (currentTheme === "system") {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      return currentTheme;
+    };
+    const effectiveTheme = getEffectiveTheme(theme);
+    document.documentElement.classList.toggle("dark", effectiveTheme === "dark");
+    if (theme === "system") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handleChange = (e) => {
+        document.documentElement.classList.toggle("dark", e.matches);
+      };
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
   }, [theme]);
   reactExports.useEffect(() => {
     chrome.storage.local.get([APP_CONSTANTS.STORAGE_KEYS.CURRENT_LEVEL], (result) => {
@@ -10298,12 +10283,19 @@ function App() {
           children: /* @__PURE__ */ jsxRuntimeExports.jsx(TrashIcon, { className: "h-5 w-5" })
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Switch,
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
         {
-          checked: theme === "dark",
-          onCheckedChange: (checked) => setTheme(checked ? "dark" : "light"),
-          "aria-label": "Toggle theme"
+          onClick: () => {
+            const nextTheme = theme === "system" ? "light" : theme === "light" ? "dark" : "system";
+            setTheme(nextTheme);
+          },
+          className: "flex items-center gap-2 px-3 py-1.5 rounded-md border hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm",
+          "aria-label": "Toggle theme",
+          children: [
+            theme === "system" ? "🌓" : theme === "light" ? "☀️" : "🌙",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "capitalize", children: theme })
+          ]
         }
       ) })
     ] }) }),
