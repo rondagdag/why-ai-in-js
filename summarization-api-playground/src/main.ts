@@ -72,7 +72,7 @@ const checkSummarizerSupport = async (): Promise<boolean> => {
   const availability = await self.Summarizer.availability();
   return availability !== 'unavailable';
 }
-
+ 
 let timeout: number | undefined = undefined;
 function scheduleSummarization() {
   // Debounces the call to the summarization API. This will run the summarization once the user

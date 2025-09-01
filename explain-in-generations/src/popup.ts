@@ -9,44 +9,44 @@ const levels: Level[] = [
   {
     level: 7,
     name: "Generation Alpha",
-    context: "Explain like I'm from Generation Alpha (2013-2025). Use emojis 🚀, gamification elements, and frequent emoji reactions. Break into mini-challenges, use AI/tech analogies, and keep it super interactive. Think: TikTok/YouTube-style explanations with quick transitions and visual cues.",
-    description: "Ultra-interactive digital native style 🎮, gamified learning chunks 🎯, AI-friendly explanations 🤖, emoji-rich communication 😊"
+    context: "Explain like I'm from Generation Alpha (2013-2025). Give me that linguistic glow-up with skibidi explanations! Use rizz-level emojis 🚀, Ohio-tier gamification, and brain rot content that slaps. Break into mini-challenges with maximum rizz, use AI/tech analogies that are straight fire, and keep it bussin with interactive vibes. Think: TikTok brain rot explanations with skibidi transitions and visual cues that hit different.",
+    description: "Skibidi-level interactive style 🎮, Ohio-tier gamified chunks 🎯, brain rot AI explanations 🤖, rizz-maxing emoji communication 😊"
   },
   {
     level: 6,
     name: "Generation Z",
-    context: "Explain like I'm from Generation Z (1995-2012). Use social media inspired formats, internet slang, and cultural references. Keep it real and skip corporate speak. Think: Instagram captions, TikTok scripts, or Twitter threads. Include occasional memes and focus on quick, memorable takeaways.",
-    description: "Social media style explanations, internet culture references, authenticity over formality, meme-friendly format"
+    context: "Explain like I'm from Generation Z (1995-2012). No cap, keep it 100 and spill the tea with that authentic rizz! Break it down in bite-sized chunks that are absolutely bussin' - none of that cringe corporate speak because we're not delulu here. Think: Instagram story format that ate, TikTok comment energy with mad drip, or Twitter thread that absolutely slaps. Bet you want those quick takeaways that hit different, so serve me explanations that are straight fire with that main character energy! Use AAVE-influenced phrases naturally, keep it real and relatable, and don't be afraid to say when something is mid or when the vibes are off.",
+    description: "No cap realness, bussin' bite-sized format, ate the assignment with rizz, main character energy that slaps"
   },
   {
     level: 5,
     name: "Millennial",
-    context: "Explain like I'm a Millennial (1980-1994). Reference 90s/2000s pop culture, use nostalgic comparisons, and blend humor with adulting wisdom. Think: BuzzFeed-style lists, Friends references, Harry Potter analogies. Balance fun with practical life hacks and side-hustle mindset.",
-    description: "90s/2000s cultural references, witty yet practical, startup/side-hustle mindset, list-style breakdowns"
+    context: "Explain like I'm a Millennial (1980-1994). OMG bae, this is about to be SO lit! 🔥 I'm low-key obsessed with 90s/2000s nostalgia that's totally the GOAT - throw in some Friends references (obvs), Harry Potter analogies, and maybe some Pokémon metaphors? I have major FOMO when it comes to missing good content, so make it BuzzFeed-listicle style that's addictive AF. We're all just trying to adult here, fam, and honestly adulting is hard! Include some life hacks for surviving this gig economy because your girl is SHOOK by these student loans. No cap, keep it 100% real without throwing shade - we've been through enough! Make it relatable to our side-hustle grind and quarter-life crisis vibes. BRB while I grab my avocado toast and process this epic content! ✨",
+    description: "OMG so lit! 🔥 90s/2000s nostalgia that's the GOAT, adulting struggles are real fam, side-hustle vibes, no cap authentic"
   },
   {
     level: 4,
     name: "Generation X",
-    context: "Explain like I'm from Generation X (1965-1979). Be direct and slightly cynical, avoid corporate buzzwords. Use references to classic rock, early tech, or 80s culture when relevant. Think: MTV generation meets pragmatic problem-solving. Focus on independence and getting things done efficiently.",
-    description: "Straight-to-the-point, DIY approach, healthy skepticism, 80s cultural touchstones, values resourcefulness"
+    context: "Explain like I'm from Generation X (1965-1979). Whatever, just cut to the chase and keep it real - no corporate BS, please. If it's the bomb, tell me straight up; if it's a buzzkill, don't sugarcoat it. Cool beans if you throw in some MTV, grunge, or early internet references that are off the chain. I'm all about that DIY, latchkey kid independence, so give me actionable stuff I can actually use. Skip the fluff and respect my time - I've got things to handle and I'm not here for games.",
+    description: "Whatever attitude with real talk, the bomb when it's direct, cool beans DIY vibes, off the chain efficiency"
   },
   {
     level: 3,
     name: "Baby Boomer",
-    context: "Explain like I'm a Baby Boomer (1946-1964). Use post-war and economic boom references, emphasize traditional values and hard work. Think: newspaper article style, Walter Cronkite-era clarity. Include historical context and draw parallels to major events from 50s-70s. Value experience and proven track records.",
-    description: "Traditional media style, historical context heavy, values-based reasoning, experience-focused explanations"
+    context: "Explain like I'm a Baby Boomer (1946-1964). Well, I'll be! Keep it proper and thoughtful - you're welcome for taking the time to explain things thoroughly. This should be the real McCoy, not some amateur night production. Make it an E-ticket ride with detailed explanations that are the bee's knees. Don't give me any of that newfangled 'no problem' nonsense when a proper 'you're welcome' will do just fine. Take your time to spell things out completely - none of this text-speak mumbo jumbo. Reference the good old days, when things were built to last and people had some common sense. Think: well-written letter or evening news broadcast style, clear as a bell and straight as an arrow.",
+    description: "The real McCoy with proper manners, E-ticket thoroughness, bee's knees clarity, well-mannered traditional style"
   },
   {
     level: 2,
     name: "The Silent Generation",
-    context: "Explain like I'm from the Silent Generation (1925-1945). Use formal, respectful language with clear hierarchy. Reference post-depression era values, military precision, and methodical approaches. Think: formal letter or professional memo style. Emphasize duty, honor, and careful planning.",
-    description: "Highly structured formal style, military-precise language, duty-oriented perspective, traditional values focus"
+    context: "Explain like I'm from the Silent Generation (1928-1945). Please use proper, formal language with appropriate respect - none of this casual nonsense. Keep it measured and deliberate, like a well-composed memo or letter. Reference how we did things back in my day when work ethic and common sense mattered. Be direct and concise - actions speak louder than words, after all. Use expressions like 'back in my day,' 'that's the proper way,' 'mind your manners,' and 'if you please.' Think formal correspondence style with traditional values. Children should be seen and not heard applies to explanations too - get to the point without unnecessary flourish.",
+    description: "Proper formal language, back in my day references, measured deliberate tone, traditional manners and respect"
   },
   {
     level: 1,
     name: "The Greatest Generation",
-    context: "Explain like I'm from the Greatest Generation (1901-1924). Use very formal, authoritative language with proper etiquette. Reference early 20th century contexts, classical literature, and time-tested principles. Think: formal academic lecture or professional correspondence style. Focus on foundational wisdom and proven methodologies.",
-    description: "Classical formal style, scholarly tone, foundational principles, traditional wisdom emphasis"
+    context: "Explain like I'm from the Greatest Generation (1901-1924). Address me with proper respect and formality - we believe in doing things the right way, not the easy way. Use dignified, measured language that reflects our values of duty, honor, and service above self. Reference our experiences through the Great Depression and World War II when explaining resilience and sacrifice. We built this country through hard work and determination, not shortcuts or gimmicks. Speak with the authority of someone who has earned their stripes through adversity. Use phrases like 'in my experience,' 'as we learned during the war,' 'back when we had to make do,' and 'it's a matter of principle.' Think: commanding officer's briefing, church elder's counsel, or grandfather's wisdom passed down. We value substance over style, duty over comfort, and results over rhetoric.",
+    description: "Duty-bound formal discourse, earned authority through adversity, principled substance over style, wartime resilience wisdom"
   }
 ];
 
