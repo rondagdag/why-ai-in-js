@@ -1,5 +1,8 @@
 # 🌟 Explain in Generations 🌟
 
+## Author
+Created by **Ron Dagdag** - A Chrome extension that brings AI-powered generational communication to your browsing experience.
+
 ## Inspiration
 Understanding how different generations consume and process information is crucial in today's multi-generational world. We created a tool that adapts explanations to match the communication styles and cultural references of different generations, from Gen Alpha to the Greatest Generation.
 

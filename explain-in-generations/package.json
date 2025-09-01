@@ -3,6 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "author": "Ron Dagdag",
+  "description": "Chrome extension that highlights text to get AI-powered explanations customized for different generations",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
