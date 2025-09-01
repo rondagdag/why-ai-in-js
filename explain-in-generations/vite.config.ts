@@ -8,8 +8,8 @@ const CHROME_TARGET = "chrome130"
 export default defineConfig({
   plugins: [react()],
   build: {
-    minify: false, // Disable minification for easier debugging
-    sourcemap: true, // Generate source maps for better debugging
+    minify: 'esbuild', // Use esbuild for faster minification
+    sourcemap: false, // Disable source maps for production
     rollupOptions: {
       input: {
         popup: path.resolve(__dirname, "index.html"),
@@ -22,12 +22,19 @@ export default defineConfig({
           return chunkInfo.name === "background" ? "background.js" : "[name].js"
         },
         chunkFileNames: "[name].js",
-        assetFileNames: "[name].[ext]"
-      }
+        assetFileNames: "[name].[ext]",
+        manualChunks: {
+          // Split vendor chunks for better caching
+          vendor: ['react', 'react-dom'],
+          ui: ['@radix-ui/react-slot', 'lucide-react']
+        }
+      },
+      external: ['chrome'] // Chrome APIs are external
     },
     outDir: "dist",
     emptyOutDir: true,
-    target: CHROME_TARGET // Use constant for Chrome target
+    target: CHROME_TARGET, // Use constant for Chrome target
+    chunkSizeWarningLimit: 500 // Warn about large chunks
   },
   resolve: {
     alias: {

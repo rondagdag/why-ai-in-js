@@ -16,39 +16,29 @@ function App() {
   const [selectedText, setSelectedText] = useState<string>("")
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system')
 
-  useEffect(() => {
-    // Function to get the actual theme based on Chrome theme preference
-    const getEffectiveTheme = async (currentTheme: 'light' | 'dark' | 'system') => {
-      if (currentTheme === 'system') {
-        try {
-          // Try to detect Chrome's theme by checking if it has dark mode enabled
-          // We can use Chrome storage to check theme preferences or detect via CSS
-          return new Promise<'light' | 'dark'>((resolve) => {
-            // Check Chrome's built-in dark mode detection
-            // Chrome extensions can detect this through the browser's color scheme
-            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
-            // Additional check: try to detect if Chrome itself is in dark mode
-            // by checking the browser's UI colors if available
-            if (typeof chrome !== 'undefined' && chrome.storage) {
-              chrome.storage.local.get(['theme'], (result) => {
-                if (result.theme) {
-                  resolve(result.theme === 'dark' ? 'dark' : 'light');
-                } else {
-                  resolve(isDark ? 'dark' : 'light');
-                }
-              });
-            } else {
-              resolve(isDark ? 'dark' : 'light');
-            }
+  // Memoize theme detection to avoid recreating on every render
+  const getEffectiveTheme = useCallback(async (currentTheme: 'light' | 'dark' | 'system') => {
+    if (currentTheme !== 'system') return currentTheme;
+    
+    try {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      // Quick Chrome storage check with fallback
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        return new Promise<'light' | 'dark'>((resolve) => {
+          chrome.storage.local.get(['theme'], (result) => {
+            resolve(result.theme === 'dark' ? 'dark' : result.theme === 'light' ? 'light' : (prefersDark ? 'dark' : 'light'));
           });
-        } catch (error) {
-          // Failed to detect Chrome theme, falling back to system preference
-          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
+        });
       }
-      return currentTheme;
+      
+      return prefersDark ? 'dark' : 'light';
+    } catch {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
+  }, []);
+
+  useEffect(() => {
 
     const applyTheme = async () => {
       const effectiveTheme = await getEffectiveTheme(theme);

@@ -30,10 +30,12 @@ async function setCurrentLevel(generation: typeof currentLevel): Promise<void> {
   }
 }
 
-// Helper function to send runtime messages safely
+// Helper function to send runtime messages safely with retry
 function sendRuntimeMessage(message: ChromeMessage): void {
   try {
-    chrome.runtime.sendMessage(message);
+    if (chrome.runtime?.id) { // Check if extension context is still valid
+      chrome.runtime.sendMessage(message);
+    }
   } catch (error) {
     // Error sending runtime message - silently fail in production
   }
@@ -41,40 +43,52 @@ function sendRuntimeMessage(message: ChromeMessage): void {
 
 // Message handler for level changes from the popup and rerun requests from side panel
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  if (message.type === APP_CONSTANTS.MESSAGE_TYPES.SET_LEVEL) {
-    // Validate that the level exists in our generations data
-    const generation = getGenerationByLevel(message.level.level)
-    if (generation) {
-      setCurrentLevel(generation).then(() => {
-        sendResponse({ success: true })
-      }).catch(() => {
-        sendResponse({ success: false, error: APP_CONSTANTS.ERROR_MESSAGES.INVALID_GENERATION })
-      })
-    } else {
-      sendResponse({ success: false, error: APP_CONSTANTS.ERROR_MESSAGES.INVALID_GENERATION })
-    }
-  } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.RERUN_SUMMARIZATION) {
-    // Handle rerun request from side panel
-    if (message.text && message.level) {
+  // Handle async operations properly
+  const handleMessage = async () => {
+    if (message.type === APP_CONSTANTS.MESSAGE_TYPES.SET_LEVEL) {
       // Validate that the level exists in our generations data
       const generation = getGenerationByLevel(message.level.level)
       if (generation) {
-        setCurrentLevel(generation).then(() => {
-          // Process the text with the new level
-          processSummarization(message.text, lastTabInfo)
-          sendResponse({ success: true })
-        }).catch(() => {
-          sendResponse({ success: false, error: APP_CONSTANTS.ERROR_MESSAGES.INVALID_GENERATION })
-        })
+        try {
+          await setCurrentLevel(generation);
+          return { success: true };
+        } catch {
+          return { success: false, error: APP_CONSTANTS.ERROR_MESSAGES.INVALID_GENERATION };
+        }
       } else {
-        sendResponse({ success: false, error: APP_CONSTANTS.ERROR_MESSAGES.INVALID_GENERATION })
+        return { success: false, error: APP_CONSTANTS.ERROR_MESSAGES.INVALID_GENERATION };
       }
-    } else {
-      sendResponse({ success: false, error: APP_CONSTANTS.ERROR_MESSAGES.MISSING_TEXT_OR_LEVEL })
+    } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.RERUN_SUMMARIZATION) {
+      // Handle rerun request from side panel
+      if (message.text && message.level) {
+        // Validate that the level exists in our generations data
+        const generation = getGenerationByLevel(message.level.level)
+        if (generation) {
+          try {
+            await setCurrentLevel(generation);
+            // Process the text with the new level
+            processSummarization(message.text, lastTabInfo);
+            return { success: true };
+          } catch {
+            return { success: false, error: APP_CONSTANTS.ERROR_MESSAGES.INVALID_GENERATION };
+          }
+        } else {
+          return { success: false, error: APP_CONSTANTS.ERROR_MESSAGES.INVALID_GENERATION };
+        }
+      } else {
+        return { success: false, error: APP_CONSTANTS.ERROR_MESSAGES.MISSING_TEXT_OR_LEVEL };
+      }
     }
-  }
+    return null;
+  };
+
+  // Execute async handler and send response
+  handleMessage().then(result => {
+    if (result) sendResponse(result);
+  });
+
   // Return true to indicate we will respond asynchronously
-  return true
+  return true;
 })
 
 // Set up the context menu item when the extension is installed or updated
