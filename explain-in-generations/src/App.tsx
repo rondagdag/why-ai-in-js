@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import Markdown from "markdown-to-jsx"
 import { Switch } from "./components/ui/Switch"
 import { Select } from "./components/ui/Select"
@@ -6,6 +6,7 @@ import { Button } from "./components/ui/Button"
 import TrashIcon from "./components/icons/TrashIcon"
 import { RefreshCw } from "lucide-react"
 import { generations, getGenerationByLevel, levelNames } from "./constants/generations"
+import { APP_CONSTANTS } from "./constants/app"
 
 function App() {
   const [summary, setSummary] = useState<string>("")
@@ -24,20 +25,20 @@ function App() {
 
   // Load saved generation level on component mount
   useEffect(() => {
-    chrome.storage.local.get(['currentLevel'], (result) => {
+    chrome.storage.local.get([APP_CONSTANTS.STORAGE_KEYS.CURRENT_LEVEL], (result) => {
       if (result.currentLevel?.level) {
         setCurrentLevel(result.currentLevel.level)
       }
     })
   }, [])
 
-  const handleRerun = () => {
+  const handleRerun = useCallback(() => {
     if (selectedText) {
       const generation = getGenerationByLevel(currentLevel)
       if (generation) {
         // Send message to background script to rerun with current level
         chrome.runtime.sendMessage({
-          type: "RERUN_SUMMARIZATION",
+          type: APP_CONSTANTS.MESSAGE_TYPES.RERUN_SUMMARIZATION,
           text: selectedText,
           level: generation
         })
@@ -45,9 +46,9 @@ function App() {
         console.error(`No generation found for level ${currentLevel}`)
       }
     }
-  }
+  }, [selectedText, currentLevel])
 
-  const handleLevelChange = (newLevel: string | number) => {
+  const handleLevelChange = useCallback((newLevel: string | number) => {
     const level = typeof newLevel === 'string' ? parseInt(newLevel) : newLevel
     setCurrentLevel(level)
     
@@ -56,75 +57,75 @@ function App() {
     if (generation) {
       // First, set the level
       chrome.runtime.sendMessage({
-        type: "SET_LEVEL",
+        type: APP_CONSTANTS.MESSAGE_TYPES.SET_LEVEL,
         level: generation
       })
       
       // Automatically rerun summarization if we have selected text
       if (selectedText && selectedText.trim().length > 0) {
         chrome.runtime.sendMessage({
-          type: "RERUN_SUMMARIZATION",
+          type: APP_CONSTANTS.MESSAGE_TYPES.RERUN_SUMMARIZATION,
           text: selectedText,
           level: generation
         })
       }
     }
-  }
+  }, [selectedText])
 
-  useEffect(() => {
-    const messageListener = (
-      message: { type: string; chunk?: string; error?: string; total?: number; loaded?: number; level?: number; isFirst?: boolean; text?: string; selectedText?: string },
-      _sender: chrome.runtime.MessageSender,
-      sendResponse: (response?: any) => void
-    ) => {
-      if (message.type === "STREAM_RESPONSE") {
-        setLoading(true)
-        if (message.isFirst) {
-          setSummary("")
-          // Also capture selected text from the stream message as backup
-          if (message.selectedText && !selectedText) {
-            setSelectedText(message.selectedText)
-          }
-          return
-        }
-        if (message.chunk !== undefined) {
-          if (message.level) {
-            setCurrentLevel(message.level)
-            setSummary((prev) => prev + message.chunk)
-          } else {
-            setSummary((prev) => prev + message.chunk)
-          }
-        }
-      } else if (message.type === "ERROR") {
-        setSummary(message.error || "An error occurred")
-        setLoading(false)
-      } else if (message.type === "AI_INITIATE") {
-        setLoading(true)
+  const messageListener = useCallback((
+    message: { type: string; chunk?: string; error?: string; total?: number; loaded?: number; level?: number; isFirst?: boolean; text?: string; selectedText?: string },
+    _sender: chrome.runtime.MessageSender,
+    sendResponse: (response?: any) => void
+  ) => {
+    if (message.type === APP_CONSTANTS.MESSAGE_TYPES.STREAM_RESPONSE) {
+      setLoading(true)
+      if (message.isFirst) {
         setSummary("")
-        setTotal(message.total || 0)
-        setProgress(message.loaded || 0)
-      } else if (message.type === "STREAM_COMPLETE") {
-        setLoading(false)
+        // Also capture selected text from the stream message as backup
+        if (message.selectedText && !selectedText) {
+          setSelectedText(message.selectedText)
+        }
+        return
+      }
+      if (message.chunk !== undefined) {
         if (message.level) {
           setCurrentLevel(message.level)
+          setSummary((prev) => prev + message.chunk)
+        } else {
+          setSummary((prev) => prev + message.chunk)
         }
-      } else if (message.type === "TEXT_SELECTED") {
-        // Store the selected text for potential rerun
-        if (message.text) {
-          setSelectedText(message.text)
-        }
-      } else if (message.type === "RERUN_COMPLETE") {
-        // Handle rerun completion if needed
-        setLoading(false)
       }
-      sendResponse()
+    } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.ERROR) {
+      setSummary(message.error || "An error occurred")
+      setLoading(false)
+    } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.AI_INITIATE) {
+      setLoading(true)
+      setSummary("")
+      setTotal(message.total || 0)
+      setProgress(message.loaded || 0)
+    } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.STREAM_COMPLETE) {
+      setLoading(false)
+      if (message.level) {
+        setCurrentLevel(message.level)
+      }
+    } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.TEXT_SELECTED) {
+      // Store the selected text for potential rerun
+      if (message.text) {
+        setSelectedText(message.text)
+      }
+    } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.RERUN_COMPLETE) {
+      // Handle rerun completion if needed
+      setLoading(false)
     }
+    sendResponse()
+  }, [selectedText])
 
+  useEffect(() => {
     chrome.runtime.onMessage.addListener(messageListener)
     return () => {
       chrome.runtime.onMessage.removeListener(messageListener)
     }
-  }, [])
+  }, [messageListener])
 
   const generationOptions = generations.map(gen => ({
     value: gen.level,

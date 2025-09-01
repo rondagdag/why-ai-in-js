@@ -2,6 +2,9 @@ import react from "@vitejs/plugin-react-swc"
 import path from "path"
 import { defineConfig } from "vite"
 
+// Chrome target version for better compatibility
+const CHROME_TARGET = "chrome130"
+
 export default defineConfig({
   plugins: [react()],
   build: {
@@ -24,7 +27,7 @@ export default defineConfig({
     },
     outDir: "dist",
     emptyOutDir: true,
-    target: "chrome130" // Specify Chrome target for better compatibility
+    target: CHROME_TARGET // Use constant for Chrome target
   },
   resolve: {
     alias: {

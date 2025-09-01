@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 cert
+
+# Packaged extensions
+collected_extensions/

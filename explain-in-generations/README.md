@@ -14,6 +14,11 @@ Understanding how different generations consume and process information is cruci
 
 ## Installation & Setup
 
+### For Users (Chrome Web Store)
+Coming soon! This extension will be available in the Chrome Web Store.
+
+### For Developers (Local Development)
+
 1. Clone this repository:
    ```bash
    git clone <repository-url>
@@ -29,6 +34,21 @@ Understanding how different generations consume and process information is cruci
 5. Enable "Developer mode" in the top right corner
 6. Click "Load unpacked" and select the `dist` folder from the project directory
 7. The first time you use the extension, Gemini Nano will be automatically downloaded (this may take some time)
+
+### Packaging for Chrome Web Store
+
+To package the extension for submission:
+```bash
+npm run package
+```
+
+This creates:
+- `chrome-extension-package/` - Unpacked extension for testing
+- `explain-in-generations-v[version].zip` - Ready for Chrome Web Store upload
+
+For complete submission instructions, see:
+- [`CHROME_STORE_ASSETS.md`](./docs/CHROME_STORE_ASSETS.md) - Required assets and content
+- [`CHROME_STORE_SUBMISSION_GUIDE.md`](./docs/CHROME_STORE_SUBMISSION_GUIDE.md) - Step-by-step submission process
 
 For more details, see the [official Chrome Summarization API documentation](https://developer.chrome.com/docs/ai/summarizer-api)
 

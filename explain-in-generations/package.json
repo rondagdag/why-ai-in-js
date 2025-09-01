@@ -1,14 +1,15 @@
 {
   "name": "@rondagdag/explain-in-generations",
   "private": true,
-  "version": "0.0.2",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "prettier": "prettier --write .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "package": "./package-extension.sh"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",

@@ -1,4 +1,5 @@
 import { Generation, getGenerationsReversed } from "./constants/generations";
+import { APP_CONSTANTS } from "./constants/app";
 
 // Get levels in reverse order for popup display (newest first)
 const levels: Generation[] = getGenerationsReversed();
@@ -8,7 +9,7 @@ let currentLevel = 1;
 // Initialize the UI
 async function initializeUI() {
   // Load saved level from storage
-  const result = await chrome.storage.sync.get('selectedLevel');
+  const result = await chrome.storage.sync.get(APP_CONSTANTS.STORAGE_KEYS.SELECTED_LEVEL);
   if (result.selectedLevel) {
     currentLevel = result.selectedLevel.level;
   }
@@ -47,11 +48,11 @@ async function selectLevel(level: Generation) {
   });
 
   // Save to storage
-  await chrome.storage.sync.set({ selectedLevel: level });
+  await chrome.storage.sync.set({ [APP_CONSTANTS.STORAGE_KEYS.SELECTED_LEVEL]: level });
 
   // Send message to background script
   await chrome.runtime.sendMessage({
-    type: 'SET_LEVEL',
+    type: APP_CONSTANTS.MESSAGE_TYPES.SET_LEVEL,
     level: level
   });
 }
