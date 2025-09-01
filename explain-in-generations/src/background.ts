@@ -13,6 +13,9 @@ let currentLevel = {
   description: "Skibidi-level interactive style 🎮, Ohio-tier gamified chunks 🎯, brain rot AI explanations 🤖, rizz-maxing emoji communication 😊"
 }
 
+// Store the last tab info for rerun functionality
+let lastTabInfo: { url?: string; id?: number } = {}
+
 // On extension startup, retrieve the previously saved level from Chrome's storage
 // This ensures user preferences persist across browser sessions
 chrome.storage.local.get(['currentLevel'], (result) => {
@@ -21,13 +24,21 @@ chrome.storage.local.get(['currentLevel'], (result) => {
   }
 });
 
-// Message handler for level changes from the popup
-// When the user selects a new level, update both memory and persistent storage
+// Message handler for level changes from the popup and rerun requests from side panel
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "SET_LEVEL") {
     currentLevel = message.level
     // Persist the new level to Chrome's storage
     chrome.storage.local.set({ currentLevel: message.level });
+    sendResponse({ success: true })
+  } else if (message.type === "RERUN_SUMMARIZATION") {
+    // Handle rerun request from side panel
+    if (message.text && message.level) {
+      currentLevel = message.level
+      chrome.storage.local.set({ currentLevel: message.level });
+      // Process the text with the new level
+      processSummarization(message.text, lastTabInfo)
+    }
     sendResponse({ success: true })
   }
 })
@@ -50,11 +61,92 @@ const getOptions = () => ({
   length: "medium"
 })
 
+// Function to process summarization for both initial selection and rerun
+async function processSummarization(selectedText: string, tabInfo: { url?: string; id?: number }) {
+  try {
+    // Check if the summarizer API is available and ready to use
+    // @ts-expect-error new chrome feature
+    const availability = await Summarizer.availability();
+    let summarizer
+
+    if (availability === 'unavailable') {
+      // API is not available on this system
+      chrome.runtime.sendMessage({
+        type: "ERROR",
+        error: "The Summarizer API isn't usable"
+      })
+      return
+    }
+
+    if (availability === 'available') {
+      // API is ready to use immediately
+      chrome.runtime.sendMessage({
+        chunk: "",
+        type: "STREAM_RESPONSE",
+        isFirst: true,
+        level: currentLevel.level
+      })
+
+      // Initialize the summarizer with current options
+      // @ts-expect-error new chrome feature
+      summarizer = await Summarizer.create(getOptions());
+      await summarizer.ready
+
+      // Process the selected text and stream the results
+      const stream = await summarizer.summarize(selectedText, {
+        context: tabInfo.url ? `article from ${new URL(tabInfo.url).origin}` : ''
+      })
+      for await (const chunk of stream) {
+        chrome.runtime.sendMessage({
+          chunk,
+          type: "STREAM_RESPONSE"
+        })
+      }
+      chrome.runtime.sendMessage({
+        type: "STREAM_COMPLETE",
+        level: currentLevel.level
+      })
+    } else {
+      // API needs to download models first
+      // @ts-expect-error new chrome feature
+      summarizer = await Summarizer.create(getOptions());
+      // Track and report download progress
+      summarizer.addEventListener(
+        "downloadprogress",
+        (e: { loaded: number; total: number }) => {
+          console.log(e.loaded, e.total)
+          chrome.runtime.sendMessage({
+            type: "AI_INITIATE",
+            total: e.total,
+            loaded: e.loaded,
+          })
+        }
+      )
+      await summarizer.ready
+    }
+  } catch (error) {
+    sentry.captureException(error)
+    chrome.runtime.sendMessage({
+      type: "ERROR",
+      error: "Failed to process summarization"
+    })
+  }
+}
+
 // Check if the Chrome AI Summarizer API is available
 if ('Summarizer' in self) {
   // Handle right-click context menu selection
   chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     if (info.menuItemId === "summarize-text" && info.selectionText && tab?.id) {
+      // Store the tab info for potential rerun
+      lastTabInfo = { url: tab.url, id: tab.id }
+      
+      // Notify side panel about the selected text
+      chrome.runtime.sendMessage({
+        type: "TEXT_SELECTED",
+        text: info.selectionText
+      })
+
       // Open the side panel if available
       if (chrome.sidePanel && tab) {
         try {
@@ -66,71 +158,8 @@ if ('Summarizer' in self) {
         }
       }
 
-      try {
-        // Check if the summarizer API is available and ready to use
-        // @ts-expect-error new chrome feature
-        //const available = (await self.ai.summarizer.capabilities()).available
-        const availability = await Summarizer.availability();
-        let summarizer
-
-        if (availability === 'unavailable') {
-          // API is not available on this system
-          chrome.runtime.sendMessage({
-            type: "ERROR",
-            error: "The Summarizer API isn't usable"
-          })
-          return
-        }
-
-        if (availability === 'available') {
-          // API is ready to use immediately
-          chrome.runtime.sendMessage({
-            chunk: "",
-            type: "STREAM_RESPONSE",
-            isFirst: true,
-            level: currentLevel.level
-          })
-
-          // Initialize the summarizer with current options
-          // @ts-expect-error new chrome feature
-          summarizer = await Summarizer.create(getOptions());
-          await summarizer.ready
-
-          // Process the selected text and stream the results
-          const stream = await summarizer.summarize(info.selectionText, {
-            context: `article from ${new URL(tab.url!).origin}`
-          })
-          for await (const chunk of stream) {
-            chrome.runtime.sendMessage({
-              chunk,
-              type: "STREAM_RESPONSE"
-            })
-          }
-          chrome.runtime.sendMessage({
-            type: "STREAM_COMPLETE",
-            level: currentLevel.level
-          })
-        } else {
-          // API needs to download models first
-          // @ts-expect-error new chrome feature
-          summarizer = await Summarizer.create(getOptions());
-          // Track and report download progress
-          summarizer.addEventListener(
-            "downloadprogress",
-            (e: { loaded: number; total: number }) => {
-              console.log(e.loaded, e.total)
-              chrome.runtime.sendMessage({
-                type: "AI_INITIATE",
-                total: e.total,
-                loaded: e.loaded,
-              })
-            }
-          )
-          await summarizer.ready
-        }
-      } catch (error) {
-        sentry.captureException(error)
-      }
+      // Process the summarization
+      await processSummarization(info.selectionText, { url: tab.url, id: tab.id })
     }
   })
 
