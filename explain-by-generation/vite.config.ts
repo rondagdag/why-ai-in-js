@@ -14,12 +14,14 @@ export default defineConfig({
       input: {
         popup: path.resolve(__dirname, "index.html"),
         popupHtml: path.resolve(__dirname, "popup.html"),
-        background: path.resolve(__dirname, "src/background.ts")
+        background: path.resolve(__dirname, "src/background.ts"),
+        'content-script': path.resolve(__dirname, "src/content-script.ts")
       },
       output: {
         entryFileNames: (chunkInfo) => {
           // Ensure content and background scripts are named correctly
-          return chunkInfo.name === "background" ? "background.js" : "[name].js"
+          return chunkInfo.name === "background" ? "background.js" : 
+                 chunkInfo.name === "content-script" ? "content-script.js" : "[name].js"
         },
         chunkFileNames: "[name].js",
         assetFileNames: "[name].[ext]",

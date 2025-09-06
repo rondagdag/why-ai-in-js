@@ -67,10 +67,13 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
           try {
             await setCurrentLevel(generation);
             // Process the text with the new level
-            processSummarization(message.text, lastTabInfo);
+            await processSummarization(message.text, lastTabInfo);
             return { success: true };
-          } catch {
-            return { success: false, error: APP_CONSTANTS.ERROR_MESSAGES.INVALID_GENERATION };
+          } catch (error) {
+            return { 
+              success: false, 
+              error: error instanceof Error ? error.message : APP_CONSTANTS.ERROR_MESSAGES.PROCESSING_FAILED 
+            };
           }
         } else {
           return { success: false, error: APP_CONSTANTS.ERROR_MESSAGES.INVALID_GENERATION };
@@ -78,6 +81,16 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       } else {
         return { success: false, error: APP_CONSTANTS.ERROR_MESSAGES.MISSING_TEXT_OR_LEVEL };
       }
+    } else if (message.type === 'SELECTION_CHANGED') {
+      // Handle selection change notifications from content script
+      // Store the new selection for potential use
+      if (message.text) {
+        sendRuntimeMessage({
+          type: APP_CONSTANTS.MESSAGE_TYPES.TEXT_SELECTED,
+          text: message.text
+        });
+      }
+      return { success: true };
     }
     return null;
   };

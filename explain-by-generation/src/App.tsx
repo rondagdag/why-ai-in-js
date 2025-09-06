@@ -85,18 +85,57 @@ function App() {
     })
   }, [])
 
-  const handleRerun = useCallback(() => {
-    if (selectedText) {
-      const generation = getGenerationByLevel(currentLevel)
-      if (generation) {
-        // Send message to background script to rerun with current level
-        chrome.runtime.sendMessage({
-          type: APP_CONSTANTS.MESSAGE_TYPES.RERUN_SUMMARIZATION,
-          text: selectedText,
-          level: generation
+  const handleRerun = useCallback(async () => {
+    // First, try to get the current selection from the active tab
+    try {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+      if (tab.id) {
+        // Request current selection from content script
+        const response = await chrome.tabs.sendMessage(tab.id, { 
+          type: "GET_CURRENT_SELECTION" 
         })
-      } else {
-        // No generation found for level - handle gracefully
+        
+        const currentSelectedText = response?.text || selectedText
+        
+        if (currentSelectedText && currentSelectedText.trim().length > 0) {
+          const generation = getGenerationByLevel(currentLevel)
+          if (generation) {
+            // Send message to background script to rerun with current level and fresh text
+            chrome.runtime.sendMessage({
+              type: APP_CONSTANTS.MESSAGE_TYPES.RERUN_SUMMARIZATION,
+              text: currentSelectedText,
+              level: generation
+            })
+            
+            // Update the stored selected text with the fresh selection
+            setSelectedText(currentSelectedText)
+          }
+        } else {
+          // No current selection, fall back to stored text
+          if (selectedText && selectedText.trim().length > 0) {
+            const generation = getGenerationByLevel(currentLevel)
+            if (generation) {
+              chrome.runtime.sendMessage({
+                type: APP_CONSTANTS.MESSAGE_TYPES.RERUN_SUMMARIZATION,
+                text: selectedText,
+                level: generation
+              })
+            }
+          }
+        }
+      }
+    } catch (error) {
+      // If content script communication fails, fall back to stored text
+      console.warn("Could not get current selection, using stored text:", error)
+      if (selectedText && selectedText.trim().length > 0) {
+        const generation = getGenerationByLevel(currentLevel)
+        if (generation) {
+          chrome.runtime.sendMessage({
+            type: APP_CONSTANTS.MESSAGE_TYPES.RERUN_SUMMARIZATION,
+            text: selectedText,
+            level: generation
+          })
+        }
       }
     }
   }, [selectedText, currentLevel])
@@ -241,7 +280,7 @@ function App() {
               ) : (
                 <RefreshCw className="mr-2 h-4 w-4" />
               )}
-              Rerun with {getGenerationByLevel(currentLevel)?.name}
+              Summarize by {getGenerationByLevel(currentLevel)?.name}
             </Button>
           )}
         </div>
