@@ -28,3 +28,6 @@ cert
 # Packaged extension directories
 collected_extensions/
 chrome-extension-pkg/
+docs/screenshots/
+
+
