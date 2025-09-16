@@ -39,5 +39,8 @@
       "matches": ["<all_urls>"],
       "js": ["content-script.js"]
     }
-  ]
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }
