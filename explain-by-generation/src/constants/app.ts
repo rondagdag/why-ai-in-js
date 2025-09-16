@@ -23,7 +23,10 @@ export const APP_CONSTANTS = {
     TEXT_SELECTED: "TEXT_SELECTED",
     RERUN_COMPLETE: "RERUN_COMPLETE",
     SET_LEVEL: "SET_LEVEL",
-    RERUN_SUMMARIZATION: "RERUN_SUMMARIZATION"
+    RERUN_SUMMARIZATION: "RERUN_SUMMARIZATION",
+    CHUNK_PROGRESS: "CHUNK_PROGRESS",
+    CHUNKING_STARTED: "CHUNKING_STARTED",
+    FINAL_SUMMARY_STARTED: "FINAL_SUMMARY_STARTED"
   },
   
   // API availability states
@@ -38,6 +41,14 @@ export const APP_CONSTANTS = {
     TYPE: "tldr",
     FORMAT: "markdown",
     LENGTH: "medium"
+  },
+  
+  // Text chunking configuration
+  CHUNKING_OPTIONS: {
+    CHUNK_SIZE: 3000,
+    CHUNK_OVERLAP: 200,
+    MIN_CHUNK_SIZE: 100,
+    MAX_TOKENS_ESTIMATE: 750
   },
   
   // Context menu

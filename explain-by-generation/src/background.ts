@@ -1,6 +1,10 @@
 import { generations, getGenerationByLevel } from "./constants/generations"
 import { APP_CONSTANTS } from "./constants/app"
 import type { ChromeMessage } from "./types/chrome-api"
+import {
+  processChunkedSummarization,
+  processStreamWithCallback
+} from "./utils/chunked-summarization"
 
 // Default configuration for the current explanation level
 // This serves as a fallback if no stored level is found
@@ -161,16 +165,6 @@ async function openSidePanelSafely(windowId: number): Promise<void> {
   }
 }
 
-// Helper function to process stream from Chrome Summarizer API
-async function processStream(stream: AsyncIterable<string>): Promise<void> {
-  for await (const chunk of stream) {
-    sendRuntimeMessage({
-      chunk,
-      type: APP_CONSTANTS.MESSAGE_TYPES.STREAM_RESPONSE
-    })
-  }
-}
-
 // Helper function to initialize summarizer based on availability
 async function initializeSummarizer(): Promise<any> {
   // @ts-expect-error - Chrome experimental API
@@ -210,10 +204,66 @@ async function streamSummarization(
   const context = tabInfo.url
     ? `article from ${new URL(tabInfo.url).origin}`
     : ""
-  const stream = await summarizer.summarize(selectedText, { context })
 
-  // Process the stream using the reader API
-  await processStream(stream)
+  try {
+    // Use chunked summarization approach
+    const result = await processChunkedSummarization(
+      summarizer,
+      selectedText,
+      context,
+      {
+        onChunkingStarted: (totalChunks) => {
+          sendRuntimeMessage({
+            type: APP_CONSTANTS.MESSAGE_TYPES.CHUNKING_STARTED,
+            totalChunks
+          })
+        },
+        onChunkProgress: (current, total, chunkSummary) => {
+          sendRuntimeMessage({
+            type: APP_CONSTANTS.MESSAGE_TYPES.CHUNK_PROGRESS,
+            current,
+            total,
+            chunkSummary
+          })
+        },
+        onFinalSummaryStarted: () => {
+          sendRuntimeMessage({
+            type: APP_CONSTANTS.MESSAGE_TYPES.FINAL_SUMMARY_STARTED
+          })
+        },
+        onError: (error) => {
+          sendRuntimeMessage({
+            type: APP_CONSTANTS.MESSAGE_TYPES.ERROR,
+            error: error.message
+          })
+        }
+      }
+    )
+
+    if (result.usedChunking) {
+      // For chunked results, send the concatenated summaries as one message
+      sendRuntimeMessage({
+        chunk: result.finalSummary,
+        type: APP_CONSTANTS.MESSAGE_TYPES.STREAM_RESPONSE
+      })
+    } else {
+      // For non-chunked results, process normally
+      const stream = await summarizer.summarize(selectedText, { context })
+      await processStreamWithCallback(stream, (chunk) => {
+        sendRuntimeMessage({
+          chunk,
+          type: APP_CONSTANTS.MESSAGE_TYPES.STREAM_RESPONSE
+        })
+      })
+    }
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Processing failed"
+    sendRuntimeMessage({
+      type: APP_CONSTANTS.MESSAGE_TYPES.ERROR,
+      error: errorMessage
+    })
+  }
 
   sendRuntimeMessage({
     type: APP_CONSTANTS.MESSAGE_TYPES.STREAM_COMPLETE,

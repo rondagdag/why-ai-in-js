@@ -19,14 +19,19 @@ export interface DownloadProgressEvent extends Event {
 
 export interface Summarizer {
   ready: Promise<void>
-  summarize(input: string, options?: SummarizeOptions): Promise<AsyncIterable<string>>
+  inputQuota: number
+  summarize(
+    input: string,
+    options?: SummarizeOptions
+  ): Promise<AsyncIterable<string>>
+  measureInputUsage(input: string): Promise<number>
   addEventListener(
-    type: 'downloadprogress',
+    type: "downloadprogress",
     listener: (event: DownloadProgressEvent) => void,
     options?: boolean | AddEventListenerOptions
   ): void
   removeEventListener(
-    type: 'downloadprogress',
+    type: "downloadprogress",
     listener: (event: DownloadProgressEvent) => void,
     options?: boolean | EventListenerOptions
   ): void
@@ -86,6 +91,22 @@ export interface RerunSummarizationMessage extends BaseMessage {
   level: any // Generation type
 }
 
+export interface ChunkProgressMessage extends BaseMessage {
+  type: 'CHUNK_PROGRESS'
+  current: number
+  total: number
+  chunkSummary?: string
+}
+
+export interface ChunkingStartedMessage extends BaseMessage {
+  type: 'CHUNKING_STARTED'
+  totalChunks: number
+}
+
+export interface FinalSummaryStartedMessage extends BaseMessage {
+  type: 'FINAL_SUMMARY_STARTED'
+}
+
 export type ChromeMessage = 
   | StreamResponseMessage
   | ErrorMessage
@@ -95,6 +116,9 @@ export type ChromeMessage =
   | RerunCompleteMessage
   | SetLevelMessage
   | RerunSummarizationMessage
+  | ChunkProgressMessage
+  | ChunkingStartedMessage
+  | FinalSummaryStartedMessage
 
 // Extend global Window interface
 declare global {

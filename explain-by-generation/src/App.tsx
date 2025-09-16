@@ -19,6 +19,12 @@ function App() {
   const [currentLevel, setCurrentLevel] = useState(7)
   const [selectedText, setSelectedText] = useState<string>("")
   const [theme, setTheme] = useState<"light" | "dark" | "system">("system")
+  
+  // Chunking-related state
+  const [isChunking, setIsChunking] = useState(false)
+  const [chunkProgress, setChunkProgress] = useState(0)
+  const [totalChunks, setTotalChunks] = useState(0)
+  const [processingPhase, setProcessingPhase] = useState<"chunking" | "final" | null>(null)
 
   // Memoize theme detection to avoid recreating on every render
   const getEffectiveTheme = useCallback(
@@ -236,6 +242,9 @@ function App() {
         isFirst?: boolean
         text?: string
         selectedText?: string
+        totalChunks?: number
+        current?: number
+        chunkSummary?: string
       },
       _sender: chrome.runtime.MessageSender,
       sendResponse: (response?: any) => void
@@ -244,6 +253,11 @@ function App() {
         setLoading(true)
         if (message.isFirst) {
           setSummary("")
+          // Reset chunking state
+          setIsChunking(false)
+          setChunkProgress(0)
+          setTotalChunks(0)
+          setProcessingPhase(null)
           // Also capture selected text from the stream message as backup
           if (message.selectedText && !selectedText) {
             setSelectedText(message.selectedText)
@@ -258,9 +272,30 @@ function App() {
             setSummary((prev) => prev + message.chunk)
           }
         }
+      } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.CHUNKING_STARTED) {
+        setLoading(true)
+        setIsChunking(true)
+        setTotalChunks(message.totalChunks || 0)
+        setChunkProgress(0)
+        setProcessingPhase("chunking")
+        setSummary("")
+      } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.CHUNK_PROGRESS) {
+        setChunkProgress(message.current || 0)
+        // Optionally show chunk summaries in the UI
+        if (message.chunkSummary) {
+          setSummary((prev) => {
+            const separator = prev ? "\n\n---\n\n" : ""
+            return `${prev}${separator}**Chunk ${message.current}/${message.total}:**\n${message.chunkSummary}`
+          })
+        }
+      } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.FINAL_SUMMARY_STARTED) {
+        setProcessingPhase("final")
+        setSummary("Combining chunk summaries...")
       } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.ERROR) {
         setSummary(message.error || "An error occurred")
         setLoading(false)
+        setIsChunking(false)
+        setProcessingPhase(null)
       } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.AI_INITIATE) {
         setLoading(true)
         setSummary("")
@@ -268,6 +303,8 @@ function App() {
         setProgress(message.loaded || 0)
       } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.STREAM_COMPLETE) {
         setLoading(false)
+        setIsChunking(false)
+        setProcessingPhase(null)
         if (message.level) {
           setCurrentLevel(message.level)
         }
@@ -279,6 +316,8 @@ function App() {
       } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.RERUN_COMPLETE) {
         // Handle rerun completion if needed
         setLoading(false)
+        setIsChunking(false)
+        setProcessingPhase(null)
       }
       sendResponse()
     },
@@ -373,6 +412,36 @@ function App() {
             <p className="text-sm text-muted-foreground">
               Downloading AI model... {Math.round((progress / total) * 100)}%
             </p>
+          </div>
+        )}
+
+        {/* Chunking Progress Indicator */}
+        {isChunking && (
+          <div className="space-y-3 p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                {processingPhase === "chunking" &&
+                  "Processing text in chunks..."}
+                {processingPhase === "final" && "Combining summaries..."}
+              </span>
+            </div>
+            
+            {totalChunks > 0 && processingPhase === "chunking" && (
+              <div className="space-y-2">
+                <div className="w-full bg-blue-200 dark:bg-blue-900 rounded-full h-2">
+                  <div
+                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                    style={{
+                      width: `${Math.round((chunkProgress / totalChunks) * 100)}%`
+                    }}
+                  ></div>
+                </div>
+                <p className="text-xs text-blue-700 dark:text-blue-300">
+                  Chunk {chunkProgress} of {totalChunks} complete
+                </p>
+              </div>
+            )}
           </div>
         )}
         <div className="rounded-lg border p-4 prose dark:prose-invert max-w-none">
