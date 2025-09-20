@@ -36,7 +36,7 @@ export async function checkInputQuota(
   try {
     const inputUsage = await summarizer.measureInputUsage(text)
     const totalQuota = summarizer.inputQuota
-    
+
     return {
       exceedsQuota: inputUsage > totalQuota,
       inputUsage,
@@ -49,7 +49,7 @@ export async function checkInputQuota(
       text,
       APP_CONSTANTS.CHUNKING_OPTIONS.MAX_TOKENS_ESTIMATE
     )
-    
+
     return {
       exceedsQuota: needsChunking,
       inputUsage: estimatedTokens,
@@ -93,23 +93,23 @@ export async function processChunkedSummarization(
       chunkOverlap: APP_CONSTANTS.CHUNKING_OPTIONS.CHUNK_OVERLAP,
       minChunkSize: APP_CONSTANTS.CHUNKING_OPTIONS.MIN_CHUNK_SIZE
     })
-    
+
     const chunks = splitter.splitText(text)
     onChunkingStarted?.(chunks.length)
-    
+
     // Summarize each chunk
     const chunkSummaries: string[] = []
-    
+
     for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i]
       const chunkContext = `${context} (Part ${i + 1} of ${chunks.length})`
-      
+
       try {
         const stream = await summarizer.summarize(chunk.text, {
           context: chunkContext
         })
         const chunkSummary = await streamToString(stream)
-        
+
         chunkSummaries.push(chunkSummary)
         onChunkProgress?.(i + 1, chunks.length, chunkSummary)
       } catch (error) {
@@ -117,19 +117,19 @@ export async function processChunkedSummarization(
           error instanceof Error ? error.message : "Unknown error"
         }`
         onError?.(new Error(errorMessage))
-        
+
         // Continue with remaining chunks, use a fallback summary
         chunkSummaries.push(`[Chunk ${i + 1} summary failed]`)
       }
     }
-    
+
     // Combine summaries into one text (no additional summarization)
     onFinalSummaryStarted?.()
-    
+
     const finalSummary = chunkSummaries
       .map((summary, index) => `**Part ${index + 1}:** ${summary}`)
       .join("\n\n")
-    
+
     return {
       finalSummary,
       chunkSummaries,

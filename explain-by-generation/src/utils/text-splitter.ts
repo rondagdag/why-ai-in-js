@@ -56,7 +56,7 @@ export class TextSplitter {
 
     while (position < text.length) {
       const remainingText = text.length - position
-      
+
       // If remaining text is small, include it in the current chunk
       if (remainingText <= this.chunkSize) {
         chunks.push({
@@ -71,9 +71,9 @@ export class TextSplitter {
       // Find the best split point within the chunk size limit
       const chunkEnd = position + this.chunkSize
       const splitPoint = this.findBestSplitPoint(text, position, chunkEnd)
-      
+
       const chunkText = text.slice(position, splitPoint)
-      
+
       // Only add chunk if it's above minimum size
       if (chunkText.length >= this.minChunkSize) {
         chunks.push({
@@ -87,7 +87,7 @@ export class TextSplitter {
 
       // Move position forward, accounting for overlap
       position = splitPoint - this.chunkOverlap
-      
+
       // Ensure we don't go backwards
       if (position <= chunks[chunks.length - 1]?.startPosition) {
         position = splitPoint
@@ -111,7 +111,7 @@ export class TextSplitter {
     }
 
     const searchWindow = text.slice(start, maxEnd)
-    
+
     // Priority order for split points:
     // 1. Double newlines (paragraph breaks)
     // 2. Single newlines
@@ -145,7 +145,7 @@ export class TextSplitter {
 
     // Fallback: split at character limit, but try to avoid mid-word
     let fallbackSplit = maxEnd
-    
+
     // Look backwards for a space to avoid splitting words
     for (let i = maxEnd - 1; i > start + this.minChunkSize; i--) {
       if (text[i] === " ") {

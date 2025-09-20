@@ -19,12 +19,14 @@ function App() {
   const [currentLevel, setCurrentLevel] = useState(7)
   const [selectedText, setSelectedText] = useState<string>("")
   const [theme, setTheme] = useState<"light" | "dark" | "system">("system")
-  
+
   // Chunking-related state
   const [isChunking, setIsChunking] = useState(false)
   const [chunkProgress, setChunkProgress] = useState(0)
   const [totalChunks, setTotalChunks] = useState(0)
-  const [processingPhase, setProcessingPhase] = useState<"chunking" | "final" | null>(null)
+  const [processingPhase, setProcessingPhase] = useState<
+    "chunking" | "final" | null
+  >(null)
 
   // Memoize theme detection to avoid recreating on every render
   const getEffectiveTheme = useCallback(
@@ -272,7 +274,9 @@ function App() {
             setSummary((prev) => prev + message.chunk)
           }
         }
-      } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.CHUNKING_STARTED) {
+      } else if (
+        message.type === APP_CONSTANTS.MESSAGE_TYPES.CHUNKING_STARTED
+      ) {
         setLoading(true)
         setIsChunking(true)
         setTotalChunks(message.totalChunks || 0)
@@ -288,7 +292,9 @@ function App() {
             return `${prev}${separator}**Chunk ${message.current}/${message.total}:**\n${message.chunkSummary}`
           })
         }
-      } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.FINAL_SUMMARY_STARTED) {
+      } else if (
+        message.type === APP_CONSTANTS.MESSAGE_TYPES.FINAL_SUMMARY_STARTED
+      ) {
         setProcessingPhase("final")
         setSummary("Combining chunk summaries...")
       } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.ERROR) {
@@ -426,7 +432,7 @@ function App() {
                 {processingPhase === "final" && "Combining summaries..."}
               </span>
             </div>
-            
+
             {totalChunks > 0 && processingPhase === "chunking" && (
               <div className="space-y-2">
                 <div className="w-full bg-blue-200 dark:bg-blue-900 rounded-full h-2">

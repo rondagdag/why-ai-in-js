@@ -3,9 +3,9 @@
 
 export interface SummarizerOptions {
   sharedContext?: string
-  type?: 'key-points' | 'tl;dr' | 'teaser' | 'headline' | 'tldr'
-  format?: 'plain-text' | 'markdown'
-  length?: 'short' | 'medium' | 'long'
+  type?: "key-points" | "tl;dr" | "teaser" | "headline" | "tldr"
+  format?: "plain-text" | "markdown"
+  length?: "short" | "medium" | "long"
 }
 
 export interface SummarizeOptions {
@@ -38,7 +38,7 @@ export interface Summarizer {
 }
 
 export interface ChromeSummarizerAPI {
-  availability(): Promise<'available' | 'unavailable' | 'loading'>
+  availability(): Promise<"available" | "unavailable" | "loading">
   create(options?: SummarizerOptions): Promise<Summarizer>
 }
 
@@ -48,7 +48,7 @@ export interface BaseMessage {
 }
 
 export interface StreamResponseMessage extends BaseMessage {
-  type: 'STREAM_RESPONSE'
+  type: "STREAM_RESPONSE"
   chunk?: string
   level?: number
   isFirst?: boolean
@@ -56,58 +56,58 @@ export interface StreamResponseMessage extends BaseMessage {
 }
 
 export interface ErrorMessage extends BaseMessage {
-  type: 'ERROR'
+  type: "ERROR"
   error?: string
 }
 
 export interface AIInitiateMessage extends BaseMessage {
-  type: 'AI_INITIATE'
+  type: "AI_INITIATE"
   total?: number
   loaded?: number
 }
 
 export interface StreamCompleteMessage extends BaseMessage {
-  type: 'STREAM_COMPLETE'
+  type: "STREAM_COMPLETE"
   level?: number
 }
 
 export interface TextSelectedMessage extends BaseMessage {
-  type: 'TEXT_SELECTED'
+  type: "TEXT_SELECTED"
   text?: string
 }
 
 export interface RerunCompleteMessage extends BaseMessage {
-  type: 'RERUN_COMPLETE'
+  type: "RERUN_COMPLETE"
 }
 
 export interface SetLevelMessage extends BaseMessage {
-  type: 'SET_LEVEL'
+  type: "SET_LEVEL"
   level: any // Generation type
 }
 
 export interface RerunSummarizationMessage extends BaseMessage {
-  type: 'RERUN_SUMMARIZATION'
+  type: "RERUN_SUMMARIZATION"
   text: string
-  level: any // Generation type
+  level: unknown // Generation type
 }
 
 export interface ChunkProgressMessage extends BaseMessage {
-  type: 'CHUNK_PROGRESS'
+  type: "CHUNK_PROGRESS"
   current: number
   total: number
   chunkSummary?: string
 }
 
 export interface ChunkingStartedMessage extends BaseMessage {
-  type: 'CHUNKING_STARTED'
+  type: "CHUNKING_STARTED"
   totalChunks: number
 }
 
 export interface FinalSummaryStartedMessage extends BaseMessage {
-  type: 'FINAL_SUMMARY_STARTED'
+  type: "FINAL_SUMMARY_STARTED"
 }
 
-export type ChromeMessage = 
+export type ChromeMessage =
   | StreamResponseMessage
   | ErrorMessage
   | AIInitiateMessage
@@ -125,7 +125,7 @@ declare global {
   interface Window {
     Summarizer?: ChromeSummarizerAPI
   }
-  
+
   // For service worker context
   const Summarizer: ChromeSummarizerAPI | undefined
 }
