@@ -82,7 +82,7 @@ export interface RerunCompleteMessage extends BaseMessage {
 
 export interface SetLevelMessage extends BaseMessage {
   type: "SET_LEVEL"
-  level: any // Generation type
+  level: unknown // Generation type
 }
 
 export interface RerunSummarizationMessage extends BaseMessage {

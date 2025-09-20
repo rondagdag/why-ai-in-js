@@ -16,24 +16,33 @@ interface SelectProps {
   className?: string
 }
 
-export function Select({ options, value, onValueChange, placeholder = "Select...", className }: SelectProps) {
+export function Select({
+  options,
+  value,
+  onValueChange,
+  placeholder = "Select...",
+  className
+}: SelectProps) {
   const [isOpen, setIsOpen] = useState(false)
   const selectRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false)
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
 
-  const selectedOption = options.find(option => option.value === value)
+  const selectedOption = options.find((option) => option.value === value)
 
   return (
     <div ref={selectRef} className={cn("relative", className)}>
@@ -49,9 +58,14 @@ export function Select({ options, value, onValueChange, placeholder = "Select...
         <span className="truncate">
           {selectedOption ? selectedOption.label : placeholder}
         </span>
-        <ChevronDownIcon className={cn("h-4 w-4 opacity-50 transition-transform", isOpen && "rotate-180")} />
+        <ChevronDownIcon
+          className={cn(
+            "h-4 w-4 opacity-50 transition-transform",
+            isOpen && "rotate-180"
+          )}
+        />
       </button>
-      
+
       {isOpen && (
         <div className="absolute top-full left-0 z-50 mt-1 w-full rounded-md border bg-popover shadow-lg">
           <div className="max-h-60 overflow-auto p-1">
@@ -70,7 +84,9 @@ export function Select({ options, value, onValueChange, placeholder = "Select...
               >
                 <div className="font-medium">{option.label}</div>
                 {option.description && (
-                  <div className="text-xs text-muted-foreground">{option.description}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {option.description}
+                  </div>
                 )}
               </button>
             ))}

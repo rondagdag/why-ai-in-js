@@ -249,7 +249,7 @@ function App() {
         chunkSummary?: string
       },
       _sender: chrome.runtime.MessageSender,
-      sendResponse: (response?: any) => void
+      sendResponse: (response?: unknown) => void
     ) => {
       if (message.type === APP_CONSTANTS.MESSAGE_TYPES.STREAM_RESPONSE) {
         setLoading(true)

@@ -1,7 +1,7 @@
 {
   "name": "@rondagdag/explain-by-generation",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "author": "Ron Dagdag",
   "description": "Chrome extension that highlights text to get AI-powered explanations customized for different generations",

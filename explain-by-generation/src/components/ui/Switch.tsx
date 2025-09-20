@@ -5,7 +5,12 @@ interface SwitchProps extends React.HTMLAttributes<HTMLButtonElement> {
   onCheckedChange?: (checked: boolean) => void
 }
 
-export function Switch({ checked, onCheckedChange, className, ...props }: SwitchProps) {
+export function Switch({
+  checked,
+  onCheckedChange,
+  className,
+  ...props
+}: SwitchProps) {
   return (
     <button
       role="switch"
