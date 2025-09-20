@@ -1,0 +1,192 @@
+// Global variables
+let toxicityModel = null;
+const threshold = 0.5;
+
+// Toxicity labels from the model
+const toxicityLabels = [
+    'identity_attack',
+    'insult', 
+    'obscene',
+    'severe_toxicity',
+    'sexual_explicit',
+    'threat',
+    'toxicity'
+];
+
+// Initialize the model when page loads
+async function initModel() {
+    try {
+        updateModelStatus('Loading model...', 'loading');
+        
+        // Load the toxicity model
+        toxicityModel = await toxicity.load(threshold);
+        
+        updateModelStatus('Ready!', 'ready');
+        enableInterface();
+        
+        // Demo with example text
+        analyzeText('Welcome to the toxicity detection demo!');
+        
+    } catch (error) {
+        console.error('Error loading model:', error);
+        updateModelStatus('Error loading model', 'error');
+        showError('Failed to load the toxicity detection model. Please refresh and try again.');
+    }
+}
+
+// Update model status display
+function updateModelStatus(status, statusClass) {
+    const statusElement = document.getElementById('model-status');
+    statusElement.textContent = status;
+    statusElement.className = statusClass || '';
+}
+
+// Enable the interface when model is ready
+function enableInterface() {
+    document.getElementById('text-input').disabled = false;
+    document.getElementById('analyze-btn').disabled = false;
+}
+
+// Analyze text for toxicity
+async function analyzeText(text = null) {
+    if (!toxicityModel) {
+        showError('Model not loaded yet. Please wait...');
+        return;
+    }
+    
+    // Get text from input or use provided text
+    const inputText = text || document.getElementById('text-input').value;
+    if (!inputText.trim()) {
+        showError('Please enter some text to analyze.');
+        return;
+    }
+    
+    try {
+        // Show loading state
+        setLoadingState(true);
+        showLoadingMessage();
+        
+        // Run toxicity analysis
+        const predictions = await toxicityModel.classify([inputText]);
+        
+        // Display results
+        displayResults(inputText, predictions);
+        
+    } catch (error) {
+        console.error('Error analyzing text:', error);
+        showError('Error analyzing text. Please try again.');
+    } finally {
+        setLoadingState(false);
+    }
+}
+
+// Set loading state for the analyze button
+function setLoadingState(isLoading) {
+    const btn = document.getElementById('analyze-btn');
+    const btnText = document.getElementById('btn-text');
+    const spinner = document.getElementById('btn-spinner');
+    
+    btn.disabled = isLoading;
+    btnText.textContent = isLoading ? 'Analyzing...' : 'Analyze Text';
+    spinner.style.display = isLoading ? 'block' : 'none';
+}
+
+// Show loading message in results
+function showLoadingMessage() {
+    document.getElementById('results-container').innerHTML = `
+        <div class="loading-message">
+            <div class="spinner"></div>
+            <span>Analyzing text for toxicity...</span>
+        </div>
+    `;
+}
+
+// Show error message
+function showError(message) {
+    document.getElementById('results-container').innerHTML = `
+        <div class="error-message">
+            ❌ ${message}
+        </div>
+    `;
+}
+
+// Display the toxicity analysis results
+function displayResults(text, predictions) {
+    const resultsContainer = document.getElementById('results-container');
+    const timestamp = new Date().toLocaleTimeString();
+    
+    // Calculate overall toxicity status
+    const overallToxic = predictions.some(pred => pred.results[0]?.match === true);
+    const toxicCount = predictions.filter(pred => pred.results[0]?.match === true).length;
+    
+    let resultsHTML = `
+        <div class="result-item">
+            <div class="analyzed-text">
+                <strong>Analyzed Text:</strong> "${text}"
+            </div>
+            
+            <div class="overall-result ${overallToxic ? 'toxic' : 'safe'}">
+                <div class="overall-label">
+                    <span class="icon">${overallToxic ? '⚠️' : '✅'}</span>
+                    <span class="label">${overallToxic ? 'TOXIC CONTENT DETECTED' : 'CONTENT APPEARS SAFE'}</span>
+                </div>
+                <div class="toxic-count">${toxicCount} of ${predictions.length} categories flagged</div>
+            </div>
+            
+            <div class="toxicity-results">
+    `;
+    
+    // Display results for each toxicity category
+    predictions.forEach(prediction => {
+        const result = prediction.results[0];
+        const isToxic = result?.match === true;
+        const confidence = result ? Math.round(result.probabilities[1] * 100) : 0;
+        const categoryName = prediction.label.replace(/_/g, ' ').toUpperCase();
+        
+        resultsHTML += `
+            <div class="toxicity-result ${isToxic ? 'toxic' : 'safe'}">
+                <div class="toxicity-label">
+                    <span class="label">${categoryName}</span>
+                    <span class="status ${isToxic ? 'toxic' : 'safe'}">
+                        ${isToxic ? '⚠️ DETECTED' : '✅ SAFE'}
+                    </span>
+                </div>
+                <div class="confidence-info">
+                    <span class="confidence">${confidence}%</span>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill ${isToxic ? 'toxic' : 'safe'}" 
+                             style="width: ${confidence}%"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    resultsHTML += `
+            </div>
+            <div class="timestamp">Analyzed at ${timestamp}</div>
+        </div>
+    `;
+    
+    resultsContainer.innerHTML = resultsHTML;
+}
+
+// Initialize when page loads
+window.addEventListener('load', initModel);
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Analyze button click
+    document.getElementById('analyze-btn').addEventListener('click', () => analyzeText());
+    
+    // Enter key to analyze (Ctrl/Cmd + Enter for multiline)
+    document.getElementById('text-input').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            analyzeText();
+        }
+    });
+    
+    // Update threshold display
+    document.getElementById('threshold').textContent = threshold;
+});

@@ -1,145 +1,79 @@
 import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@latest/dist/transformers.min.js';
 
-class SentimentAnalyzer {
-    constructor() {
-        this.pipe = null;
-        this.isLoading = false;
-        this.init();
-    }
+// Global variables
+let sentimentPipeline = null;
 
-    async init() {
-        try {
-            this.updateStatus('Loading model...');
-            this.isLoading = true;
-            
-            // Allocate a pipeline for sentiment-analysis
-            this.pipe = await pipeline('sentiment-analysis');
-            
-            this.updateStatus('Model loaded successfully!');
-            this.isLoading = false;
-            this.enableAnalysis();
-            
-            // Auto-analyze placeholder text
-            this.analyzeText('I love transformers!');
-            
-        } catch (error) {
-            console.error('Error loading model:', error);
-            this.updateStatus('Error loading model');
-            this.isLoading = false;
-        }
-    }
-
-    async analyzeText(text) {
-        if (!this.pipe || !text.trim()) {
-            return;
-        }
-
-        try {
-            this.showLoading();
-            
-            // Run sentiment analysis
-            const out = await this.pipe(text);
-            
-            this.displayResults(out, text);
-            
-        } catch (error) {
-            console.error('Error analyzing text:', error);
-            this.displayError('Error analyzing text');
-        }
-    }
-
-    displayResults(results, text) {
-        const container = document.getElementById('results-container');
+// Initialize the model when page loads
+async function initModel() {
+    try {
+        document.getElementById('status').textContent = 'Loading model...';
         
-        container.innerHTML = `
-            <div class="result-item">
-                <div class="analyzed-text">
-                    <strong>Analyzed Text:</strong> "${text}"
-                </div>
-                <div class="sentiment-results">
-                    ${results.map(result => `
-                        <div class="sentiment-result ${result.label.toLowerCase()}">
-                            <div class="sentiment-label">
-                                <span class="label">${result.label}</span>
-                                <span class="confidence">${(result.score * 100).toFixed(2)}%</span>
-                            </div>
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" style="width: ${result.score * 100}%"></div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="timestamp">
-                    Analyzed at ${new Date().toLocaleTimeString()}
-                </div>
-            </div>
-        `;
-    }
-
-    displayError(message) {
-        const container = document.getElementById('results-container');
-        container.innerHTML = `
-            <div class="error-message">
-                ❌ ${message}
-            </div>
-        `;
-    }
-
-    showLoading() {
-        const container = document.getElementById('results-container');
-        container.innerHTML = `
-            <div class="loading-message">
-                <div class="spinner"></div>
-                Analyzing sentiment...
-            </div>
-        `;
-    }
-
-    updateStatus(status) {
-        document.getElementById('model-status').textContent = status;
-    }
-
-    enableAnalysis() {
-        const button = document.getElementById('analyze-btn');
-        const buttonText = document.getElementById('btn-text');
-        const spinner = document.getElementById('btn-spinner');
+        // Load the sentiment analysis pipeline
+        sentimentPipeline = await pipeline('sentiment-analysis');
         
-        button.disabled = false;
-        buttonText.textContent = 'Analyze Sentiment';
-        spinner.style.display = 'none';
+        document.getElementById('status').textContent = 'Ready!';
+        document.getElementById('analyze-btn').disabled = false;
+        
+        // Demo with example text
+        analyzeSentiment('I love this demo!');
+        
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('status').textContent = 'Error loading model';
     }
 }
 
-// Initialize the sentiment analyzer
-const analyzer = new SentimentAnalyzer();
+// Analyze sentiment of input text
+async function analyzeSentiment(text = null) {
+    if (!sentimentPipeline) return;
+    
+    // Get text from input or use provided text
+    const inputText = text || document.getElementById('text-input').value;
+    if (!inputText.trim()) return;
+    
+    try {
+        // Show loading
+        document.getElementById('results').innerHTML = '🔄 Analyzing...';
+        
+        // Run sentiment analysis
+        const result = await sentimentPipeline(inputText);
+        
+        // Display results
+        displayResult(inputText, result[0]);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('results').innerHTML = '❌ Error analyzing text';
+    }
+}
 
-// Event listeners
+// Display the sentiment analysis result
+function displayResult(text, result) {
+    const confidence = Math.round(result.score * 100);
+    const emoji = result.label === 'POSITIVE' ? '😊' : '😞';
+    
+    document.getElementById('results').innerHTML = `
+        <div style="padding: 20px; background: #f5f5f5; border-radius: 8px; margin-top: 20px;">
+            <div><strong>Text:</strong> "${text}"</div>
+            <div style="margin-top: 10px; font-size: 18px;">
+                ${emoji} <strong>${result.label}</strong> (${confidence}% confidence)
+            </div>
+        </div>
+    `;
+}
+
+// Initialize when page loads
+window.addEventListener('load', initModel);
+
+// Analyze button click
 document.addEventListener('DOMContentLoaded', () => {
-    const textInput = document.getElementById('text-input');
-    const analyzeBtn = document.getElementById('analyze-btn');
-
-    // Analyze button click
-    analyzeBtn.addEventListener('click', () => {
-        const text = textInput.value;
-        analyzer.analyzeText(text);
-    });
-
-    // Real-time analysis on input (with debounce)
-    let debounceTimer;
-    textInput.addEventListener('input', (e) => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            if (e.target.value.trim() && !analyzer.isLoading) {
-                analyzer.analyzeText(e.target.value);
-            }
-        }, 500);
-    });
-
+    document.getElementById('analyze-btn').addEventListener('click', () => analyzeSentiment());
+    
     // Enter key to analyze
-    textInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
+    document.getElementById('text-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
             e.preventDefault();
-            analyzer.analyzeText(textInput.value);
+            analyzeSentiment();
         }
     });
 });

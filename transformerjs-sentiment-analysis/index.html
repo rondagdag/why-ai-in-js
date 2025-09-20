@@ -4,52 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transformers.js Sentiment Analysis</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        #text-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        #analyze-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #analyze-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        #results {
+            min-height: 60px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>🤗 Transformers.js Sentiment Analysis</h1>
-            <p>Real-time sentiment analysis using Hugging Face models in the browser</p>
-        </header>
-
-        <main>
-            <div class="input-section">
-                <label for="text-input">Enter text to analyze:</label>
-                <textarea 
-                    id="text-input" 
-                    placeholder="Type something here... e.g., 'I love transformers!'"
-                    rows="4"
-                ></textarea>
-                <button id="analyze-btn" disabled>
-                    <span id="btn-text">Loading Model...</span>
-                    <div id="btn-spinner" class="spinner"></div>
-                </button>
-            </div>
-
-            <div class="results-section">
-                <h3>Sentiment Analysis Results:</h3>
-                <div id="results-container">
-                    <div class="result-placeholder">
-                        Results will appear here after analysis
-                    </div>
-                </div>
-            </div>
-
-            <div class="model-info">
-                <h4>Model Information:</h4>
-                <p><strong>Model:</strong> <span id="model-name">nlptown/bert-base-multilingual-uncased-sentiment</span></p>
-                <p><strong>Task:</strong> Sentiment Analysis</p>
-                <p><strong>Status:</strong> <span id="model-status">Loading...</span></p>
-            </div>
-        </main>
-
-        <footer>
-            <p>
-                <a href="../index.html">← Back to AI in JavaScript Demos</a> | 
-                <a href="https://huggingface.co/docs/transformers.js" target="_blank">Transformers.js Docs</a>
-            </p>
-        </footer>
+        <h1>🤗 Sentiment Analysis Demo</h1>
+        
+        <div class="status">
+            Status: <span id="status">Initializing...</span>
+        </div>
+        
+        <textarea 
+            id="text-input" 
+            placeholder="Enter text to analyze (e.g., 'I love this!')"
+            rows="3"
+        ></textarea>
+        
+        <button id="analyze-btn" disabled>Analyze Sentiment</button>
+        
+        <div id="results"></div>
+        
+        <div class="footer">
+            <a href="../index.html">← Back to Demos</a>
+        </div>
     </div>
 
     <script type="module" src="script.js"></script>

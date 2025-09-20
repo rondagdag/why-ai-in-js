@@ -1,0 +1,462 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: white;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+main {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+}
+
+.model-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    margin-bottom: 30px;
+}
+
+.model-info h4 {
+    margin-bottom: 10px;
+    color: #495057;
+    font-size: 1.1em;
+}
+
+.model-info p {
+    margin-bottom: 5px;
+    color: #6c757d;
+}
+
+#model-name {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+#model-status {
+    font-weight: 600;
+}
+
+#model-status.loading {
+    color: #ffc107;
+}
+
+#model-status.ready {
+    color: #28a745;
+}
+
+#model-status.error {
+    color: #dc3545;
+}
+
+.input-section {
+    margin-bottom: 30px;
+}
+
+.input-section label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+#text-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    margin-bottom: 15px;
+    min-height: 100px;
+}
+
+#text-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#text-input:disabled {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+#analyze-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 160px;
+    justify-content: center;
+}
+
+#analyze-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+#analyze-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.results-section {
+    margin-bottom: 30px;
+}
+
+.results-section h3 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+#results-container {
+    min-height: 120px;
+    border: 2px dashed #e1e5e9;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.result-placeholder {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 40px 20px;
+}
+
+.result-item {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.analyzed-text {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #667eea;
+    word-wrap: break-word;
+}
+
+.overall-result {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 2px solid;
+}
+
+.overall-result.safe {
+    border-color: #28a745;
+    background: #f8fff9;
+}
+
+.overall-result.toxic {
+    border-color: #dc3545;
+    background: #fff8f8;
+}
+
+.overall-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.overall-label .icon {
+    font-size: 1.5em;
+}
+
+.overall-label .label {
+    font-weight: 700;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.overall-result.safe .label {
+    color: #28a745;
+}
+
+.overall-result.toxic .label {
+    color: #dc3545;
+}
+
+.toxic-count {
+    font-size: 0.9em;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.toxicity-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.toxicity-result {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #ccc;
+}
+
+.toxicity-result.safe {
+    border-left-color: #28a745;
+    background: #f8fff9;
+}
+
+.toxicity-result.toxic {
+    border-left-color: #dc3545;
+    background: #fff8f8;
+}
+
+.toxicity-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.toxicity-label .label {
+    font-weight: 600;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+}
+
+.status {
+    font-weight: 600;
+    font-size: 0.8em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status.safe {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status.toxic {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.confidence-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.confidence {
+    font-weight: 700;
+    font-size: 1em;
+    min-width: 40px;
+}
+
+.toxicity-result.safe .confidence {
+    color: #28a745;
+}
+
+.toxicity-result.toxic .confidence {
+    color: #dc3545;
+}
+
+.confidence-bar {
+    flex: 1;
+    background: #e9ecef;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.confidence-fill {
+    height: 100%;
+    transition: width 0.5s ease;
+    border-radius: 4px;
+}
+
+.confidence-fill.safe {
+    background: linear-gradient(90deg, #28a745, #20c997);
+}
+
+.confidence-fill.toxic {
+    background: linear-gradient(90deg, #dc3545, #e74c3c);
+}
+
+.timestamp {
+    text-align: right;
+    font-size: 0.85em;
+    color: #666;
+    font-style: italic;
+    border-top: 1px solid #e9ecef;
+    padding-top: 10px;
+}
+
+.loading-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.error-message {
+    text-align: center;
+    color: #dc3545;
+    padding: 40px 20px;
+    font-weight: 600;
+}
+
+footer {
+    text-align: center;
+    color: white;
+    opacity: 0.9;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+    
+    main {
+        padding: 20px;
+    }
+    
+    .toxicity-results {
+        grid-template-columns: 1fr;
+    }
+    
+    .toxicity-label {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .confidence-info {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+    }
+    
+    .confidence {
+        min-width: auto;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.7em;
+    }
+    
+    header p {
+        font-size: 1em;
+    }
+    
+    main {
+        padding: 15px;
+    }
+    
+    .overall-label {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .overall-label .label {
+        font-size: 1em;
+    }
+}
