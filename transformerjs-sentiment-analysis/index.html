@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformers.js Sentiment Analysis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤗 Transformers.js Sentiment Analysis</h1>
+            <p>Real-time sentiment analysis using Hugging Face models in the browser</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <label for="text-input">Enter text to analyze:</label>
+                <textarea 
+                    id="text-input" 
+                    placeholder="Type something here... e.g., 'I love transformers!'"
+                    rows="4"
+                ></textarea>
+                <button id="analyze-btn" disabled>
+                    <span id="btn-text">Loading Model...</span>
+                    <div id="btn-spinner" class="spinner"></div>
+                </button>
+            </div>
+
+            <div class="results-section">
+                <h3>Sentiment Analysis Results:</h3>
+                <div id="results-container">
+                    <div class="result-placeholder">
+                        Results will appear here after analysis
+                    </div>
+                </div>
+            </div>
+
+            <div class="model-info">
+                <h4>Model Information:</h4>
+                <p><strong>Model:</strong> <span id="model-name">nlptown/bert-base-multilingual-uncased-sentiment</span></p>
+                <p><strong>Task:</strong> Sentiment Analysis</p>
+                <p><strong>Status:</strong> <span id="model-status">Loading...</span></p>
+            </div>
+        </main>
+
+        <footer>
+            <p>
+                <a href="../index.html">← Back to AI in JavaScript Demos</a> | 
+                <a href="https://huggingface.co/docs/transformers.js" target="_blank">Transformers.js Docs</a>
+            </p>
+        </footer>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "transformerjs-sentiment-analysis",
+  "version": "1.0.0",
+  "description": "Real-time sentiment analysis using Hugging Face Transformers.js in the browser",
+  "type": "module",
+  "scripts": {
+    "dev": "npx http-server . -p 3000 -o",
+    "start": "npx http-server . -p 3000 -o"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.0.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "keywords": [
+    "transformers.js",
+    "sentiment-analysis",
+    "huggingface",
+    "machine-learning",
+    "browser-ai",
+    "nlp",
+    "javascript"
+  ],
+  "author": "AI in JavaScript Demo Collection",
+  "license": "MIT"
+}
