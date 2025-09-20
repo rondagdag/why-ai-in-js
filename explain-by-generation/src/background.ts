@@ -241,11 +241,18 @@ async function streamSummarization(
     )
 
     if (result.usedChunking) {
-      // For chunked results, send the concatenated summaries as one message
-      sendRuntimeMessage({
-        chunk: result.finalSummary,
-        type: APP_CONSTANTS.MESSAGE_TYPES.STREAM_RESPONSE
-      })
+      // For chunked results, stream the final summary
+      await processStreamWithCallback(
+        (async function* () {
+          yield result.finalSummary
+        })(),
+        (chunk) => {
+          sendRuntimeMessage({
+            chunk,
+            type: APP_CONSTANTS.MESSAGE_TYPES.STREAM_RESPONSE
+          })
+        }
+      )
     } else {
       // For non-chunked results, process normally
       const stream = await summarizer.summarize(selectedText, { context })
@@ -257,8 +264,7 @@ async function streamSummarization(
       })
     }
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Processing failed"
+    const errorMessage = error instanceof Error ? error.message : "Processing failed"
     sendRuntimeMessage({
       type: APP_CONSTANTS.MESSAGE_TYPES.ERROR,
       error: errorMessage

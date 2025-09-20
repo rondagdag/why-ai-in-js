@@ -18,7 +18,7 @@ npm run package
 
 # This will create:
 # - chrome-extension-pkg/ (for testing)
-# - explain-in-generations-v0.0.2.zip (for upload)
+# - collected_extensions/explain-by-generation-v1.2.0.zip (for upload)
 ```
 
 #### 3. Test Your Extension Locally
@@ -37,7 +37,7 @@ npm run package
 #### 1. Create New Item
 1. Go to [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/)
 2. Click "Add new item"
-3. **Upload your ZIP file**: `explain-in-generations-v0.0.2.zip`
+3. **Upload your ZIP file**: `collected_extensions/explain-by-generation-v1.2.0.zip`
 4. Click "Upload" and wait for processing
 
 #### 2. Store Listing Information
@@ -51,25 +51,35 @@ Transform complex text into easy-to-understand explanations tailored for differe
 
 FEATURES:
 🎯 Highlight any text on any webpage
-🤖 Get AI-powered explanations instantly  
-👥 Choose explanations for different generations (Gen Z, Millennial, Gen X, Boomer)
+🤖 Get AI-powered explanations instantly using Chrome's built-in AI
+👥 Choose explanations for 7 different generations (Gen Alpha to Greatest Generation)
 🎨 Clean, intuitive side panel interface
-⚡ Fast and lightweight
-🔒 Privacy-focused - no data stored on servers
+⚡ Fast and lightweight - runs entirely on your device
+🔒 Privacy-focused - no data sent to external servers
+🌍 Works completely offline after initial setup
 
 HOW IT WORKS:
 1. Highlight text on any webpage
-2. Right-click and select "Explain by Generation"
-3. Choose your target generation in the side panel
-4. Get a customized explanation instantly
+2. Open the side panel using the extension icon
+3. Choose your target generation
+4. Get a customized explanation instantly using local AI
+
+SUPPORTED GENERATIONS:
+• Gen Alpha (2013-present)
+• Gen Z (1997-2012) 
+• Millennials (1981-1996)
+• Gen X (1965-1980)
+• Baby Boomers (1946-1964)
+• Silent Generation (1928-1945)
+• Greatest Generation (1901-1927)
 
 Perfect for:
 - Students learning new concepts
-- Professionals explaining complex topics
-- Content creators adapting messaging
-- Anyone wanting to understand text better
+- Professionals explaining complex topics to different age groups
+- Content creators adapting messaging for diverse audiences
+- Anyone wanting to understand text from different generational perspectives
 
-Works on any website, any text, anywhere on the web!
+Uses Chrome's built-in Summarizer API with Gemini Nano for completely private, local AI processing!
 ```
 
 ##### Category and Language
@@ -78,7 +88,9 @@ Works on any website, any text, anywhere on the web!
 
 ##### Privacy
 - **Permissions**: Your extension will show the permissions automatically
-- **Privacy Policy**: Create and host a privacy policy (see template below)
+- **Privacy Policy**: Host your privacy policy at: `https://your-domain.com/privacy-policy.html`
+  - The extension includes a privacy-policy.html file in the root directory
+  - You can host this on your website or GitHub Pages
 
 #### 3. Upload Assets
 
@@ -86,10 +98,11 @@ Works on any website, any text, anywhere on the web!
 - Upload your `icon128.png` as the store icon
 
 ##### Screenshots (Required - Create These)
-1. **Main feature screenshot**: Show extension highlighting text and explanation panel
-2. **Popup interface**: Show the extension popup/controls
-3. **Multiple generations**: Show different explanation styles
-4. **Context menu**: Show right-click activation
+1. **Main feature screenshot**: Show extension side panel with highlighted text and generated explanations
+2. **Generation selection**: Show the interface with different generation options
+3. **Multiple generations**: Show different explanation styles side by side
+4. **Settings/Popup**: Show the extension popup interface
+5. **In-context usage**: Show the extension working on a real webpage
 
 ##### Promotional Images (Optional but Recommended)
 - **Small tile**: 440x280 pixels
@@ -122,41 +135,51 @@ Works on any website, any text, anywhere on the web!
 - Users can find and install it
 - You'll receive analytics and user feedback
 
-### Phase 4: Privacy Policy Template
+### Phase 4: Privacy Policy Requirements
 
-Create a simple privacy policy and host it on your website:
+The extension includes a privacy-policy.html file. You need to:
 
-```markdown
-# Privacy Policy for Explain by Generation
+1. **Host the privacy policy** on your website or GitHub Pages
+2. **Update the Chrome Web Store listing** with the privacy policy URL
+3. **Ensure the policy matches** the extension's actual data handling
 
-Last updated: [DATE]
+#### Key Privacy Policy Points for This Extension:
+- Uses Chrome's built-in Summarizer API (Gemini Nano)
+- All processing happens locally on the user's device
+- No data is sent to external servers
+- Only stores user preferences locally
+- Selected text is processed in real-time and not retained
+- Complies with Chrome Web Store Developer Program Policies
 
-## Data Collection
-This extension does not collect, store, or transmit any personal data to external servers.
+The included privacy-policy.html file covers all these requirements and is ready to host.
 
-## Local Storage
-The extension may store user preferences locally on your device using Chrome's storage API. This data never leaves your device.
+### Phase 5: Chrome AI Requirements
 
-## Permissions
-- **activeTab**: To access highlighted text on the current webpage
-- **contextMenus**: To add right-click menu options
-- **sidePanel**: To display explanation panel
-- **storage**: To save user preferences locally
-- **host permissions**: To work on any website you visit
+This extension uses Chrome's built-in Summarizer API with Gemini Nano, which has specific requirements:
 
-## Third-Party Services
-This extension may use AI services to generate explanations. Please refer to the respective AI service's privacy policy.
+#### Browser Requirements
+- **Chrome version**: 138 or later
+- **Operating System**: Windows 10/11, macOS 13+, or Linux
+- **Not supported**: Chrome for Android, iOS, or ChromeOS
 
-## Contact
-For questions about this privacy policy, contact: [YOUR EMAIL]
-```
+#### Hardware Requirements  
+- **Storage**: At least 22 GB free space for Gemini Nano download
+- **GPU**: More than 4 GB of VRAM
+- **Network**: Unlimited/unmetered connection for initial model download
 
-### Phase 5: Maintenance and Updates
+#### Important Notes for Users
+- First-time usage requires Gemini Nano model download (happens automatically)
+- Model is removed if available storage falls below 10 GB
+- All AI processing happens locally - no internet required after setup
+- Review [Google's Generative AI Prohibited Uses Policy](https://policies.google.com/terms/generative-ai/use-policy)
 
+Make sure to include these requirements in your store listing description!
+
+### Phase 6: Maintenance and Updates
 #### Updating Your Extension
 1. **Update version** in `manifest.json` and `package.json`
 2. **Make your changes**
-3. **Test thoroughly**
+3. **Test thoroughly** (especially Chrome AI functionality)
 4. **Package new version**: `npm run package`
 5. **Upload to Chrome Web Store** (existing item)
 6. **Submit for review**
@@ -171,38 +194,47 @@ For questions about this privacy policy, contact: [YOUR EMAIL]
 ### Troubleshooting Common Issues
 
 #### Common Rejection Reasons
-1. **Missing privacy policy** - Host one on your website
-2. **Excessive permissions** - Only request necessary permissions
-3. **Poor quality images** - Ensure screenshots are clear and representative
-4. **Misleading description** - Be accurate about functionality
+1. **Missing privacy policy** - Host the included privacy-policy.html on your website
+2. **Excessive permissions** - Current permissions are minimal and necessary
+3. **Poor quality images** - Ensure screenshots show actual Chrome AI functionality
+4. **Misleading description** - Be clear about Chrome version and hardware requirements
 5. **Copyright issues** - Don't use copyrighted material
+6. **Chrome AI compliance** - Follow Google's Generative AI Prohibited Uses Policy
 
 #### Technical Issues
-1. **Manifest errors** - Validate your manifest.json
-2. **Missing files** - Ensure all referenced files exist
+1. **Manifest errors** - Validate your manifest.json (current version uses Manifest V3)
+2. **Missing files** - Ensure all referenced files exist in the package
 3. **Permission errors** - Test all features work with granted permissions
+4. **Chrome AI issues** - Verify Summarizer API availability and requirements
+5. **Build errors** - Ensure `npm run package` completes without errors
 
 ### Quick Checklist Before Submission
 
-- [ ] Extension built and tested locally
-- [ ] ZIP file created with packaging script
-- [ ] Developer account created and verified
+- [ ] Extension built and tested locally with `npm run package`
+- [ ] Chrome AI (Summarizer API) tested and working
+- [ ] ZIP file created in `collected_extensions/` folder
+- [ ] Developer account created and verified ($5 fee paid)
 - [ ] All store listing information prepared
-- [ ] Screenshots taken and optimized
-- [ ] Privacy policy created and hosted
+- [ ] Screenshots taken showing actual Chrome AI functionality
+- [ ] Privacy policy hosted online (use included privacy-policy.html)
 - [ ] Extension tested on multiple websites
-- [ ] All features working as expected
-- [ ] Version numbers updated appropriately
+- [ ] All 7 generation types working as expected
+- [ ] Side panel functionality verified
+- [ ] Version numbers updated in manifest.json and package.json
+- [ ] Chrome version requirements clearly stated in description
+- [ ] Hardware requirements mentioned for Gemini Nano
 
 ### Cost Summary
 - **Developer registration**: $5 USD (one-time)
 - **Extension hosting**: Free
+- **Chrome AI usage**: Free (built into Chrome)
 - **Total cost to publish**: $5 USD
 
 ### Timeline
 - **Preparation**: 2-4 hours
 - **Submission**: 30 minutes
 - **Review process**: 1-7 business days
+- **Gemini Nano download** (for users): Automatic on first use
 - **Total time to publish**: 1-2 weeks
 
-Remember: The first submission often takes longer, but subsequent updates are usually faster to review!
+**Important**: Extensions using Chrome's built-in AI may require additional review time. The first submission often takes longer, but subsequent updates are usually faster to review!
