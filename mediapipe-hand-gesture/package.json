@@ -1,0 +1,25 @@
+{
+  "name": "mediapipe-hand-gesture",
+  "version": "1.0.0",
+  "description": "A simple MediaPipe hand gesture recognition demo for web browsers",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server . -p 8080",
+    "start": "npx http-server . -p 8080"
+  },
+  "keywords": [
+    "mediapipe",
+    "hand-gesture",
+    "computer-vision",
+    "javascript",
+    "web-ai"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "^0.10.0"
+  }
+}

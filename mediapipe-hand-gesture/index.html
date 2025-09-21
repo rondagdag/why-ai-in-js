@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediaPipe Hand Gesture Recognizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>MediaPipe Hand Gesture Recognizer</h1>
+        <p>Show your hand gestures to the camera to see real-time recognition!</p>
+        
+        <div class="demo-container">
+            <div class="video-container">
+                <video id="webcam" autoplay playsinline></video>
+                <canvas id="output_canvas"></canvas>
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading MediaPipe model...</p>
+                </div>
+            </div>
+            
+            <div class="results-container">
+                <h3>Detected Gestures:</h3>
+                <div id="gesture-results">
+                    <p class="no-results">No gestures detected</p>
+                </div>
+                
+                <div class="controls">
+                    <button id="enable-cam" disabled>Enable Camera</button>
+                    <div class="status">
+                        <span id="status">Initializing...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info">
+            <h3>Supported Gestures:</h3>
+            <div class="gesture-list">
+                <span class="gesture-item">👍 Thumbs Up</span>
+                <span class="gesture-item">👎 Thumbs Down</span>
+                <span class="gesture-item">✌️ Victory</span>
+                <span class="gesture-item">👋 Open Palm</span>
+                <span class="gesture-item">✊ Closed Fist</span>
+                <span class="gesture-item">🤟 ILoveYou</span>
+                <span class="gesture-item">👉 Pointing Up</span>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="script.js"></script>
+</body>
+</html>
