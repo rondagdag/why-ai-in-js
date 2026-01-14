@@ -10,57 +10,57 @@ export const generations: Generation[] = [
     level: 1,
     name: "The Greatest Generation",
     context:
-      "Explain like I'm from the Greatest Generation (1901-1924). Address me with proper respect and formality - we believe in doing things the right way, not the easy way. Use dignified, measured language that reflects our values of duty, honor, and service above self. Reference our experiences through the Great Depression and World War II when explaining resilience and sacrifice. We built this country through hard work and determination, not shortcuts or gimmicks. Speak with the authority of someone who has earned their stripes through adversity. Use phrases like 'in my experience,' 'as we learned during the war,' 'back when we had to make do,' and 'it's a matter of principle.' Think: commanding officer's briefing, church elder's counsel, or grandfather's wisdom passed down. We value substance over style, duty over comfort, and results over rhetoric.",
+      "Summarize this for someone from the Greatest Generation (born 1901-1924). Use formal, dignified language with respect and gravitas. Make analogies to: Victory Gardens, radio broadcasts, assembly lines, railroad systems, telegrams, the local general store, wartime rationing, and community barn raisings. Compare complex systems to military operations or factory production lines. Explain digital concepts like 'the internet is like a nationwide telegraph system that sends letters instantly' or 'a computer stores information like a filing cabinet with millions of folders.' Use phrases like 'in plain terms,' 'the practical matter is,' and 'the essential point.' Keep explanations clear, purposeful, and grounded in tangible, real-world parallels they experienced.",
     description:
-      "Duty-bound formal discourse, earned authority through adversity, principled substance over style, wartime resilience wisdom"
+      "Formal dignified tone with Victory Garden and wartime analogies, telegraph-era comparisons, practical factory-line explanations"
   },
   {
     level: 2,
     name: "The Silent Generation",
     context:
-      "Explain like I'm from the Silent Generation (1928-1945). Please use proper, formal language with appropriate respect - none of this casual nonsense. Keep it measured and deliberate, like a well-composed memo or letter. Reference how we did things back in my day when work ethic and common sense mattered. Be direct and concise - actions speak louder than words, after all. Use expressions like 'back in my day,' 'that's the proper way,' 'mind your manners,' and 'if you please.' Think formal correspondence style with traditional values. Children should be seen and not heard applies to explanations too - get to the point without unnecessary flourish.",
+      "Summarize this for someone from the Silent Generation (born 1925-1945). Use proper, measured language like a well-written memo. Make analogies to: rotary phones, typewriters, the post office mail system, encyclopedias, card catalogs at the library, bank ledgers, filing systems, and television channel dials. Explain modern concepts like 'a search engine works like a librarian who instantly finds the right encyclopedia entry' or 'cloud storage is like having a safe deposit box you can access from any bank branch.' Use expressions like 'to put it simply,' 'the proper way to understand this,' and 'in practical terms.' Focus on reliability, proper procedure, and systematic organization.",
     description:
-      "Proper formal language, back in my day references, measured deliberate tone, traditional manners and respect"
+      "Measured memo-style with typewriter and library analogies, encyclopedia references, systematic procedural explanations"
   },
   {
     level: 3,
     name: "Baby Boomer",
     context:
-      "Explain like I'm a Baby Boomer (1946-1964). Well, I'll be! Keep it proper and thoughtful - you're welcome for taking the time to explain things thoroughly. This should be the real McCoy, not some amateur night production. Make it an E-ticket ride with detailed explanations that are the bee's knees. Don't give me any of that newfangled 'no problem' nonsense when a proper 'you're welcome' will do just fine. Take your time to spell things out completely - none of this text-speak mumbo jumbo. Reference the good old days, when things were built to last and people had some common sense. Think: well-written letter or evening news broadcast style, clear as a bell and straight as an arrow.",
+      "Summarize this for a Baby Boomer (born 1946-1964). Use clear, thorough explanations like an evening news broadcast. Make analogies to: Polaroid cameras, VCR recordings, telephone directories, Rolodexes, cassette tapes, TV Guide schedules, station wagons, shopping malls, and Woodstock gatherings. Explain modern tech like 'streaming is like having every TV channel and movie rental store available through your remote' or 'social media is like a neighborhood bulletin board where everyone can post and read updates instantly.' Reference familiar brands and experiences. Use phrases like 'here's the bottom line,' 'what this really means,' and 'let me break this down.' Be comprehensive but accessible.",
     description:
-      "The real McCoy with proper manners, E-ticket thoroughness, bee's knees clarity, well-mannered traditional style"
+      "Evening news clarity with VCR and Polaroid analogies, mall-era references, comprehensive bulletin-board explanations"
   },
   {
     level: 4,
     name: "Generation X",
     context:
-      "Explain like I'm from Generation X (1965-1979). Whatever, just cut to the chase and keep it real - no corporate BS, please. If it's the bomb, tell me straight up; if it's a buzzkill, don't sugarcoat it. Cool beans if you throw in some MTV, grunge, or early internet references that are off the chain. I'm all about that DIY, latchkey kid independence, so give me actionable stuff I can actually use. Skip the fluff and respect my time - I've got things to handle and I'm not here for games.",
+      "Summarize this for Generation X (born 1965-1979). Cut to the chase with no fluff. Make analogies to: mixtapes, dial-up modems, arcade games, MTV music videos, Blockbuster rentals, pagers, answering machines, floppy disks, and mall food courts. Explain concepts like 'an algorithm is like the MTV VJ deciding which videos to play based on what's popular' or 'a firewall is like the bouncer at a club checking IDs.' Reference the transition from analog to digital. Use phrases like 'here's the deal,' 'bottom line,' and 'what you actually need to know.' Be direct, practical, and respect their time. Skip the corporate jargon.",
     description:
-      "Whatever attitude with real talk, the bomb when it's direct, cool beans DIY vibes, off the chain efficiency"
+      "Direct no-fluff style with mixtape and dial-up analogies, MTV-era references, practical Blockbuster-style explanations"
   },
   {
     level: 5,
     name: "Millennial",
     context:
-      "Explain like I'm a Millennial (1980-1994). OMG bae, this is about to be SO lit! 🔥 I'm low-key obsessed with 90s/2000s nostalgia that's totally the GOAT - throw in some Friends references (obvs), Harry Potter analogies, and maybe some Pokémon metaphors? I have major FOMO when it comes to missing good content, so make it BuzzFeed-listicle style that's addictive AF. We're all just trying to adult here, fam, and honestly adulting is hard! Include some life hacks for surviving this gig economy because your girl is SHOOK by these student loans. No cap, keep it 100% real without throwing shade - we've been through enough! Make it relatable to our side-hustle grind and quarter-life crisis vibes. BRB while I grab my avocado toast and process this epic content! ✨",
+      "Summarize this for a Millennial (born 1980-1994). Make it relatable and engaging like a BuzzFeed article. Use analogies to: AIM away messages, burning CDs, iPod playlists, MySpace Top 8, early Facebook, flip phones, Harry Potter houses, Friends episodes, Pokémon evolutions, and Netflix DVD mailers. Explain concepts like 'machine learning is like how Spotify learned your music taste over time' or 'blockchain is like a Google Doc everyone can see but no one can secretly edit.' Use phrases like 'okay so basically,' 'here's the thing,' and 'think of it like.' Reference the analog-to-digital childhood transition. Keep it authentic, slightly nostalgic, and easy to share.",
     description:
-      "OMG so lit! 🔥 90s/2000s nostalgia that's the GOAT, adulting struggles are real fam, side-hustle vibes, no cap authentic"
+      "BuzzFeed-style with AIM and iPod analogies, Harry Potter references, Spotify-era relatable explanations"
   },
   {
     level: 6,
     name: "Generation Z",
     context:
-      "Explain like I'm from Generation Z (1995-2012). No cap, keep it 100 and spill the tea with that authentic rizz! Break it down in bite-sized chunks that are absolutely bussin' - none of that cringe corporate speak because we're not delulu here. Think: Instagram story format that ate, TikTok comment energy with mad drip, or Twitter thread that absolutely slaps. Bet you want those quick takeaways that hit different, so serve me explanations that are straight fire with that main character energy! Use AAVE-influenced phrases naturally, keep it real and relatable, and don't be afraid to say when something is mid or when the vibes are off.",
+      "Summarize this for Generation Z (born 1995-2012). Keep it short, visual, and real. Make analogies to: Instagram filters, TikTok algorithms, Discord servers, Minecraft worlds, YouTube recommendations, Spotify Wrapped, iPhone shortcuts, Among Us tasks, and Netflix autoplay. Explain concepts like 'an API is like how apps talk to each other, like when Spotify shares to your Instagram story' or 'encryption is like sending a Snap that only the right person can open.' Use phrases like 'basically,' 'think of it like,' and 'the tldr is.' Break into scannable chunks. Be authentic, skip the corporate speak, and acknowledge when something is actually complicated.",
     description:
-      "No cap realness, bussin' bite-sized format, ate the assignment with rizz, main character energy that slaps"
+      "Short scannable format with TikTok and Discord analogies, Instagram-filter references, Spotify Wrapped-style explanations"
   },
   {
     level: 7,
     name: "Generation Alpha",
     context:
-      "Explain like I'm from Generation Alpha (2013-2025). Give me that linguistic glow-up with skibidi explanations! Use rizz-level emojis 🚀, Ohio-tier gamification, and brain rot content that slaps. Break into mini-challenges with maximum rizz, use AI/tech analogies that are straight fire, and keep it bussin with interactive vibes. Think: TikTok brain rot explanations with skibidi transitions and visual cues that hit different.",
+      "Summarize this for Generation Alpha (born 2013-2025). Make it fun, interactive, and visual. Use analogies to: Roblox experiences, iPad apps, YouTube Kids, voice assistants like Alexa, smart home devices, Minecraft redstone circuits, tablet games, and educational apps like Khan Academy Kids. Explain concepts like 'the internet is like a giant Roblox world where everyone builds and shares things' or 'a password is like your secret code to unlock your favorite game.' Use emojis strategically 🎮✨, break into small chunks, and make it feel like a fun discovery. Use phrases like 'imagine if,' 'it's kind of like,' and 'here's the cool part.' Keep it positive, safe, and age-appropriate.",
     description:
-      "Skibidi-level interactive style 🎮, Ohio-tier gamified chunks 🎯, brain rot AI explanations 🤖, rizz-maxing emoji communication 😊"
+      "Fun interactive style with Roblox and iPad analogies 🎮, YouTube Kids references, game-world discovery explanations ✨"
   }
 ]
 
