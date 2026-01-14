@@ -64,7 +64,9 @@ To run End-to-End (E2E) tests:
 ```bash
 npm test
 ```
+
 This suite includes:
+
 - `extension.spec.ts`: Verifies basic popup loading and storage updates.
 - `content-script.spec.ts`: Verifies content script injection and communication with the background script.
 - `side-panel.spec.ts`: Verifies side panel interaction flow.

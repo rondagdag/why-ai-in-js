@@ -141,7 +141,8 @@ function App() {
       } catch (error) {
         // Silently fail if content script is not available
         // This is expected when the extension is reloaded or on pages where content script doesn't run
-        const errorMessage = error instanceof Error ? error.message : String(error)
+        const errorMessage =
+          error instanceof Error ? error.message : String(error)
         if (!errorMessage.includes("Receiving end does not exist")) {
           console.log("Could not check current selection:", error)
         }
