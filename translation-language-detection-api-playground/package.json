@@ -1,0 +1,25 @@
+{
+  "name": "translation-language-detection-api-playground",
+  "version": "1.0.0",
+  "description": "Playground for Chrome's experimental Translator and Language Detector APIs",
+  "type": "module",
+  "scripts": {
+    "dev": "npx http-server . -p 3001 -o",
+    "start": "npx http-server . -p 3001 -o",
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "http-server": "^14.1.1"
+  },
+  "keywords": [
+    "translator-api",
+    "language-detector",
+    "chrome-apis",
+    "built-in-ai",
+    "experimental"
+  ],
+  "author": "AI in JavaScript Demo Collection",
+  "license": "Apache-2.0"
+}
