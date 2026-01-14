@@ -5,7 +5,27 @@
       "Bash(npm run package:*)",
       "Bash(npm view:*)",
       "Bash(npm install)",
-      "Bash(npm run install:all:*)"
+      "Bash(npm run install:all:*)",
+      "WebFetch(domain:rondagdag.github.io)",
+      "Bash(for dir in tensorflowjs-toxicity quick-start_onnxruntime-web-script-tag mediapipe-hand-gesture webllmsimple-chat-javascript transformerjs-sentiment-analysis video-object-detection video-background-removal phi-webgpu phi-3.5-webgpu prompt-api-playground summarization-api-playground translation-language-detection-api-playground)",
+      "Bash(do echo -n \"$dir: \")",
+      "Bash([ -d \"$dir\" ])",
+      "Bash(done)",
+      "Bash(for demo in tensorflowjs-toxicity/index.html quick-start_onnxruntime-web-script-tag/index.html mediapipe-hand-gesture/index.html webllmsimple-chat-javascript/dist/index.html transformerjs-sentiment-analysis/index.html video-object-detection/dist/index.html video-background-removal/dist/index.html phi-webgpu/dist/index.html prompt-api-playground/index.html summarization-api-playground/dist/index.html translation-language-detection-api-playground/index.html)",
+      "Bash(do echo -n \"$demo: \")",
+      "Bash([ -f \"$demo\" ])",
+      "Bash(cat:*)",
+      "Bash(for demo in tensorflowjs-toxicity quick-start_onnxruntime-web-script-tag mediapipe-hand-gesture webllmsimple-chat-javascript transformerjs-sentiment-analysis video-background-removal phi-webgpu prompt-api-playground summarization-api-playground translation-language-detection-api-playground)",
+      "Bash(do if [ -f \"$demo/package.json\" ])",
+      "Bash(then echo \"$demo: HAS package.json\")",
+      "Bash(fi)",
+      "Bash(for demo in webllmsimple-chat-javascript video-object-detection video-background-removal phi-webgpu summarization-api-playground)",
+      "Bash(do echo \"=== $demo ===\")",
+      "Bash([ -f \"$demo/index.html\" ])",
+      "Bash([ -f \"$demo/dist/index.html\" ])",
+      "Bash(git ls-tree:*)",
+      "Bash(git restore:*)",
+      "Bash(npm run build:all:*)",
     ]
   }
 }
