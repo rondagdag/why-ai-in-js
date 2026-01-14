@@ -197,7 +197,7 @@ function App() {
               height="auto"
               className="block"
             ></img>
-            <h1 className="text-4xl font-bold mb-1">Phi-3.5 WebGPU</h1>
+            <h1 className="text-4xl font-bold mb-1">Phi-4 WebGPU</h1>
             <h2 className="font-semibold">
               A private and powerful AI chatbot
               <br />
@@ -210,16 +210,17 @@ function App() {
               <br />
               You are about to load{" "}
               <a
-                href="onnx-community/Phi-3.5-mini-instruct-onnx-web"
+                href="https://huggingface.co/onnx-community/Phi-4-mini-instruct-web-q4f16"
                 target="_blank"
                 rel="noreferrer"
                 className="font-medium underline"
               >
-                Phi-3.5-mini-instruct
+                Phi-4-mini-instruct
               </a>
-              , a 3.82 billion parameter LLM that is optimized for inference on
-              the web. Once downloaded, the model (2.3&nbsp;GB) will be cached
-              and reused when you revisit the page.
+              , Microsoft's latest small language model (3.8B parameters),
+              optimized for inference on the web. Once downloaded, the model
+              (~1.4&nbsp;GB) will be cached and reused when you revisit the
+              page.
               <br />
               <br />
               Everything runs directly in your browser using{" "}
@@ -231,20 +232,9 @@ function App() {
               >
                 🤗&nbsp;Transformers.js
               </a>{" "}
-              and ONNX Runtime Web, meaning your conversations aren&#39;t sent
-              to a server. You can even disconnect from the internet after the
-              model has loaded!
-              <br />
-              Want to learn more? Check out the demo's source code on{" "}
-              <a
-                href="https://github.com/huggingface/transformers.js-examples/tree/main/phi-3.5-webgpu"
-                target="_blank"
-                rel="noreferrer"
-                className="underline"
-              >
-                GitHub
-              </a>
-              !
+              and ONNX Runtime Web with WebGPU acceleration, meaning your
+              conversations aren&#39;t sent to a server. You can even disconnect
+              from the internet after the model has loaded!
             </p>
 
             {error && (

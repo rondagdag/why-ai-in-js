@@ -1,8 +1,9 @@
 {
-  "name": "phi-3.5-webgpu",
+  "name": "phi-4-webgpu",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Run Microsoft's Phi-4-mini LLM locally in the browser using WebGPU + ONNX + Transformers.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
