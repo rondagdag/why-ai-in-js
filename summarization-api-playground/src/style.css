@@ -69,6 +69,152 @@ textarea {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.8em;
+  margin-top: 0;
+}
+
+h3 {
+  font-size: 1.3em;
+  margin-bottom: 0.8em;
+}
+
+.info-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.info-box h2 {
+  margin-top: 0;
+  color: white;
+}
+
+.info-box p {
+  margin: 0.5em 0;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.05em;
+}
+
+.info-box ul {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.info-box ul li {
+  margin: 0.3em 0;
+}
+
+.examples-section {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: rgba(100, 108, 255, 0.1);
+  border-radius: 8px;
+  border: 2px solid rgba(100, 108, 255, 0.2);
+}
+
+.example-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.example-btn {
+  padding: 12px 24px;
+  font-size: 1em;
+  font-weight: 500;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.example-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.example-btn.active {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+}
+
+fieldset {
+  border: 2px solid rgba(100, 108, 255, 0.3);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+legend {
+  font-weight: 600;
+  font-size: 1.1em;
+  padding: 0 8px;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.setting-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.setting-item label {
+  font-weight: 500;
+  font-size: 0.95em;
+}
+
+.setting-item select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 2px solid rgba(100, 108, 255, 0.3);
+  background-color: rgba(0, 0, 0, 0.1);
+  color: inherit;
+  font-size: 1em;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.setting-item select:hover {
+  border-color: rgba(100, 108, 255, 0.5);
+}
+
+.setting-item select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.char-count-wrapper {
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.output-section {
+  margin-top: 24px;
+}
+
+.output-wrapper {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  border: 2px solid rgba(100, 108, 255, 0.3);
+  min-height: 150px;
 }
 
 .dialog {
@@ -85,6 +231,10 @@ h1 {
 
 pre {
   text-wrap: auto;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Courier New', monospace;
 }
 
 .tokens-exceeded, #character-count-exceed {
@@ -110,5 +260,35 @@ pre {
 
   .dialog {
     background-color: lightcoral;
+  }
+
+  .setting-item select {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  .char-count-wrapper {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .output-wrapper {
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2em;
+  }
+
+  .example-buttons {
+    flex-direction: column;
+  }
+
+  .example-btn {
+    width: 100%;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
   }
 }

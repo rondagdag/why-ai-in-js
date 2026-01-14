@@ -12,49 +12,78 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Summarization API Playgroud</title>
-    <script type="module" crossorigin src="/summarization-api-playground/dist/assets/index-BPsXR9p9.js"></script>
-    <link rel="stylesheet" crossorigin href="/summarization-api-playground/dist/assets/index-CL64T4_G.css">
+    <script type="module" crossorigin src="/summarization-api-playground/dist/assets/index-B5X5XfqW.js"></script>
+    <link rel="stylesheet" crossorigin href="/summarization-api-playground/dist/assets/index-2IKdmBRi.css">
   </head>
   <body>
     <header>
       <h1>Summarization API Playground</h1>
     </header>
     <main>
-        <fieldset>
-          <legend>Prompt</legend>
-          <textarea id="input"></textarea>
-          <div>Character Count: <span id="character-count">0</span><span id="character-count-exceed" class="hidden"> (may exceed maximum token limit supported by the API.)</span></div>
-        </fieldset>
-        <fieldset>
-          <legend>Settings</legend>
-          <div>
-            <label for="type">Summary Type:</label>
-            <select id="type">
-              <option value="key-points" selected>Key Points</option>
-              <option value="tldr">TL;DR</option>
-              <option value="teaser">Teaser</option>
-              <option value="headline">Headline</option>
-            </select>
+        <div class="info-box">
+          <h2>How It Works</h2>
+          <p>This playground uses Chrome's built-in <strong>Summarization API</strong> powered by <strong>Gemini Nano</strong>, a compact AI model that runs entirely in your browser. No data is sent to external servers - all processing happens locally on your device.</p>
+          <ul>
+            <li><strong>Privacy-First:</strong> Your text never leaves your browser</li>
+            <li><strong>Offline Capable:</strong> Works without an internet connection (after initial model download)</li>
+            <li><strong>Real-Time:</strong> Instant summarization with automatic updates as you type</li>
+          </ul>
+        </div>
+
+        <div class="examples-section">
+          <h3>Quick Examples - Click to Try</h3>
+          <div class="example-buttons">
+            <button class="example-btn" data-example="news">News Article</button>
+            <button class="example-btn" data-example="tech">Technical Documentation</button>
+            <button class="example-btn" data-example="story">Short Story</button>
+            <button class="example-btn" data-example="research">Research Abstract</button>
           </div>
-          <div>
-            <label for="length">Length:</label>
-            <select id="length">
-              <option value="short" selected>Short</option>
-              <option value="medium">Medium</option>
-              <option value="long">Long</option>
-            </select>
-          </div>
-          <div>
-            <label for="format">Format:</label>
-            <select id="format">
-              <option value="markdown" selected>Markdown</option>
-              <option value="plain-text">Plain text</option>
-            </select>
+        </div>
+
+        <fieldset>
+          <legend>Enter Your Text (or select an example above)</legend>
+          <textarea id="input" placeholder="Type or paste text here, or click an example button above to get started..."></textarea>
+          <div class="char-count-wrapper">
+            Character Count: <span id="character-count">0</span>
+            <span id="character-count-exceed" class="hidden"> (may exceed maximum token limit supported by the API.)</span>
           </div>
         </fieldset>
-        <div>
-          <h2>Summary</h2>
-          <pre id="output"></pre>
+
+        <fieldset>
+          <legend>Summarization Settings</legend>
+          <div class="settings-grid">
+            <div class="setting-item">
+              <label for="type">Summary Type:</label>
+              <select id="type">
+                <option value="key-points" selected>Key Points - Extract main ideas as bullet points</option>
+                <option value="tldr">TL;DR - Brief overview of the content</option>
+                <option value="teaser">Teaser - Engaging preview to encourage reading</option>
+                <option value="headline">Headline - Catchy title or summary phrase</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label for="length">Length:</label>
+              <select id="length">
+                <option value="short" selected>Short - Concise summary</option>
+                <option value="medium">Medium - Balanced detail</option>
+                <option value="long">Long - Comprehensive summary</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label for="format">Format:</label>
+              <select id="format">
+                <option value="markdown" selected>Markdown - Formatted text</option>
+                <option value="plain-text">Plain Text - No formatting</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="output-section">
+          <h2>AI-Generated Summary</h2>
+          <div class="output-wrapper">
+            <pre id="output">Your summary will appear here automatically as you type or select an example...</pre>
+          </div>
         </div>
     </main>
     <footer>

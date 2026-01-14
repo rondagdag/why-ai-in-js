@@ -46,13 +46,31 @@ Open your browser and navigate to `http://localhost:5173`
 
 ## Usage
 
-1. Enter or paste text into the input textarea
-2. Configure your preferences:
+### Quick Start with Examples
+
+1. Click any of the example buttons (News Article, Technical Documentation, Short Story, Research Abstract)
+2. Watch as the AI automatically generates a summary
+3. Try different summary types, lengths, and formats to see how the output changes
+
+### Custom Text
+
+1. Type or paste your own text into the textarea
+2. The summary updates automatically as you type (after a 1-second pause)
+3. Configure your preferences:
    - **Summary Type**: Choose from key-points, tldr, teaser, or headline
    - **Length**: Select short, medium, or long output
    - **Format**: Pick markdown or plain text
-3. Click "Summarize" to generate the summary
-4. View the AI-generated summary below
+4. The AI-generated summary appears automatically below
+
+### New Demo Features
+
+- **Pre-loaded Examples**: Four diverse examples ready to test immediately
+- **Visual Explanations**: Learn how the API works with on-screen information
+- **Better Descriptions**: Each option now explains what it does
+- **Improved UI**: Modern, gradient-based design for better presentations
+- **Active State**: Selected example button highlights for clarity
+
+See [DEMO_GUIDE.md](DEMO_GUIDE.md) for a comprehensive explanation of what's happening under the hood and presentation tips.
 
 ## Summary Types
 
