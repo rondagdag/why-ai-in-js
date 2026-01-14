@@ -26,6 +26,7 @@
       "Bash(git ls-tree:*)",
       "Bash(git restore:*)",
       "Bash(npm run build:all:*)",
+      "Bash(gh pr view:*)"
     ]
   }
 }
