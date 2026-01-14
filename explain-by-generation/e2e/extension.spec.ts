@@ -62,7 +62,7 @@ test.describe("Extension E2E", () => {
       .poll(async () => {
         return await backgroundPage!.evaluate(() => {
           return new Promise((resolve) => {
-            chrome.storage.sync.get(["selectedLevel"], (result) => {
+            chrome.storage.sync.get(["selectedLevel"], (result: any) => {
               resolve(result.selectedLevel?.level)
             })
           })

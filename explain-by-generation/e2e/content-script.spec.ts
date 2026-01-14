@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 test.describe('Content Script E2E', () => {
     let context: import('@playwright/test').BrowserContext;
-    let extensionId: string;
+
 
     test.beforeAll(async () => {
         const pathToExtension = path.join(__dirname, '../dist');

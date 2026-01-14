@@ -1,7 +1,17 @@
 {
   "extends": "./tsconfig.node.json",
   "compilerOptions": {
-    "types": ["node"]
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "types": [
+      "node",
+      "chrome"
+    ]
   },
-  "include": ["e2e/**/*.ts", "playwright.config.ts"]
+  "include": [
+    "e2e/**/*.ts",
+    "playwright.config.ts"
+  ]
 }
