@@ -1,0 +1,19 @@
+{
+  "name": "tensorflowjs-toxicity",
+  "version": "1.0.0",
+  "description": "This project demonstrates how to use TensorFlow.js and the Toxicity model to classify text for toxic content in a modern web interface.",
+  "main": "script.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}

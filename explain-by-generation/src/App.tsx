@@ -112,8 +112,9 @@ function App() {
     chrome.storage.local.get(
       [APP_CONSTANTS.STORAGE_KEYS.CURRENT_LEVEL],
       (result) => {
-        if (result.currentLevel?.level) {
-          setCurrentLevel(result.currentLevel.level)
+        const data = result as { currentLevel?: { level: number } }
+        if (data.currentLevel?.level) {
+          setCurrentLevel(data.currentLevel.level)
         }
       }
     )

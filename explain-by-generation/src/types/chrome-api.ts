@@ -19,11 +19,14 @@ export interface DownloadProgressEvent extends Event {
 
 export interface Summarizer {
   ready: Promise<void>
+  // inputQuota might be removed in the new API, but leaving it for now if not causing errors.
+  // Docs emphasize measureInputUsage.
   inputQuota: number
-  summarize(
+  summarize(input: string, options?: SummarizeOptions): Promise<string>
+  summarizeStreaming(
     input: string,
     options?: SummarizeOptions
-  ): Promise<AsyncIterable<string>>
+  ): AsyncIterable<string>
   measureInputUsage(input: string): Promise<number>
   addEventListener(
     type: "downloadprogress",

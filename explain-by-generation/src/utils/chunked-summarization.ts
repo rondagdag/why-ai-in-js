@@ -76,7 +76,7 @@ export async function processChunkedSummarization(
 
     if (!quotaCheck.exceedsQuota) {
       // Text is small enough, process normally
-      const stream = await summarizer.summarize(text, { context })
+      const stream = summarizer.summarizeStreaming(text, { context })
       const summary = await streamToString(stream)
       return {
         finalSummary: summary,
@@ -105,7 +105,7 @@ export async function processChunkedSummarization(
       const chunkContext = `${context} (Part ${i + 1} of ${chunks.length})`
 
       try {
-        const stream = await summarizer.summarize(chunk.text, {
+        const stream = summarizer.summarizeStreaming(chunk.text, {
           context: chunkContext
         })
         const chunkSummary = await streamToString(stream)

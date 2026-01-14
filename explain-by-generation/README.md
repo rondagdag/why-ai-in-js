@@ -1,15 +1,19 @@
 # 🌟 Explain by Generation 🌟
 
 ## Author
+
 Created by **Ron Dagdag** - A Chrome extension that brings AI-powered generational communication to your browsing experience.
 
 ## Inspiration
+
 Understanding how different generations consume and process information is crucial in today's multi-generational world. We created a tool that adapts explanations to match the communication styles and cultural references of different generations, from Gen Alpha to the Greatest Generation.
 
 ## **What it does**
+
 🌟 Explain by Generation enables users to highlight any text on a webpage and instantly receive AI-powered explanations tailored to specific generational communication styles. It seamlessly integrates into the Chrome side panel, allowing users to switch between different generational perspectives without leaving their current page.
 
 ## **Features**
+
 - Adapts explanations for 7 different generations
 - Uses generation-specific cultural references and communication styles
 - Real-time AI-powered text processing
@@ -18,6 +22,7 @@ Understanding how different generations consume and process information is cruci
 ## Installation & Setup
 
 ### For Users (Chrome Web Store)
+
 Coming soon! This extension will be available in the Chrome Web Store.
 
 ### For Developers (Local Development)
@@ -31,6 +36,7 @@ Coming soon! This extension will be available in the Chrome Web Store.
    ```bash
    npm install
    npm run build
+   npm test
    ```
 3. Ensure your system meets the hardware requirements (see Requirements section below)
 4. Open Chrome and navigate to `chrome://extensions`
@@ -41,15 +47,32 @@ Coming soon! This extension will be available in the Chrome Web Store.
 ### Packaging for Chrome Web Store
 
 To package the extension for submission:
+
 ```bash
 npm run package
 ```
 
 This creates:
+
 - `chrome-extension-pkg/` - Unpacked extension for testing
 - `explain-in-generations-v[version].zip` - Ready for Chrome Web Store upload
 
+### Testing
+
+To run End-to-End (E2E) tests:
+
+```bash
+npm test
+```
+This suite includes:
+- `extension.spec.ts`: Verifies basic popup loading and storage updates.
+- `content-script.spec.ts`: Verifies content script injection and communication with the background script.
+- `side-panel.spec.ts`: Verifies side panel interaction flow.
+
+This uses Playwright to launch a browser with the extension loaded and verify functionality.
+
 For complete submission instructions, see:
+
 - [`CHROME_STORE_ASSETS.md`](./docs/CHROME_STORE_ASSETS.md) - Required assets and content
 - [`CHROME_STORE_SUBMISSION_GUIDE.md`](./docs/CHROME_STORE_SUBMISSION_GUIDE.md) - Step-by-step submission process
 
@@ -66,9 +89,11 @@ For more details, see the [official Chrome Summarization API documentation](http
 ## Requirements
 
 ### Browser Requirements
+
 - Google Chrome version 138 or later
 
 ### Hardware Requirements
+
 - **Operating System**: Windows 10 or 11; macOS 13+ (Ventura and onwards); or Linux
   - Chrome for Android, iOS, and ChromeOS are not yet supported
 - **Storage**: At least 22 GB of free space on the volume that contains your Chrome profile for Gemini Nano download
@@ -76,6 +101,7 @@ For more details, see the [official Chrome Summarization API documentation](http
 - **Network**: Unlimited data or an unmetered connection for initial model download
 
 ### Permissions
+
 - `"sidePanel"`: Required for the extension's side panel interface
 - `"activeTab"`: Required to access the current page's content
 - `"contextMenus"`: Required for right-click context menu functionality
@@ -87,6 +113,7 @@ For more details, see the [official Chrome Summarization API documentation](http
 ## API Notes
 
 This extension uses Chrome's built-in Summarizer API with Gemini Nano, which:
+
 - Is free to use and runs locally on the user's device
 - Does not send data to external servers, ensuring privacy
 - Requires Chrome version 138 or later
@@ -97,6 +124,7 @@ This extension uses Chrome's built-in Summarizer API with Gemini Nano, which:
 **Important**: Please acknowledge [Google's Generative AI Prohibited Uses Policy](https://policies.google.com/terms/generative-ai/use-policy) before using this extension.
 
 ## **What's next for 🌟 Explain by Generation**
+
 - Enhanced generational context awareness
 - Customizable communication style preferences
 - Multi-language support with generation-appropriate localizations

@@ -1,47 +1,150 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>ONNX Runtime JavaScript examples: Quick Start - Web (using script tag)</title>
-    </head>
-    <body>
-        <!-- see also advanced usage of importing ONNX Runtime Web: -->
-        <!-- https://github.com/microsoft/onnxruntime-inference-examples/tree/main/js/importing_onnxruntime-web -->
 
-        <!-- import ONNXRuntime Web from CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
-        <script>
-            // use an async context to call onnxruntime functions.
-            async function main() {
-                try {
-                    // create a new session and load the specific model.
-                    //
-                    // the model in this example contains a single MatMul node
-                    // it has 2 inputs: 'a'(float32, 3x4) and 'b'(float32, 4x3)
-                    // it has 1 output: 'c'(float32, 3x3)
-                    const session = await ort.InferenceSession.create('./model.onnx');
+<head>
+    <title>ONNX Runtime Web Demo</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
 
-                    // prepare inputs. a tensor need its corresponding TypedArray as data
-                    const dataA = Float32Array.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-                    const dataB = Float32Array.from([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]);
-                    const tensorA = new ort.Tensor('float32', dataA, [3, 4]);
-                    const tensorB = new ort.Tensor('float32', dataB, [4, 3]);
+        h1 {
+            color: #333;
+        }
 
-                    // prepare feeds. use model input names as keys.
-                    const feeds = { a: tensorA, b: tensorB };
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-                    // feed inputs and run
-                    const results = await session.run(feeds);
+        .box {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
 
-                    // read from results
-                    const dataC = results.c.data;
-                    document.write(`data of result tensor 'c': ${dataC}`);
+        button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-                } catch (e) {
-                    document.write(`failed to inference ONNX model: ${e}.`);
+        button:hover {
+            background: #005a9e;
+        }
+
+        code {
+            background: #e0e0e0;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .matrix {
+            font-family: monospace;
+            white-space: pre;
+            margin-top: 10px;
+        }
+    </style>
+    <!-- Import ONNXRuntime Web from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>ONNX Runtime Web - In-Browser Inference</h1>
+        <p>This demo loads a <b>Matrix Multiplication</b> model (<code>model.onnx</code>) directly in the browser using
+            a script tag.</p>
+
+        <div class="box">
+            <h3>Input Data</h3>
+            <p>We will multiply two matrices:</p>
+            <div><b>Matrix A (3x4):</b>
+                <div id="input-a" class="matrix">Loading...</div>
+            </div>
+            <br>
+            <div><b>Matrix B (4x3):</b>
+                <div id="input-b" class="matrix">Loading...</div>
+            </div>
+        </div>
+
+        <button onclick="runInference()">Run Inference</button>
+
+        <div class="box" style="margin-top: 20px;">
+            <h3>Result</h3>
+            <div id="output">Click "Run Inference" to compute...</div>
+        </div>
+
+        <p style="font-size: 0.9em; color: #666;">Check the console for detailed logs.</p>
+    </div>
+
+    <script>
+        // Define input data globally so we can display it locally
+        const rawDataA = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        const rawDataB = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
+
+        function formatMatrix(data, rows, cols) {
+            let str = "";
+            for (let i = 0; i < rows; i++) {
+                str += "[ ";
+                for (let j = 0; j < cols; j++) {
+                    str += data[i * cols + j].toString().padStart(4, ' ') + " ";
                 }
+                str += "]\n";
             }
+            return str;
+        }
 
-            main();
-        </script>
-    </body>
+        // Display inputs on load
+        document.getElementById('input-a').textContent = formatMatrix(rawDataA, 3, 4);
+        document.getElementById('input-b').textContent = formatMatrix(rawDataB, 4, 3);
+
+        async function runInference() {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = "Running inference...";
+
+            try {
+                // 1. Create session
+                const session = await ort.InferenceSession.create('./model.onnx');
+
+                // 2. Prepare inputs
+                const dataA = Float32Array.from(rawDataA);
+                const dataB = Float32Array.from(rawDataB);
+
+                const tensorA = new ort.Tensor('float32', dataA, [3, 4]);
+                const tensorB = new ort.Tensor('float32', dataB, [4, 3]);
+
+                // 3. Prepare feeds
+                const feeds = { a: tensorA, b: tensorB };
+
+                // 4. Run inference
+                const start = performance.now();
+                const results = await session.run(feeds);
+                const end = performance.now();
+
+                // 5. Read result
+                const dataC = results.c.data;
+
+                outputDiv.innerHTML = `
+                        <b>Inference Success!</b> (${(end - start).toFixed(2)}ms)<br>
+                        <b>Output Matrix C (3x3):</b><br>
+                        <div class="matrix">${formatMatrix(dataC, 3, 3)}</div>
+                    `;
+
+            } catch (e) {
+                console.error(e);
+                outputDiv.textContent = `Error: ${e.message}`;
+            }
+        }
+    </script>
+</body>
+
 </html>

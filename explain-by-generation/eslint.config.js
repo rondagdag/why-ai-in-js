@@ -8,33 +8,33 @@ import pluginPrettier from "eslint-plugin-prettier"
 export default tseslint.config(
   { ignores: ["dist"] },
   {
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommended
-    ],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: globals.browser
     },
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
-      prettier: pluginPrettier,
+      prettier: pluginPrettier
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [
         "warn",
-        { allowConstantExport: true },
+        { allowConstantExport: true }
       ],
-      "quotes": ["error", "double"],
-      "semi": ["error", "never"],
+      quotes: ["error", "double"],
+      semi: ["error", "never"],
       "comma-dangle": ["error", "never"],
-      "prettier/prettier": ["error", {
-        "singleQuote": false,
-        "semi": false
-      }]
-    },
+      "prettier/prettier": [
+        "error",
+        {
+          singleQuote: false,
+          semi: false
+        }
+      ]
+    }
   }
 )

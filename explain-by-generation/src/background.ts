@@ -1,10 +1,20 @@
-import { generations, getGenerationByLevel } from "./constants/generations"
+import {
+  Generation,
+  generations,
+  getGenerationByLevel
+} from "./constants/generations"
 import { APP_CONSTANTS } from "./constants/app"
-import type { ChromeMessage } from "./types/chrome-api"
+import type { ChromeMessage, Summarizer } from "./types/chrome-api"
 import {
   processChunkedSummarization,
   processStreamWithCallback
 } from "./utils/chunked-summarization"
+
+interface StorageData {
+  currentLevel?: Generation
+  selectedLevel?: Generation
+  theme?: string
+}
 
 // Default configuration for the current explanation level
 // This serves as a fallback if no stored level is found
@@ -19,8 +29,9 @@ let lastTabInfo: { url?: string; id?: number } = {}
 chrome.storage.local.get(
   [APP_CONSTANTS.STORAGE_KEYS.CURRENT_LEVEL],
   (result) => {
-    if (result.currentLevel && result.currentLevel.level) {
-      const generation = getGenerationByLevel(result.currentLevel.level)
+    const data = result as StorageData
+    if (data.currentLevel?.level) {
+      const generation = getGenerationByLevel(data.currentLevel.level)
       if (generation) {
         currentLevel = generation
       }
@@ -35,7 +46,7 @@ async function setCurrentLevel(generation: typeof currentLevel): Promise<void> {
       [APP_CONSTANTS.STORAGE_KEYS.CURRENT_LEVEL]: generation
     })
     currentLevel = generation
-  } catch (error) {
+  } catch {
     // Error saving current level - silently fail in production
   }
 }
@@ -47,7 +58,7 @@ function sendRuntimeMessage(message: ChromeMessage): void {
       // Check if extension context is still valid
       chrome.runtime.sendMessage(message)
     }
-  } catch (error) {
+  } catch {
     // Error sending runtime message - silently fail in production
   }
 }
@@ -160,7 +171,7 @@ async function openSidePanelSafely(windowId: number): Promise<void> {
         setTimeout(resolve, APP_CONSTANTS.PANEL_OPEN_DELAY)
       )
     }
-  } catch (error) {
+  } catch {
     // Error opening side panel - silently fail in production
   }
 }
@@ -197,7 +208,7 @@ async function initializeSummarizer(): Promise<any> {
 
 // Helper function to stream summarization results
 async function streamSummarization(
-  summarizer: any,
+  summarizer: Summarizer,
   selectedText: string,
   tabInfo: { url?: string; id?: number }
 ): Promise<void> {
@@ -255,7 +266,7 @@ async function streamSummarization(
       )
     } else {
       // For non-chunked results, process normally
-      const stream = await summarizer.summarize(selectedText, { context })
+      const stream = summarizer.summarizeStreaming(selectedText, { context })
       await processStreamWithCallback(stream, (chunk) => {
         sendRuntimeMessage({
           chunk,
@@ -264,7 +275,8 @@ async function streamSummarization(
       })
     }
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Processing failed"
+    const errorMessage =
+      error instanceof Error ? error.message : "Processing failed"
     sendRuntimeMessage({
       type: APP_CONSTANTS.MESSAGE_TYPES.ERROR,
       error: errorMessage

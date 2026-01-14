@@ -17,6 +17,7 @@ Before running this application, make sure you have:
 1. **Node.js** (v18 or higher)
 2. **Ollama** installed and running
 3. **Required Ollama models** downloaded
+4. **LlamaIndex** (v0.12.x or higher) - installed via package.json
 
 ### Quick Setup
 

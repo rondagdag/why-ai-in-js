@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "prettier": "prettier --write .",
     "preview": "vite preview",
+    "test": "playwright test",
     "package": "./package-extension.sh"
   },
   "dependencies": {
@@ -27,8 +28,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/typography": "^0.5.16",
-    "@types/chrome": "^0.0.287",
+    "@types/chrome": "^0.1.33",
     "@types/node": "^22.10.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

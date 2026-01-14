@@ -1,16 +1,19 @@
 # Critical Issues Fixed - Optimization Summary
 
 ## 🚀 Overview
+
 Fixed critical performance, memory, and maintainability issues in the "Explain by Generation" Chrome extension project.
 
 ## ✅ Critical Issues Resolved
 
 ### 1. **Memory Leaks Fixed** ⚠️ **HIGH PRIORITY**
+
 - **Issue**: useEffect dependencies missing, causing stale closures and memory leaks
 - **Fix**: Added proper `useCallback` hooks and dependency arrays
 - **Impact**: Prevents memory leaks and ensures proper cleanup of event listeners
 
 ### 2. **Stream Processing Fixed** ⚠️ **HIGH PRIORITY**
+
 - **Issue**: `stream.getReader is not a function` - Chrome Summarizer API returns AsyncIterable, not ReadableStream
 - **Fix**: Updated stream processing to use `for await` loop instead of ReadableStream reader
 - **Impact**: Eliminates runtime errors and ensures proper streaming functionality
@@ -24,7 +27,10 @@ async function processStream(stream: ReadableStream<string>): Promise<void> {
 // After - Correct async iterable handling
 async function processStream(stream: AsyncIterable<string>): Promise<void> {
   for await (const chunk of stream) {
-    sendRuntimeMessage({ chunk, type: APP_CONSTANTS.MESSAGE_TYPES.STREAM_RESPONSE })
+    sendRuntimeMessage({
+      chunk,
+      type: APP_CONSTANTS.MESSAGE_TYPES.STREAM_RESPONSE
+    })
   }
 }
 ```
@@ -40,9 +46,12 @@ useEffect(() => {
 }, []) // Missing dependencies
 
 // After - Memory safe
-const messageListener = useCallback((message) => {
-  // Properly captures current selectedText
-}, [selectedText])
+const messageListener = useCallback(
+  (message) => {
+    // Properly captures current selectedText
+  },
+  [selectedText]
+)
 
 useEffect(() => {
   chrome.runtime.onMessage.addListener(messageListener)
@@ -51,23 +60,27 @@ useEffect(() => {
 ```
 
 ### 3. **Constants Extraction** 📋 **MEDIUM PRIORITY**
+
 - **Issue**: Magic numbers and strings scattered throughout codebase
 - **Fix**: Created comprehensive constants file (`src/constants/app.ts`)
 - **Impact**: Improved maintainability and consistency
 
 ```typescript
 // Before - Magic values
-await new Promise(resolve => setTimeout(resolve, 1000))
+await new Promise((resolve) => setTimeout(resolve, 1000))
 type: "STREAM_RESPONSE"
 target: "chrome130"
 
 // After - Centralized constants
-await new Promise(resolve => setTimeout(resolve, APP_CONSTANTS.PANEL_OPEN_DELAY))
+await new Promise((resolve) =>
+  setTimeout(resolve, APP_CONSTANTS.PANEL_OPEN_DELAY)
+)
 type: APP_CONSTANTS.MESSAGE_TYPES.STREAM_RESPONSE
 target: CHROME_TARGET
 ```
 
 ### 4. **Race Conditions Fixed** ⚠️ **HIGH PRIORITY**
+
 - **Issue**: Async operations without proper sequencing causing race conditions
 - **Fix**: Added proper async/await patterns and sequential operation handling
 - **Impact**: Eliminates race conditions in side panel opening and message handling
@@ -83,6 +96,7 @@ sendRuntimeMessage({ type: APP_CONSTANTS.MESSAGE_TYPES.TEXT_SELECTED })
 ```
 
 ### 5. **TypeScript Type Safety** 🛡️ **MEDIUM PRIORITY**
+
 - **Issue**: Multiple `@ts-expect-error` suppressions hiding type issues
 - **Fix**: Created proper TypeScript interfaces (`src/types/chrome-api.ts`)
 - **Impact**: Better type safety and IDE support
@@ -90,16 +104,17 @@ sendRuntimeMessage({ type: APP_CONSTANTS.MESSAGE_TYPES.TEXT_SELECTED })
 ```typescript
 // Before - Suppressed errors
 // @ts-expect-error new chrome feature
-const availability = await Summarizer.availability();
+const availability = await Summarizer.availability()
 
 // After - Proper types
 interface ChromeSummarizerAPI {
-  availability(): Promise<'available' | 'unavailable' | 'loading'>
+  availability(): Promise<"available" | "unavailable" | "loading">
   create(options?: SummarizerOptions): Promise<Summarizer>
 }
 ```
 
 ### 6. **Function Decomposition** 🔧 **MEDIUM PRIORITY**
+
 - **Issue**: 90+ line `processSummarization` function with multiple responsibilities
 - **Fix**: Split into focused, single-responsibility functions
 - **Impact**: Improved readability, testability, and maintainability
@@ -112,30 +127,37 @@ async function processSummarization() {
 
 // After - Decomposed functions
 async function initializeSummarizer(): Promise<any>
-async function streamSummarization(summarizer, selectedText, tabInfo): Promise<void>
+async function streamSummarization(
+  summarizer,
+  selectedText,
+  tabInfo
+): Promise<void>
 async function processStream(stream: ReadableStream<string>): Promise<void>
 async function openSidePanelSafely(windowId: number): Promise<void>
 ```
 
 ### 7. **Storage Optimization** 💾 **MEDIUM PRIORITY**
+
 - **Issue**: Redundant storage operations and inconsistent error handling
 - **Fix**: Centralized storage operations with proper error handling
 - **Impact**: Reduced storage calls and improved reliability
 
 ```typescript
 // Before - Multiple storage calls
-chrome.storage.local.set({ currentLevel: generation });
+chrome.storage.local.set({ currentLevel: generation })
 // Later in same function...
-chrome.storage.local.set({ currentLevel: generation });
+chrome.storage.local.set({ currentLevel: generation })
 
 // After - Centralized with error handling
 async function setCurrentLevel(generation: typeof currentLevel): Promise<void> {
   try {
-    await chrome.storage.local.set({ [APP_CONSTANTS.STORAGE_KEYS.CURRENT_LEVEL]: generation });
-    currentLevel = generation;
+    await chrome.storage.local.set({
+      [APP_CONSTANTS.STORAGE_KEYS.CURRENT_LEVEL]: generation
+    })
+    currentLevel = generation
   } catch (error) {
-    sentry.captureException(error);
-    console.error('Failed to save current level:', error);
+    sentry.captureException(error)
+    console.error("Failed to save current level:", error)
   }
 }
 ```

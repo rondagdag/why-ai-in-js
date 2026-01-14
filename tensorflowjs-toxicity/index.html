@@ -11,37 +11,62 @@
 <body>
     <div class="container">
         <header>
-            <h1>🛡️ Toxicity Detection Demo</h1>
-            <p>Analyze text for toxic content using TensorFlow.js</p>
+            <div class="header-content">
+                <div class="title-section">
+                    <h1>🛡️ Toxicity Detection</h1>
+                    <p>Real-time content moderation using TensorFlow.js</p>
+                </div>
+                <div class="model-badge">
+                    <span class="status-dot" id="status-dot"></span>
+                    <span id="model-status">Initializing...</span>
+                </div>
+            </div>
         </header>
         
         <main>
-            <div class="model-info">
-                <h4>Model Status</h4>
-                <p>Model: <span id="model-name">@tensorflow-models/toxicity</span></p>
-                <p>Status: <span id="model-status">Initializing...</span></p>
-                <p>Threshold: <span id="threshold">0.5</span></p>
+            <div class="controls-section">
+                <!-- Preset Buttons -->
+                <div class="presets">
+                    <span class="label">Try an example:</span>
+                    <div class="chip-container">
+                        <button class="chip" data-text="Have a wonderful day!">😊 Safe</button>
+                        <button class="chip" data-text="You are completely useless.">🤬 Insult</button>
+                        <button class="chip" data-text="I will hurt you.">👊 Threat</button>
+                        <button class="chip" data-text="You are an idiot and a fool.">🤪 Toxic</button>
+                    </div>
+                </div>
+
+                <!-- Real-time Toggle -->
+                <div class="toggle-container">
+                    <label class="switch">
+                        <input type="checkbox" id="realtime-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="toggle-label">Real-time Analysis</span>
+                </div>
             </div>
             
             <div class="input-section">
-                <label for="text-input">Enter text to analyze for toxicity:</label>
                 <textarea 
                     id="text-input" 
                     placeholder="Type a message to check for toxic content..."
                     rows="4"
                     disabled
                 ></textarea>
-                <button id="analyze-btn" disabled>
-                    <span id="btn-text">Analyze Text</span>
-                    <div id="btn-spinner" class="spinner" style="display: none;"></div>
-                </button>
+                <div class="action-bar">
+                    <button id="analyze-btn" disabled>
+                        <span id="btn-text">Analyze Text</span>
+                        <div id="btn-spinner" class="spinner" style="display: none;"></div>
+                    </button>
+                    <span class="threshold-info">Threshold: <span id="threshold">0.5</span></span>
+                </div>
             </div>
             
             <div class="results-section">
-                <h3>Toxicity Analysis Results</h3>
                 <div id="results-container">
                     <div class="result-placeholder">
-                        Results will appear here after analysis...
+                        <div class="placeholder-icon">👋</div>
+                        <p>Select an example above or type your own text to see the analysis.</p>
                     </div>
                 </div>
             </div>

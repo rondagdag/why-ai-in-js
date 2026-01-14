@@ -6,14 +6,20 @@ const levels: Generation[] = getGenerationsReversed()
 
 let currentLevel = 1
 
+interface StorageData {
+  currentLevel?: Generation
+  selectedLevel?: Generation
+  theme?: string
+}
+
 // Initialize the UI
 async function initializeUI() {
   // Load saved level from storage
   const result = await chrome.storage.sync.get(
     APP_CONSTANTS.STORAGE_KEYS.SELECTED_LEVEL
   )
-  if (result.selectedLevel) {
-    currentLevel = result.selectedLevel.level
+  if ((result as StorageData).selectedLevel) {
+    currentLevel = (result as StorageData).selectedLevel!.level
   }
 
   const container = document.getElementById("options")!
@@ -33,8 +39,8 @@ async function initializeUI() {
   })
 
   // If we loaded a saved level, initialize it without opening side panel
-  if (result.selectedLevel) {
-    await selectLevel(result.selectedLevel, false) // Pass false for initialization
+  if ((result as StorageData).selectedLevel) {
+    await selectLevel((result as StorageData).selectedLevel!, false) // Pass false for initialization
   }
 }
 

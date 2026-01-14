@@ -5,6 +5,7 @@
 ### Phase 1: Pre-Submission Preparation
 
 #### 1. Developer Account Setup
+
 1. **Visit**: [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/)
 2. **Sign in** with your Google account
 3. **Pay the one-time registration fee**: $5 USD
@@ -12,6 +13,7 @@
 5. **Accept the Developer Agreement**
 
 #### 2. Package Your Extension
+
 ```bash
 # Run the packaging script
 npm run package
@@ -22,6 +24,7 @@ npm run package
 ```
 
 #### 3. Test Your Extension Locally
+
 1. Open Chrome and navigate to `chrome://extensions/`
 2. Enable "Developer mode" (toggle in top right)
 3. Click "Load unpacked"
@@ -35,6 +38,7 @@ npm run package
 ### Phase 2: Chrome Web Store Submission
 
 #### 1. Create New Item
+
 1. Go to [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/)
 2. Click "Add new item"
 3. **Upload your ZIP file**: `collected_extensions/explain-by-generation-v1.2.0.zip`
@@ -43,9 +47,11 @@ npm run package
 #### 2. Store Listing Information
 
 ##### Basic Information
+
 - **Name**: "Explain by Generation"
 - **Summary**: "Get AI-powered explanations of highlighted text customized for different generations"
-- **Description**: 
+- **Description**:
+
 ```
 Transform complex text into easy-to-understand explanations tailored for different generations!
 
@@ -66,7 +72,7 @@ HOW IT WORKS:
 
 SUPPORTED GENERATIONS:
 • Gen Alpha (2013-present)
-• Gen Z (1997-2012) 
+• Gen Z (1997-2012)
 • Millennials (1981-1996)
 • Gen X (1965-1980)
 • Baby Boomers (1946-1964)
@@ -83,10 +89,12 @@ Uses Chrome's built-in Summarizer API with Gemini Nano for completely private, l
 ```
 
 ##### Category and Language
+
 - **Category**: Productivity
 - **Language**: English
 
 ##### Privacy
+
 - **Permissions**: Your extension will show the permissions automatically
 - **Privacy Policy**: Host your privacy policy at: `https://your-domain.com/privacy-policy.html`
   - The extension includes a privacy-policy.html file in the root directory
@@ -95,9 +103,11 @@ Uses Chrome's built-in Summarizer API with Gemini Nano for completely private, l
 #### 3. Upload Assets
 
 ##### Store Icon
+
 - Upload your `icon128.png` as the store icon
 
 ##### Screenshots (Required - Create These)
+
 1. **Main feature screenshot**: Show extension side panel with highlighted text and generated explanations
 2. **Generation selection**: Show the interface with different generation options
 3. **Multiple generations**: Show different explanation styles side by side
@@ -105,10 +115,12 @@ Uses Chrome's built-in Summarizer API with Gemini Nano for completely private, l
 5. **In-context usage**: Show the extension working on a real webpage
 
 ##### Promotional Images (Optional but Recommended)
+
 - **Small tile**: 440x280 pixels
 - **Large tile**: 920x680 pixels
 
 #### 4. Review and Submit
+
 1. **Review all information** carefully
 2. **Check that all required fields are filled**
 3. **Preview your store listing**
@@ -117,6 +129,7 @@ Uses Chrome's built-in Summarizer API with Gemini Nano for completely private, l
 ### Phase 3: Post-Submission
 
 #### Review Process
+
 - **Initial review**: 1-3 business days (usually)
 - **May be longer** for first submission or complex extensions
 - **Possible outcomes**:
@@ -125,12 +138,14 @@ Uses Chrome's built-in Summarizer API with Gemini Nano for completely private, l
   - ⏳ Additional review required
 
 #### If Rejected
+
 1. **Read the rejection email carefully**
 2. **Fix the identified issues**
 3. **Update your extension** if needed
 4. **Resubmit** with changes
 
 #### After Approval
+
 - Your extension will be live in the Chrome Web Store
 - Users can find and install it
 - You'll receive analytics and user feedback
@@ -144,6 +159,7 @@ The extension includes a privacy-policy.html file. You need to:
 3. **Ensure the policy matches** the extension's actual data handling
 
 #### Key Privacy Policy Points for This Extension:
+
 - Uses Chrome's built-in Summarizer API (Gemini Nano)
 - All processing happens locally on the user's device
 - No data is sent to external servers
@@ -158,16 +174,19 @@ The included privacy-policy.html file covers all these requirements and is ready
 This extension uses Chrome's built-in Summarizer API with Gemini Nano, which has specific requirements:
 
 #### Browser Requirements
+
 - **Chrome version**: 138 or later
 - **Operating System**: Windows 10/11, macOS 13+, or Linux
 - **Not supported**: Chrome for Android, iOS, or ChromeOS
 
-#### Hardware Requirements  
+#### Hardware Requirements
+
 - **Storage**: At least 22 GB free space for Gemini Nano download
 - **GPU**: More than 4 GB of VRAM
 - **Network**: Unlimited/unmetered connection for initial model download
 
 #### Important Notes for Users
+
 - First-time usage requires Gemini Nano model download (happens automatically)
 - Model is removed if available storage falls below 10 GB
 - All AI processing happens locally - no internet required after setup
@@ -176,7 +195,9 @@ This extension uses Chrome's built-in Summarizer API with Gemini Nano, which has
 Make sure to include these requirements in your store listing description!
 
 ### Phase 6: Maintenance and Updates
+
 #### Updating Your Extension
+
 1. **Update version** in `manifest.json` and `package.json`
 2. **Make your changes**
 3. **Test thoroughly** (especially Chrome AI functionality)
@@ -185,6 +206,7 @@ Make sure to include these requirements in your store listing description!
 6. **Submit for review**
 
 #### Best Practices
+
 - **Monitor user reviews** and respond professionally
 - **Fix bugs quickly** with updates
 - **Add new features** based on user feedback
@@ -194,6 +216,7 @@ Make sure to include these requirements in your store listing description!
 ### Troubleshooting Common Issues
 
 #### Common Rejection Reasons
+
 1. **Missing privacy policy** - Host the included privacy-policy.html on your website
 2. **Excessive permissions** - Current permissions are minimal and necessary
 3. **Poor quality images** - Ensure screenshots show actual Chrome AI functionality
@@ -202,6 +225,7 @@ Make sure to include these requirements in your store listing description!
 6. **Chrome AI compliance** - Follow Google's Generative AI Prohibited Uses Policy
 
 #### Technical Issues
+
 1. **Manifest errors** - Validate your manifest.json (current version uses Manifest V3)
 2. **Missing files** - Ensure all referenced files exist in the package
 3. **Permission errors** - Test all features work with granted permissions
@@ -225,12 +249,14 @@ Make sure to include these requirements in your store listing description!
 - [ ] Hardware requirements mentioned for Gemini Nano
 
 ### Cost Summary
+
 - **Developer registration**: $5 USD (one-time)
 - **Extension hosting**: Free
 - **Chrome AI usage**: Free (built into Chrome)
 - **Total cost to publish**: $5 USD
 
 ### Timeline
+
 - **Preparation**: 2-4 hours
 - **Submission**: 30 minutes
 - **Review process**: 1-7 business days

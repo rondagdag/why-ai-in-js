@@ -8,30 +8,33 @@ const CHROME_TARGET = "chrome130"
 export default defineConfig({
   plugins: [react()],
   build: {
-    minify: 'esbuild', // Use esbuild for faster minification
+    minify: "esbuild", // Use esbuild for faster minification
     sourcemap: false, // Disable source maps for production
     rollupOptions: {
       input: {
         popup: path.resolve(__dirname, "index.html"),
         popupHtml: path.resolve(__dirname, "popup.html"),
         background: path.resolve(__dirname, "src/background.ts"),
-        'content-script': path.resolve(__dirname, "src/content-script.ts")
+        "content-script": path.resolve(__dirname, "src/content-script.ts")
       },
       output: {
         entryFileNames: (chunkInfo) => {
           // Ensure content and background scripts are named correctly
-          return chunkInfo.name === "background" ? "background.js" : 
-                 chunkInfo.name === "content-script" ? "content-script.js" : "[name].js"
+          return chunkInfo.name === "background"
+            ? "background.js"
+            : chunkInfo.name === "content-script"
+              ? "content-script.js"
+              : "[name].js"
         },
         chunkFileNames: "[name].js",
         assetFileNames: "[name].[ext]",
         manualChunks: {
           // Split vendor chunks for better caching
-          vendor: ['react', 'react-dom'],
-          ui: ['@radix-ui/react-slot', 'lucide-react']
+          vendor: ["react", "react-dom"],
+          ui: ["@radix-ui/react-slot", "lucide-react"]
         }
       },
-      external: ['chrome'] // Chrome APIs are external
+      external: ["chrome"] // Chrome APIs are external
     },
     outDir: "dist",
     emptyOutDir: true,
