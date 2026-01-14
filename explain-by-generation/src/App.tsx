@@ -140,7 +140,11 @@ function App() {
         }
       } catch (error) {
         // Silently fail if content script is not available
-        console.log("Could not check current selection:", error)
+        // This is expected when the extension is reloaded or on pages where content script doesn't run
+        const errorMessage = error instanceof Error ? error.message : String(error)
+        if (!errorMessage.includes("Receiving end does not exist")) {
+          console.log("Could not check current selection:", error)
+        }
       }
     }
 
@@ -319,6 +323,16 @@ function App() {
         // Store the selected text for potential rerun
         if (message.text) {
           setSelectedText(message.text)
+
+          // Automatically trigger summarization for the new selection
+          const generation = getGenerationByLevel(currentLevel)
+          if (generation) {
+            chrome.runtime.sendMessage({
+              type: APP_CONSTANTS.MESSAGE_TYPES.RERUN_SUMMARIZATION,
+              text: message.text,
+              level: generation
+            })
+          }
         }
       } else if (message.type === APP_CONSTANTS.MESSAGE_TYPES.RERUN_COMPLETE) {
         // Handle rerun completion if needed
@@ -328,7 +342,7 @@ function App() {
       }
       sendResponse()
     },
-    [selectedText]
+    [selectedText, currentLevel]
   )
 
   useEffect(() => {

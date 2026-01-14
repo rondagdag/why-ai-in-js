@@ -56,7 +56,11 @@ function sendRuntimeMessage(message: ChromeMessage): void {
   try {
     if (chrome.runtime?.id) {
       // Check if extension context is still valid
-      chrome.runtime.sendMessage(message)
+      chrome.runtime.sendMessage(message, () => {
+        // Checking chrome.runtime.lastError suppresses the "Receiving end does not exist" error
+        // which happens when no listeners (popup/sidepanel) are active
+        void chrome.runtime.lastError
+      })
     }
   } catch {
     // Error sending runtime message - silently fail in production
