@@ -30,6 +30,70 @@
       powered by Gemini Nano.
     </p>
     <div id="error-message"></div>
+
+    <!-- How It Works Section -->
+    <details id="how-it-works" open>
+      <summary>How It Works</summary>
+      <div class="explanation">
+        <p><strong>The Prompt API</strong> is a browser-native AI capability that runs <strong>Gemini Nano</strong> directly in Chrome - no server required!</p>
+        <ul>
+          <li><strong>100% Client-Side:</strong> All inference happens locally on your device</li>
+          <li><strong>Privacy-First:</strong> Your prompts never leave your browser</li>
+          <li><strong>Zero Latency:</strong> No network round-trips to cloud APIs</li>
+          <li><strong>Free:</strong> No API keys or usage costs</li>
+        </ul>
+        <div class="code-example">
+          <p><strong>Key API Methods:</strong></p>
+          <pre><code>// Check availability
+const status = await LanguageModel.availability();
+
+// Create a session with system prompt
+const session = await LanguageModel.create({
+  systemPrompt: "You are a helpful assistant.",
+  temperature: 0.7,
+  topK: 3
+});
+
+// Stream responses token-by-token
+for await (const chunk of session.promptStreaming(prompt)) {
+  console.log(chunk); // Real-time output!
+}</code></pre>
+        </div>
+      </div>
+    </details>
+
+    <!-- Example Prompts Section -->
+    <div id="examples-section">
+      <h2>Try These Examples</h2>
+      <p class="examples-subtitle">Click any example to load it into the prompt area:</p>
+      <div class="examples-grid">
+        <div class="example-category">
+          <h3>Creative Writing</h3>
+          <button class="example-btn" data-prompt="Write a haiku about JavaScript programming">Haiku about JS</button>
+          <button class="example-btn" data-prompt="Create a short story opening (2-3 sentences) about a robot learning to paint">Robot story opener</button>
+          <button class="example-btn" data-prompt="Write a limerick about debugging code at 3am">Debugging limerick</button>
+        </div>
+        <div class="example-category">
+          <h3>Code Help</h3>
+          <button class="example-btn" data-prompt="Explain the difference between let, const, and var in JavaScript in simple terms">let vs const vs var</button>
+          <button class="example-btn" data-prompt="What does the spread operator (...) do in JavaScript? Give a brief example.">Spread operator</button>
+          <button class="example-btn" data-prompt="Write a simple JavaScript function to check if a string is a palindrome">Palindrome function</button>
+        </div>
+        <div class="example-category">
+          <h3>Q&A / Knowledge</h3>
+          <button class="example-btn" data-prompt="What are 3 benefits of using WebGPU for AI inference in the browser?">WebGPU benefits</button>
+          <button class="example-btn" data-prompt="Explain what a Large Language Model (LLM) is in 2-3 simple sentences">What is an LLM?</button>
+          <button class="example-btn" data-prompt="List 5 creative uses for client-side AI in web applications">Client-side AI uses</button>
+        </div>
+        <div class="example-category">
+          <h3>Formatting & Structure</h3>
+          <button class="example-btn" data-prompt="Create a markdown table comparing React, Vue, and Angular with columns for Learning Curve, Performance, and Community Size">Framework comparison</button>
+          <button class="example-btn" data-prompt="Write a numbered list of 5 tips for writing clean JavaScript code">Clean code tips</button>
+          <button class="example-btn" data-prompt="Format this as bullet points: benefits of TypeScript include type safety, better IDE support, easier refactoring, and self-documenting code">Format as bullets</button>
+        </div>
+      </div>
+    </div>
+
     <div id="prompt-area">
       <form>
         <label>

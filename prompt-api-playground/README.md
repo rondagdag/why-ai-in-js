@@ -1,21 +1,158 @@
-# ✨ Prompt API Playground
+# Prompt API Playground
 
-I ([@tomayac](https://github.com/tomayac)) have created a Chrome [Prompt API Playground](https://tomayac.github.io/prompt-api-playground/) that hopefully is useful to more people:
+An interactive demo of Chrome's built-in **Prompt API** powered by **Gemini Nano** - a small language model that runs entirely in the browser!
 
-![Screenshot 2024-08-02 at 11 51 44](https://github.com/user-attachments/assets/4f46e3b5-41e4-4ab9-b006-fd173fae6711)
+## What is the Prompt API?
 
-You can [deep link to prompts](https://tomayac.github.io/prompt-api-playground/?prompt=Tell%2520me%2520two%2520fun%2520facts%2520about%2520the%2520Eiffel%2520tower.) and see the **Markdown response** and the **raw response**:
+The Prompt API is a browser-native AI capability that allows web applications to interact with a locally-running language model (Gemini Nano) without any server calls, API keys, or cloud dependencies.
 
-![Screenshot 2024-08-02 at 11 55 51](https://github.com/user-attachments/assets/b4cd8375-f903-4318-aaac-672fc283a698)
+### Key Benefits
 
-If there's a **problem with the response**, you can highlight it with your mouse and it will be [part of the deep link](https://tomayac.github.io/prompt-api-playground/?prompt=Write%2520a%2520aJavaScript%2520function%2520that%2520tells%2520me%2520if%2520a%2520number%2520is%2520even%2520or%2520odd.&highlight=console.log%28isEven%285%29%29%253B%2520%252F%252F%2520true):
+- **100% Client-Side**: All AI inference happens locally on the user's device
+- **Privacy-First**: Prompts never leave the browser - no data sent to servers
+- **Zero Latency**: No network round-trips mean instant responses
+- **Free**: No API keys, rate limits, or usage costs
+- **Offline Capable**: Works without an internet connection (once model is downloaded)
 
-![Screenshot 2024-08-02 at 11 58 42](https://github.com/user-attachments/assets/3ab454e9-efe6-4418-ae45-fd6d7283b9d3)
+## Running the Demo
 
-If a **prompt crashes**, you can still [link to it](https://tomayac.github.io/prompt-api-playground/?prompt=Tell%2520me%2520the%2520lyrics%2520of%2520%2522Never%2520gonna%2520give%2520you%2520up%2522%21&highlight=Error%253A%2520The%2520execution%2520yielded%2520a%2520bad%2520response.%250A), and the raw response contains the response until the crash:
+### Prerequisites
 
-![Screenshot 2024-08-02 at 12 25 29](https://github.com/user-attachments/assets/9056e318-e5b6-4203-ac86-e4f32249dbc8)
+1. **Chrome 138+** or **Chrome Canary** with experimental features enabled
+2. Navigate to `chrome://flags/` and enable:
+   - `#optimization-guide-on-device-model` → Set to "Enabled BypassPerfRequirement"
+   - `#prompt-api-for-gemini-nano` → Set to "Enabled"
+3. Restart Chrome after enabling flags
+4. The model (~1.7GB) will download automatically on first use
 
-On **non-supported browsers**, it points people at the [Early Preview Program](https://developer.chrome.com/docs/ai/join-epp):
+### Start the Server
 
-![Screenshot 2024-08-02 at 12 01 23](https://github.com/user-attachments/assets/de3a372e-6293-4f14-ac77-a74522ad17ac)
+```bash
+# From this directory
+npx http-server . -p 8080
+
+# Or from the repo root
+npm run dev
+```
+
+Then open: http://localhost:8080/prompt-api-playground/
+
+## Demo Walkthrough
+
+### 1. Understanding the API (How It Works Section)
+
+The collapsible "How It Works" section explains:
+- What the Prompt API is and why it matters
+- Key benefits of client-side AI
+- Code example showing the main API methods
+
+### 2. Try the Examples
+
+Click any example button to load a pre-written prompt. Categories include:
+
+| Category | What It Shows |
+|----------|---------------|
+| **Creative Writing** | Haikus, stories, limericks - shows creative generation |
+| **Code Help** | JS explanations & code generation - practical dev use cases |
+| **Q&A / Knowledge** | General knowledge queries - information retrieval |
+| **Formatting & Structure** | Tables, lists, formatting - structured output |
+
+### 3. Interactive Prompt Area
+
+- Type your own prompts or use the examples
+- **Token Counter**: Shows real-time token cost as you type
+- **Temperature & Top-K**: Adjust model parameters
+  - Temperature (0-2): Higher = more creative, Lower = more focused
+  - Top-K (1-8): Number of top tokens to consider
+
+### 4. Session Stats
+
+Watch the stats table to understand token usage:
+- **Input Usage**: Tokens used so far in the conversation
+- **Input Remaining**: Available context window
+- **Input Quota**: Total context window size (~4K tokens)
+
+### 5. Streaming Responses
+
+Responses stream token-by-token in real-time, demonstrating:
+- Non-blocking UI during generation
+- Progressive rendering for better UX
+- Markdown rendering with syntax highlighting
+
+## Key Code Patterns
+
+### Feature Detection
+
+```javascript
+// Check if the API is available
+if (!self.LanguageModel) {
+  // Show fallback message
+  return;
+}
+
+// Check model availability
+const availability = await self.LanguageModel.availability();
+// Returns: 'available' | 'downloadable' | 'downloading' | 'unavailable'
+```
+
+### Creating a Session
+
+```javascript
+const session = await self.LanguageModel.create({
+  temperature: 0.7,      // Creativity (0-2)
+  topK: 3,               // Token diversity
+  initialPrompts: [
+    { role: 'system', content: 'You are a helpful assistant.' }
+  ],
+  monitor(m) {
+    m.addEventListener('downloadprogress', (e) => {
+      console.log(`Downloaded ${e.loaded * 100}%`);
+    });
+  }
+});
+```
+
+### Streaming Responses
+
+```javascript
+const stream = await session.promptStreaming(userPrompt);
+
+for await (const chunk of stream) {
+  // Handle incremental chunks
+  // Note: Each chunk may contain the full response so far
+  outputElement.textContent = chunk;
+}
+```
+
+### Token Counting
+
+```javascript
+// Measure input cost before sending
+const tokenCount = await session.measureInputUsage(prompt);
+console.log(`This prompt costs ${tokenCount} tokens`);
+```
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| "Browser doesn't support Prompt API" | Enable Chrome flags and restart |
+| "Model unavailable" | Ensure 22GB+ free disk space for download |
+| Model downloading slowly | First download is ~1.7GB, wait for completion |
+| Responses are cut off | Approaching token quota, reset session |
+| Session errors | Click "Reset session" to create a new one |
+
+## Demo Tips for Presentations
+
+1. **Start with "How It Works"** - Explain the client-side AI concept
+2. **Use Creative Writing examples first** - Quick, visual results
+3. **Show the token counter** - Type a long prompt to show real-time counting
+4. **Adjust temperature live** - Show how it affects creativity
+5. **Open DevTools Network tab** - Prove no API calls are made!
+6. **Compare latency** - Much faster than cloud APIs for simple queries
+
+## Resources
+
+- [Chrome Prompt API Documentation](https://developer.chrome.com/docs/ai/prompt-api)
+- [Chrome AI Early Preview Program](https://developer.chrome.com/docs/ai/join-epp)
+- [Original Playground by @tomayac](https://tomayac.github.io/prompt-api-playground/)

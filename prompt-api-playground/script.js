@@ -303,4 +303,20 @@ const SYSTEM_PROMPT = "You are a helpful and friendly assistant.";
     sessionTopK.value = Math.max(1, Math.min(defaultTopK, maxTopK));
     await updateSession();
   }
+
+  // Handle example button clicks
+  const exampleButtons = document.querySelectorAll('.example-btn');
+  exampleButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const prompt = btn.dataset.prompt;
+      if (prompt) {
+        promptInput.value = prompt;
+        promptInput.focus();
+        // Scroll to prompt area
+        promptArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Trigger input event to update token count
+        promptInput.dispatchEvent(new Event('input'));
+      }
+    });
+  });
 })();

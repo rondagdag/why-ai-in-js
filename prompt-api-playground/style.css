@@ -166,3 +166,202 @@ footer {
 table {
   font-variant-numeric: tabular-nums;
 }
+
+/* How It Works Section */
+#how-it-works {
+  margin-block: 1.5rem;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 12px;
+  border: 1px solid #0f3460;
+}
+
+#how-it-works summary {
+  background: linear-gradient(90deg, #4285f4, #34a853);
+  font-weight: bold;
+  padding: 10px 20px;
+}
+
+#how-it-works .explanation {
+  padding: 1rem 1.5rem;
+}
+
+#how-it-works ul {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+#how-it-works li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.code-example {
+  background: #0d1117;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: 1px solid #30363d;
+}
+
+.code-example pre {
+  margin: 0.5rem 0 0 0;
+  overflow-x: auto;
+}
+
+.code-example code {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #c9d1d9;
+}
+
+/* Examples Section */
+#examples-section {
+  margin-block: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #1e1e2e 0%, #252540 100%);
+  border-radius: 12px;
+  border: 1px solid #3d3d5c;
+}
+
+#examples-section h2 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  color: #f4b400;
+}
+
+.examples-subtitle {
+  color: #888;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.example-category h3 {
+  font-size: 0.95rem;
+  color: #4285f4;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #3d3d5c;
+}
+
+.example-btn {
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #2d2d44 0%, #1e1e2e 100%);
+  border: 1px solid #4d4d6d;
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: auto;
+}
+
+.example-btn:hover {
+  background: linear-gradient(135deg, #3d3d5c 0%, #2d2d44 100%);
+  border-color: #4285f4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
+}
+
+.example-btn:active {
+  transform: translateY(0);
+}
+
+/* Improve prompt area styling */
+#prompt-area {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #0f3460;
+}
+
+#prompt-area h2 {
+  color: #f4b400;
+  margin-top: 1.5rem;
+}
+
+/* Better textarea styling */
+textarea {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  color: #c9d1d9;
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #4285f4;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+}
+
+/* Settings styling */
+.settings {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.settings input {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  color: #c9d1d9;
+  padding: 0.5rem;
+}
+
+/* Session stats table */
+table {
+  width: 100%;
+  margin-top: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+}
+
+th {
+  background: rgba(66, 133, 244, 0.2);
+  color: #4285f4;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Token cost indicator */
+#cost {
+  display: inline-block;
+  margin-left: 1rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(244, 180, 0, 0.2);
+  border-radius: 4px;
+  color: #f4b400;
+  font-size: 0.85rem;
+}
+
+/* Response area improvements */
+#response-area {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+/* Copy link button */
+#copy-link-button {
+  background: linear-gradient(90deg, #4285f4, #34a853);
+}
