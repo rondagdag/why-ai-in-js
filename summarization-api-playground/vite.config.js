@@ -6,7 +6,7 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/why-ai-in-js/summarization-api-playground/dist/',
+  base: './',
   build: {
     outDir: 'dist',
     assetsDir: 'assets'
