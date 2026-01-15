@@ -1,0 +1,135 @@
+<!--
+  Copyright 2024 Google LLC
+  SPDX-License-Identifier: Apache-2.0
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>"
+    />
+    <title>Translation & Language Detection API Playground</title>
+    <script>
+      if (!isSecureContext) location.protocol = 'https:';
+    </script>
+    <script type="module" crossorigin src="/why-ai-in-js/translation-language-detection-api-playground/dist/assets/index-oTLfbqOu.js"></script>
+    <link rel="stylesheet" crossorigin href="/why-ai-in-js/translation-language-detection-api-playground/dist/assets/index-HQVb5q82.css">
+  </head>
+  <body>
+    <header>
+      <h1>🌐 Translation & Language Detection API Playground</h1>
+    </header>
+
+    <main>
+      <div class="not-supported-message" hidden>
+        <strong>⚠️ API Not Available</strong>
+        <p>Your browser doesn't support the Translator or Language Detector APIs.</p>
+        <p>If you're in Chrome, join the
+          <a href="https://developer.chrome.com/docs/ai/built-in#get_an_early_preview">Early Preview Program</a>
+          to enable it.
+        </p>
+      </div>
+
+      <div class="info-box">
+        <h2>How It Works</h2>
+        <p>This playground demonstrates Chrome's built-in <strong>Translation API</strong> and <strong>Language Detection API</strong>, both powered by on-device AI models. All processing happens locally in your browser - no data is sent to external servers.</p>
+        <ul>
+          <li><strong>Language Detection:</strong> Automatically identifies the language of your input text with confidence scores</li>
+          <li><strong>Translation:</strong> Translates between supported language pairs (English ↔ Spanish, English ↔ Japanese)</li>
+          <li><strong>Privacy-First:</strong> Everything runs on-device - your text never leaves your browser</li>
+          <li><strong>Real-Time:</strong> Language detection happens instantly as you type</li>
+        </ul>
+      </div>
+
+      <div class="examples-section">
+        <h3>🎯 Quick Examples - Click to Try</h3>
+        <div class="example-buttons">
+          <button class="example-btn" data-example="spanish">Spanish Greeting</button>
+          <button class="example-btn" data-example="japanese">Japanese Text</button>
+          <button class="example-btn" data-example="english">English Paragraph</button>
+          <button class="example-btn" data-example="french">French Quote</button>
+          <button class="example-btn" data-example="german">German Proverb</button>
+          <button class="example-btn" data-example="mixed">Mixed Languages</button>
+        </div>
+      </div>
+
+      <form>
+        <fieldset>
+          <legend>Input Text</legend>
+          <textarea id="input" placeholder="Type or paste text here, or click an example button above...">Hello, world!</textarea>
+          <div class="detection-result">
+            <span class="detection-icon">🔍</span>
+            <span id="detected">Analyzing...</span>
+          </div>
+        </fieldset>
+
+        <fieldset class="translation-controls" hidden>
+          <legend>Translation</legend>
+          <div class="translate-row">
+            <label for="translate">Translate to:</label>
+            <select id="translate">
+              <option value="en">English</option>
+              <option value="ja">Japanese</option>
+              <option selected value="es">Spanish</option>
+            </select>
+            <button type="submit" class="translate-btn">Translate →</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="output-section" hidden>
+          <legend>Translation Result</legend>
+          <output id="output"></output>
+        </fieldset>
+      </form>
+
+      <div class="api-explanation">
+        <h3>📚 What's Happening Under the Hood</h3>
+        <div class="explanation-grid">
+          <div class="explanation-card">
+            <h4>1. Language Detection</h4>
+            <pre><code>// Create a language detector
+const detector = await LanguageDetector.create();
+
+// Detect the language
+const results = await detector.detect(text);
+// Returns: [{ detectedLanguage: "es", confidence: 0.95 }, ...]</code></pre>
+            <p>The API analyzes character patterns, word structures, and linguistic features to identify the language with a confidence score.</p>
+          </div>
+          <div class="explanation-card">
+            <h4>2. Translation</h4>
+            <pre><code>// Create a translator for a specific language pair
+const translator = await Translator.create({
+  sourceLanguage: "es",
+  targetLanguage: "en"
+});
+
+// Translate the text
+const result = await translator.translate(text);
+// Returns: "Hello, how are you?"</code></pre>
+            <p>The Translator API uses neural machine translation models that run entirely in your browser.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="supported-languages">
+        <h3>🗣️ Supported Language Pairs</h3>
+        <p>Currently, the Translation API supports these pairs:</p>
+        <ul>
+          <li><strong>English ↔ Spanish:</strong> Full bidirectional translation</li>
+          <li><strong>English ↔ Japanese:</strong> Full bidirectional translation</li>
+        </ul>
+        <p class="note">Note: Language Detection works with many more languages, but translation is limited to the pairs above during the preview period.</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>Be the first to test new AI APIs. Your feedback is invaluable to our development process.</p>
+      <p>Join the <a href="https://developer.chrome.com/docs/ai/built-in#get_an_early_preview">Early Preview Program</a> today.</p>
+    </footer>
+  </body>
+</html>

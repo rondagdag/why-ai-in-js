@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A collection of client-side AI capability demos",
   "scripts": {
-    "dev": "npx http-server .",
+    "dev": "npx http-server . --cors='*' -o",
     "install:all": "npm-run-all --parallel install:*",
     "install:phi": "cd phi-webgpu && npm install",
     "install:summarization": "cd summarization-api-playground && npm install",
@@ -13,8 +13,8 @@
     "install:video-bg": "cd video-background-removal && npm install",
     "install:video-obj": "cd video-object-detection && npm install",
     "install:phichat": "cd onnxruntimeweb-phichat && npm install",
+    "build:all": "npm-run-all --parallel build:phi build:summarization build:explain build:next build:techstack build:video-bg build:video-obj build:phichat",
     "build": "npm run build:all",
-    "build:all": "npm-run-all --parallel build:*",
     "build:phi": "cd phi-webgpu && npm install && npm run build",
     "build:summarization": "cd summarization-api-playground && npm install && npm run build",
     "build:explain": "cd explain-by-generation && npm install && npm run build",

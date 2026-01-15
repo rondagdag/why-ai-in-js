@@ -1,0 +1,159 @@
+<!--
+  Copyright 2024 Google LLC
+  SPDX-License-Identifier: Apache-2.0
+ -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark light">
+    <meta http-equiv="origin-trial" content="Aq1kMNMJGNDo7/yPLcMjuCPPt6yagT2AJMUTwXoqdhYIgtGpwJAk+b23OBMOzBprnEt/fZD24poMmmc/Lih2yQ4AAABdeyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElNdWx0aW1vZGFsSW5wdXQiLCJleHBpcnkiOjE3NzQzMTA0MDB9">
+    <link
+    rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>"
+  >
+    <title>Prompt API Playground</title>
+    <script>
+      if (!isSecureContext) location.protocol = "https:";
+    </script>
+    <script type="module" crossorigin src="/why-ai-in-js/prompt-api-playground/dist/assets/index-BjKC8fgE.js"></script>
+    <link rel="stylesheet" crossorigin href="/why-ai-in-js/prompt-api-playground/dist/assets/index-CuHXDkU4.css">
+  </head>
+  <body>
+    <h1>✨ Prompt API Playground</h1>
+    <p>
+      This is a demo of Chrome's
+      <a
+        href="https://developer.chrome.com/docs/ai/prompt-api"
+      >built-in Prompt API</a>
+      powered by Gemini Nano.
+    </p>
+    <div id="error-message"></div>
+
+    <!-- How It Works Section -->
+    <details id="how-it-works" open>
+      <summary>How It Works</summary>
+      <div class="explanation">
+        <p><strong>The Prompt API</strong> is a browser-native AI capability that runs <strong>Gemini Nano</strong> directly in Chrome - no server required!</p>
+        <ul>
+          <li><strong>100% Client-Side:</strong> All inference happens locally on your device</li>
+          <li><strong>Privacy-First:</strong> Your prompts never leave your browser</li>
+          <li><strong>Zero Latency:</strong> No network round-trips to cloud APIs</li>
+          <li><strong>Free:</strong> No API keys or usage costs</li>
+        </ul>
+        <div class="code-example">
+          <p><strong>Key API Methods:</strong></p>
+          <pre><code>// Check availability
+const status = await LanguageModel.availability();
+
+// Create a session with system prompt
+const session = await LanguageModel.create({
+  systemPrompt: "You are a helpful assistant.",
+  temperature: 0.7,
+  topK: 3
+});
+
+// Stream responses token-by-token
+for await (const chunk of session.promptStreaming(prompt)) {
+  console.log(chunk); // Real-time output!
+}</code></pre>
+        </div>
+      </div>
+    </details>
+
+    <!-- Example Prompts Section -->
+    <div id="examples-section">
+      <h2>Try These Examples</h2>
+      <p class="examples-subtitle">Click any example to load it into the prompt area:</p>
+      <div class="examples-grid">
+        <div class="example-category">
+          <h3>Creative Writing</h3>
+          <button class="example-btn" data-prompt="Write a haiku about JavaScript programming">Haiku about JS</button>
+          <button class="example-btn" data-prompt="Create a short story opening (2-3 sentences) about a robot learning to paint">Robot story opener</button>
+          <button class="example-btn" data-prompt="Write a limerick about debugging code at 3am">Debugging limerick</button>
+        </div>
+        <div class="example-category">
+          <h3>Code Help</h3>
+          <button class="example-btn" data-prompt="Explain the difference between let, const, and var in JavaScript in simple terms">let vs const vs var</button>
+          <button class="example-btn" data-prompt="What does the spread operator (...) do in JavaScript? Give a brief example.">Spread operator</button>
+          <button class="example-btn" data-prompt="Write a simple JavaScript function to check if a string is a palindrome">Palindrome function</button>
+        </div>
+        <div class="example-category">
+          <h3>Q&A / Knowledge</h3>
+          <button class="example-btn" data-prompt="What are 3 benefits of using WebGPU for AI inference in the browser?">WebGPU benefits</button>
+          <button class="example-btn" data-prompt="Explain what a Large Language Model (LLM) is in 2-3 simple sentences">What is an LLM?</button>
+          <button class="example-btn" data-prompt="List 5 creative uses for client-side AI in web applications">Client-side AI uses</button>
+        </div>
+        <div class="example-category">
+          <h3>Formatting & Structure</h3>
+          <button class="example-btn" data-prompt="Create a markdown table comparing React, Vue, and Angular with columns for Learning Curve, Performance, and Community Size">Framework comparison</button>
+          <button class="example-btn" data-prompt="Write a numbered list of 5 tips for writing clean JavaScript code">Clean code tips</button>
+          <button class="example-btn" data-prompt="Format this as bullet points: benefits of TypeScript include type safety, better IDE support, easier refactoring, and self-documenting code">Format as bullets</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="prompt-area">
+      <form>
+        <label>
+          Prompt
+          <textarea id="prompt-input"></textarea>
+        </label>
+        <button type="submit" id="submit-button">Submit prompt</button>
+        <button type="button" id="reset-button">Reset session</button>
+        <span id="cost"></span>
+        <div class="settings">
+          <label for="session-top-k">Top-k</label>
+          <input
+          id="session-top-k"
+          min="1"
+          type="number"
+        >
+          <label for="session-temperature">Temperature</label>
+          <input
+          id="session-temperature"
+          type="number"
+          step="any"
+          min="0"
+        >
+        </div>
+      </form>
+      <h2>Session stats</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Temperature</th>
+            <th>Top-k</th>
+            <th>Input Usage</th>
+            <th>Input Remaining</th>
+            <th>Input Quota</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="temperature">&nbsp;</td>
+            <td id="top-k">&nbsp;</td>
+            <td id="tokens-so-far">&nbsp;</td>
+            <td id="tokens-left">&nbsp;</td>
+            <td id="max-tokens">&nbsp;</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>Conversation</h2>
+      <div id="response-area"></div>
+      <details>
+        <summary>Raw response</summary>
+        <div></div>
+      </details>
+      <button id="copy-link-button">Copy link</button>
+      <small
+      >💡 If there's a problem with the response, select the problematic text
+         with your mouse before clicking the button.</small>
+      <div id="problematic-area">
+        <h2>Problematic:</h2>
+        <pre id="problem"></pre>
+      </div>
+    </div>
+  </body>
+</html>

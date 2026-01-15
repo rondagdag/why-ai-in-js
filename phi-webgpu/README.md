@@ -1,5 +1,5 @@
 ---
-title: Phi-4 WebGPU
+title: Phi-3.5 WebGPU
 emoji: ⚡
 colorFrom: blue
 colorTo: purple
@@ -7,18 +7,18 @@ sdk: static
 pinned: false
 license: apache-2.0
 models:
-  - onnx-community/Phi-4-mini-instruct-web-q4f16
-short_description: Run Phi-4 AI locally in your browser with WebGPU
+  - onnx-community/Phi-3.5-mini-instruct-onnx-web
+short_description: Run Phi-3.5 AI locally in your browser with WebGPU
 thumbnail: https://huggingface.co/spaces/webml-community/phi-3.5-webgpu/resolve/main/banner.png
 ---
 
-# Phi-4 WebGPU Demo
+# Phi-3.5 WebGPU Demo
 
-**Run Microsoft's Phi-4-mini LLM entirely in your browser** - no server required!
+**Run Microsoft's Phi-3.5-mini LLM entirely in your browser** - no server required!
 
 This demo showcases the power of running AI locally using:
 
-- **[Phi-4-mini-instruct](https://huggingface.co/onnx-community/Phi-4-mini-instruct-web-q4f16)** - Microsoft's latest 3.8B parameter model
+- **[Phi-3.5-mini-instruct](https://huggingface.co/onnx-community/Phi-3.5-mini-instruct-onnx-web)** - A powerful small language model
 - **[Transformers.js](https://huggingface.co/docs/transformers.js)** - Hugging Face's ML library for JavaScript
 - **[ONNX Runtime Web](https://onnxruntime.ai/)** - High-performance ML inference engine
 - **[WebGPU](https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API)** - Next-gen GPU API for the web
@@ -91,7 +91,7 @@ Navigate to `http://localhost:5173` in a WebGPU-supported browser:
 
 ## Model Details
 
-- **Model**: Phi-4-mini-instruct (3.8B parameters)
+- **Model**: Phi-3.5-mini-instruct
 - **Quantization**: 4-bit (q4f16) - reduces size from ~7GB to ~1.4GB
 - **Context Length**: 128K tokens
 - **Speed**: ~10-30 tokens/second (varies by GPU)
@@ -100,4 +100,4 @@ Navigate to `http://localhost:5173` in a WebGPU-supported browser:
 
 - [Transformers.js Documentation](https://huggingface.co/docs/transformers.js)
 - [WebGPU Guide](https://huggingface.co/docs/transformers.js/guides/webgpu)
-- [Phi-4 Model Card](https://huggingface.co/microsoft/Phi-4-mini-instruct)
+- [Phi-3.5 Model Card](https://huggingface.co/microsoft/Phi-3.5-mini-instruct)

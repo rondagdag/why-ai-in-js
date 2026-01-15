@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 export default defineConfig({
-  base: "/why-ai-in-js/video-background-removal/dist/",
+  base: "./",
   build: {
     target: "esnext",
   },

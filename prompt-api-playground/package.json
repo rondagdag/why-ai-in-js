@@ -2,8 +2,13 @@
   "name": "prompt-api-playground",
   "version": "1.0.0",
   "description": "This is a demo of Chrome's experimental Prompt API.",
+  "private": true,
+  "type": "module",
   "scripts": {
     "start": "npx http-server",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "fix": "prettier --write ."
   },
   "author": "Thomas Steiner (tomac@google.com)",
@@ -13,6 +18,11 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "http-server": "^14.1.1",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "dompurify": "^3.1.6",
+    "marked": "^13.0.3"
   }
 }

@@ -197,7 +197,7 @@ function App() {
               height="auto"
               className="block"
             ></img>
-            <h1 className="text-4xl font-bold mb-1">Phi-4 WebGPU</h1>
+            <h1 className="text-4xl font-bold mb-1">Phi-3.5 WebGPU</h1>
             <h2 className="font-semibold">
               A private and powerful AI chatbot
               <br />
@@ -210,14 +210,14 @@ function App() {
               <br />
               You are about to load{" "}
               <a
-                href="https://huggingface.co/onnx-community/Phi-4-mini-instruct-web-q4f16"
+                href="https://huggingface.co/onnx-community/Phi-3.5-mini-instruct-onnx-web"
                 target="_blank"
                 rel="noreferrer"
                 className="font-medium underline"
               >
-                Phi-4-mini-instruct
+                Phi-3.5-mini-instruct
               </a>
-              , Microsoft's latest small language model (3.8B parameters),
+              , a powerful small language model,
               optimized for inference on the web. Once downloaded, the model
               (~1.4&nbsp;GB) will be cached and reused when you revisit the
               page.
