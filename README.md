@@ -5,8 +5,9 @@ A collection of demos showcasing various client-side AI capabilities and APIs.
 ## 🎯 Quick Links
 
 - **📊 [View the Presentation](https://rondagdag.github.io/why-ai-in-js/)** - Learn about AI in JavaScript
-- **� [Download PDF](./Why%20AI%20in%20JS.pdf)** - Get the presentation slides
-- **�🚀 [Try the Live Demos](https://rondagdag.github.io/why-ai-in-js/)** - Test out all the demos online
+- **📄 [Download PDF](./Why%20AI%20in%20JS.pdf)** - Get the presentation slides
+- **🚀 [Try the Live Demos](https://rondagdag.github.io/why-ai-in-js/)** - Test out all the demos online
+- **🐙 [GitHub Repository](https://github.com/rondagdag/why-ai-in-js)** - Source code and contributions
 
 ## Running Locally
 
@@ -290,7 +291,7 @@ why-ai-in-js/
 
 | Extension | Technology | Description |
 |----------|-----------|-------------|
-| **Explain by Generation** | Chrome Summarizer API | Highlight any text to get AI-powered explanations tailored to different generational communication styles (Gen Alpha to Greatest Generation) |
+| **[Explain by Generation](https://chromewebstore.google.com/detail/explain-by-generation/jdfehdhaicpncdiapagfpmfbkkpgddep)** | Chrome Summarizer API | Highlight any text to get AI-powered explanations tailored to different generational communication styles (Gen Alpha to Greatest Generation) |
 | **TechStack Time Machine** | Chrome Prompt API | View technical content through different software engineering eras (1970s mainframes to 2020s cloud-native) with era-appropriate terminology |
 
 ### 🚀 Other Demos
