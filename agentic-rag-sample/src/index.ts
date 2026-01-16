@@ -2,6 +2,8 @@ import { VectorStoreIndex, Settings, FunctionTool } from "llamaindex";
 import { SimpleDirectoryReader } from "@llamaindex/readers/directory";
 import { agent } from "@llamaindex/workflow";
 import { ollama, OllamaEmbedding } from "@llamaindex/ollama";
+import { HuggingFaceEmbedding } from "@llamaindex/huggingface";
+
 import * as dotenv from "dotenv";
 import * as path from "path";
 import { fileURLToPath } from "url";
@@ -36,9 +38,14 @@ export class AgenticRAGSystem {
   private setupConfiguration() {
     console.log("🔧 Setting up configuration...");
 
-    // Configure embedding model - using Ollama instead of HuggingFace to avoid network issues
-    Settings.embedModel = new OllamaEmbedding({
-      model: process.env.OLLAMA_EMBEDDING_MODEL || "nomic-embed-text",
+    // // Configure embedding model - using Ollama instead of HuggingFace to avoid network issues
+    // Settings.embedModel = new OllamaEmbedding({
+    //   model: process.env.OLLAMA_EMBEDDING_MODEL || "nomic-embed-text",
+    // });
+
+    // Configure embedding model
+    Settings.embedModel = new HuggingFaceEmbedding({
+      modelType: process.env.HUGGINGFACE_MODEL || "BAAI/bge-small-en-v1.5",
     });
 
     // Configure LLM model
@@ -79,7 +86,7 @@ export class AgenticRAGSystem {
   private async loadDocuments() {
     console.log("📚 Loading documents from docs folder...");
 
-    const docsPath = path.resolve(__dirname, "../docs");
+    const docsPath = path.resolve(__dirname, "../docs/texts");
     console.log(`📁 Reading documents from: ${docsPath}`);
 
     try {
